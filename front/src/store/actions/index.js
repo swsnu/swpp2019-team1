@@ -5,4 +5,11 @@ export {
 } from './user';
 */
 
-export { getMatch, getHotMatch, getNewMatch, getRecommendMatch } from './match';
+export {
+  getMatch,
+  getHotMatch,
+  getNewMatch,
+  getRecommendMatch,
+  joinMatch,
+  quitMatch,
+} from './match';

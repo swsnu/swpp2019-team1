@@ -9,7 +9,7 @@ class MatchDetail extends Component {
   }
 
   render() {
-    const { match } = this.props;
+    const { selected } = this.props;
     return (
       <div className="MatchDetail">
         <div className="Detail-Header">
@@ -17,15 +17,40 @@ class MatchDetail extends Component {
             <img src="TODO-source-directory" alt="thumbnail" />
           </div>
           <div className="Detail-MainInfo">
-            <div className="Detail-MatchTitle">{match.title}</div>
-            <div className="Detail-Time">{match.time}</div>
-            <div className="Detail-Location">{match.location}</div>
-            <div className="Detail-Host">{match.hostName}</div>
+            <div className="Detail-MatchTitle">{selected.title}</div>
+            <div className="Detail-Time">{selected.time}</div>
+            <div className="Detail-Location">{selected.location}</div>
+            <div
+              className="Detail-Host"
+              onClick={() => this.props.onClickUser(this.props.selected.hostId)}
+            >
+              {selected.hostName}
+            </div>
           </div>
         </div>
-        <div className="Detail-Restriction">{match.restriction}</div>
+        <div className="Detail-Restriction">{selected.restriction}</div>
         <div className="Detail-Google-Map">GoogleMapAPI</div>
-        <div className="Detail-Additional-Info">{match.additionalInfo}</div>
+        <div className="Detail-Additional-Info">{selected.additionalInfo}</div>
+        <div className="HostButtons">
+          <button
+            id="edit-match-button"
+            onClick={() => this.props.onClickEdit(this.props.selected.id)}
+          >
+            Edit
+          </button>
+          <button
+            id="join-match-button"
+            onClick={() => this.props.onClickJoin(this.props.selected.id)}
+          >
+            Join
+          </button>
+          <button
+            id="quit-match-button"
+            onClick={() => this.props.onClickQuit(this.props.selected.id)}
+          >
+            Quit
+          </button>
+        </div>
       </div>
     );
   }
@@ -33,8 +58,8 @@ class MatchDetail extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user.user,
-    match: state.match.selected,
+    user: state.user.userid,
+    selected: state.match.selected,
   };
 };
 

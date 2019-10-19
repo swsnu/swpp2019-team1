@@ -39,7 +39,7 @@ export const getNewMatch = () => {
 };
 
 const getRecommendMatch_ = recommend => {
-  return { type: actionTypes.GET_Recommend_MATCH, recommend };
+  return { type: actionTypes.GET_RECOMMEND_MATCH, recommend };
 };
 
 export const getRecommendMatch = id => {
@@ -47,5 +47,17 @@ export const getRecommendMatch = id => {
     return axios
       .get(`/api/match/recommend/${id}`)
       .then(res => dispatch(getRecommendMatch_(res.data)));
+  };
+};
+
+export const joinMatch = id => {
+  return dispatch => {
+    return axios.post(`/api/match/${id}/join`, null);
+  };
+};
+
+export const quitMatch = id => {
+  return dispatch => {
+    return axios.delete(`/api/match/${id}/join`);
   };
 };
