@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'antd/dist/antd.css';
 import './index.css';
 
 import { createStore, combineReducers, applyMiddleware } from 'redux';

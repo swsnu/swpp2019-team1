@@ -1,6 +1,27 @@
-// import axios from 'axios';
-// import { push } from 'connected-react-router';
-// import * as actionTypes from './actionTypes';
+import axios from 'axios';
+import { push } from 'connected-react-router';
+import { message } from 'antd';
+
+import * as actionTypes from './actionTypes';
+
+const createUserAction = () => {
+  return {
+    type: actionTypes.CREATE_USER,
+  };
+};
+
+// eslint-disable-next-line import/prefer-default-export
+export const createUser = () => {
+  return dispatch => {
+    return axios
+      .post(`/api/signup`)
+      .then(() => {
+        dispatch(createUserAction());
+        dispatch(push('/home'));
+      })
+      .catch(() => message.error('Email is duplicated'));
+  };
+};
 
 /*
 const getUserInfo_ = user => {

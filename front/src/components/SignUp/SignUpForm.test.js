@@ -4,7 +4,7 @@ import SignUpForm from './SignUpForm';
 
 describe('<SignUpForm />', () => {
   it('should render without errors', () => {
-    const component = shallow(<SignUpForm />);
+    const component = shallow(<SignUpForm clickSignUp={() => null} />);
     const wrapper = component.find('.SignUpForm');
     expect(wrapper.length).toBe(1);
   });
