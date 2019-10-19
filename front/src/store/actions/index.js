@@ -5,6 +5,8 @@ export {
 } from './user';
 */
 
+export { createUser } from './user';
+
 export {
   getMatch,
   getHotMatch,

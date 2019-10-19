@@ -15,8 +15,9 @@ import SignUp from './containers/SignUp/SignUp';
 import UserProfile from './containers/UserProfile/UserProfile';
 
 function App(props) {
+  const { history } = props;
   return (
-    <ConnectedRouter history={props.history}>
+    <ConnectedRouter history={history}>
       <Header />
       <Switch>
         <Route path="/home" exact component={HomePage} />
