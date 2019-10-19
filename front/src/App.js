@@ -10,8 +10,8 @@ import HomePage from './containers/HomePage/HomePage';
 import Search from './containers/Search/Search';
 import MatchCreate from './containers/Match/MatchCreate/MatchCreate';
 import MatchDetail from './containers/Match/MatchDetail/MatchDetail';
-import LoginForm from './containers/Login/LoginForm';
-import Register from './containers/Register/Register';
+import SignInForm from './containers/SignIn/SignInForm';
+import SignUp from './containers/SignUp/SignUp';
 import UserProfile from './containers/UserProfile/UserProfile';
 
 function App(props) {
@@ -23,8 +23,8 @@ function App(props) {
         <Route path="/search" exact component={Search} />
         <Route path="/match/create" exact component={MatchCreate} />
         <Route path="/match/:id" exact component={MatchDetail} />
-        <Route path="/login" exact component={LoginForm} />
-        <Route path="/register" exact component={Register} />
+        <Route path="/signin" exact component={SignInForm} />
+        <Route path="/signup" exact component={SignUp} />
         <Route path="/profile" exact component={UserProfile} />
         <Redirect from="/" to="/home" />
       </Switch>

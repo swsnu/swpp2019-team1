@@ -10,9 +10,13 @@ import { createBrowserHistory } from 'history';
 import * as serviceWorker from './serviceWorker';
 import App from './App';
 
+import userReducer from './store/reducers/user';
+import matchReducer from './store/reducers/match';
+
 const history = createBrowserHistory();
 const rootReducer = combineReducers({
-  // TODO: add reducer
+  user: userReducer,
+  match: matchReducer,
   router: connectRouter(history),
 });
 
