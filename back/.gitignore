@@ -2,6 +2,10 @@
 # Created by https://www.gitignore.io/api/django
 # Edit at https://www.gitignore.io/?templates=django
 
+# vscode setting
+.vscode/
+
+
 ### Django ###
 *.log
 *.pot
