@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 
-class SignUp extends Component {
+class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
 
   render() {
-    return <div className="SignUp">SignUp</div>;
+    return <div className="SignIn">SignIn</div>;
   }
 }
-SignUp.propTypes = {};
-export default SignUp;
+SignIn.propTypes = {};
+export default SignIn;

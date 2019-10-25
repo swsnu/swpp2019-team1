@@ -7,6 +7,7 @@ const stubNew = { dummy: 'new' };
 const stubHot = { dummy: 'hot' };
 const stubRecommend = { dummy: 'recommend' };
 
+// eslint-disable-next-line no-unused-vars
 const stubMatch = {
   hot: [],
   new: [],
@@ -21,8 +22,8 @@ describe('ActionMatch', () => {
   });
 
   it(`'getMatch' should fetch match correctly`, done => {
-    const spy = jest.spyOn(axios, 'get').mockImplementation(url => {
-      return new Promise((resolve, reject) => {
+    const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
+      return new Promise(resolve => {
         const result = {
           status: 200,
           data: stubMatchA,
@@ -39,8 +40,8 @@ describe('ActionMatch', () => {
     });
   });
   it(`'getNewMatch' should fetch new match correctly`, done => {
-    const spy = jest.spyOn(axios, 'get').mockImplementation(url => {
-      return new Promise((resolve, reject) => {
+    const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
+      return new Promise(resolve => {
         const result = {
           status: 200,
           data: stubNew,
@@ -57,8 +58,8 @@ describe('ActionMatch', () => {
     });
   });
   it(`'getHotMatch' should fetch hot match correctly`, done => {
-    const spy = jest.spyOn(axios, 'get').mockImplementation(url => {
-      return new Promise((resolve, reject) => {
+    const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
+      return new Promise(resolve => {
         const result = {
           status: 200,
           data: stubHot,
@@ -75,8 +76,8 @@ describe('ActionMatch', () => {
     });
   });
   it(`'getRecommendMatch' should fetch recommend match correctly`, done => {
-    const spy = jest.spyOn(axios, 'get').mockImplementation(url => {
-      return new Promise((resolve, reject) => {
+    const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
+      return new Promise(resolve => {
         const result = {
           status: 200,
           data: stubRecommend,
