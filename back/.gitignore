@@ -4,8 +4,6 @@
 
 # vscode setting
 .vscode/
-
-
 ### Django ###
 *.log
 *.pot
