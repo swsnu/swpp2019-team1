@@ -23,16 +23,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "airbnb",
-      "plugin:prettier/recommended"
-    ],
-    "rules": {
-      "react/jsx-filename-extension": 0
-    }
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -64,6 +54,14 @@
       "src/**/*.{js,jsx}",
       "!src/index.js",
       "!src/serviceWorker.js"
-    ]
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
   }
 }
