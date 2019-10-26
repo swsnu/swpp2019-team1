@@ -7,6 +7,8 @@ const stubNew = { dummy: 'new' };
 const stubHot = { dummy: 'hot' };
 const stubRecommend = { dummy: 'recommend' };
 
+const stubMatchId = 2;
+
 // eslint-disable-next-line no-unused-vars
 const stubMatch = {
   hot: [],
@@ -91,6 +93,36 @@ describe('ActionMatch', () => {
       expect(newState.match.recommend[0]).toBe(stubRecommend);
       expect(spy).toHaveBeenCalledTimes(1);
       done();
+    });
+  });
+  it(`'joinMatch' should request match join and quit correctly`, done => {
+    const spyPost = jest.spyOn(axios, 'post').mockImplementation(() => {
+      return new Promise(resolve => {
+        const result = {
+          status: 200,
+        };
+        resolve(result);
+      });
+    });
+    const spyDelete = jest.spyOn(axios, 'delete').mockImplementation(() => {
+      return new Promise(resolve => {
+        const result = {
+          status: 200,
+        };
+        resolve(result);
+      });
+    });
+
+    store.dispatch(actionCreators.joinMatch(stubMatchId)).then(() => {
+      let newState = store.getState();
+      expect(newState.match.myMatch[0]).toBe(stubMatchId);
+      expect(spyPost).toHaveBeenCalledTimes(1);
+      store.dispatch(actionCreators.quitMatch(stubMatchId)).then(() => {
+        newState = store.getState();
+        expect(newState.match.myMatch.length).toBe(0);
+        expect(spyDelete).toHaveBeenCalledTimes(1);
+        done();
+      });
     });
   });
 });
