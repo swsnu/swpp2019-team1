@@ -1,3 +1,6 @@
+/* eslint-disable prefer-template */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React from 'react';
 
 const MatchForm = ({
@@ -7,6 +10,7 @@ const MatchForm = ({
   maxCapacity,
   isOnline,
   locationText,
+  // latitude and longitude will be implemented or removed after applying Google Map API
   locationLatitude,
   locationLongitude,
   timeStart,
@@ -18,6 +22,7 @@ const MatchForm = ({
   restrictAgeFrom,
   restrictAgeTo,
   isGenderRestricted,
+  // restrictToMale and restrictToFemale will be implemented later with CSS
   restrictToMale,
   restrictToFemale,
   handleInputMatchNameChange,
@@ -25,6 +30,7 @@ const MatchForm = ({
   handleInputMaxCapacityChange,
   handleInputIsOnlineChange,
   handleInputLocationTextChange,
+  // latitude and longitude will be implemented or removed after applying Google Map API
   handleInputLocationLatitudeChange,
   handleInputLocationLongitudeChange,
   handleInputTimeStartChange,
@@ -47,8 +53,8 @@ const MatchForm = ({
         type="text"
         value={matchName}
         onChange={handleInputMatchNameChange}
-      />{' '}
-      <button>Upload Thumbnail</button>
+      />
+      <button type="button">Upload Thumbnail</button>
       <br />
       Category
       <input
@@ -87,14 +93,18 @@ const MatchForm = ({
           '-' +
           ('0' + (timeStart.getMonth() + 1)).slice(-2) +
           '-' +
-          timeStart.getDate()
+          ('0' + timeStart.getDate()).slice(-2)
         }
         onChange={handleInputTimeStartChange}
       />
       Time
       <input
         type="time"
-        value={timeStart}
+        value={
+          ('0' + timeStart.getHours()).slice(-2) +
+          ':' +
+          ('0' + timeStart.getMinutes()).slice(-2)
+        }
         onChange={handleInputTimeStartChange}
       />
       Periodic
@@ -109,14 +119,24 @@ const MatchForm = ({
       Date
       <input
         type="date"
-        value={timeStart}
-        onChange={handleInputTimeStartChange}
+        value={
+          timeEnd.getFullYear() +
+          '-' +
+          ('0' + (timeEnd.getMonth() + 1)).slice(-2) +
+          '-' +
+          ('0' + timeEnd.getDate()).slice(-2)
+        }
+        onChange={handleInputTimeEndChange}
       />
       Time
       <input
         type="time"
-        // value={matchName}
-        // onChange={handleInputMatchNameChange}
+        value={
+          ('0' + timeEnd.getHours()).slice(-2) +
+          ':' +
+          ('0' + timeEnd.getMinutes()).slice(-2)
+        }
+        onChange={handleInputTimeEndChange}
       />
       Every
       <input

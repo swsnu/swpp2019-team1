@@ -41,10 +41,9 @@ class MatchCreate extends Component {
 
   handleLocationSearch = () => {};
 
-  handleInputMatchNameChange = event => {
+  handleInputMatchNameChange = event =>
     this.setState({ matchName: event.target.value });
-    console.log(this.state);
-  };
+
   // handleNewMatchThumbnailUploaded
 
   handleInputCategoryIDChange = event =>
@@ -66,39 +65,37 @@ class MatchCreate extends Component {
     this.setState({ locationLongitude: event.target.value });
 
   handleInputTimeStartChange = event => {
-    var inputDate = event.target.value;
-    var newDate = this.state.timeStart;
-
+    const { timeStart } = this.state;
+    const inputDate = event.target.value;
+    const newDate = timeStart;
     if (inputDate.split('-').length !== 1) {
       // Date Changed
-      newDate.setFullYear(parseInt(inputDate.split('-')[0]));
-      newDate.setMonth(parseInt(inputDate.split('-')[1]) - 1);
-      newDate.setDate(parseInt(inputDate.split('-')[2]));
+      newDate.setFullYear(parseInt(inputDate.split('-')[0], 10));
+      newDate.setMonth(parseInt(inputDate.split('-')[1], 10) - 1);
+      newDate.setDate(parseInt(inputDate.split('-')[2], 10));
     } else {
       // Time Changed
-      newDate.setHours(parseInt(inputDate.split(':')[0]));
-      newDate.setMinutes(parseInt(inputDate.split(':')[1]));
+      newDate.setHours(parseInt(inputDate.split(':')[0], 10));
+      newDate.setMinutes(parseInt(inputDate.split(':')[1], 10));
     }
     this.setState({ timeStart: newDate });
   };
 
-  //TODO: alert error message if the end time earlier than the start time
+  // TODO: alert error message if the end time earlier than the start time
   handleInputTimeEndChange = event => {
-    var inputDate = event.target.value;
-    var newDate = this.state.timeEnd;
-    console.log(inputDate);
+    const { timeEnd } = this.state;
+    const inputDate = event.target.value;
+    const newDate = timeEnd;
     if (inputDate.split('-').length !== 1) {
       // Date Changed
-      newDate.setFullYear(parseInt(inputDate.split('-')[0]));
-      newDate.setMonth(parseInt(inputDate.split('-')[1]) - 1);
-      newDate.setDate(parseInt(inputDate.split('-')[2]));
+      newDate.setFullYear(parseInt(inputDate.split('-')[0], 10));
+      newDate.setMonth(parseInt(inputDate.split('-')[1], 10) - 1);
+      newDate.setDate(parseInt(inputDate.split('-')[2], 10));
     } else {
       // Time Changed
-      newDate.setHours(parseInt(inputDate.split(':')[0]));
-      newDate.setMinutes(parseInt(inputDate.split(':')[1]));
+      newDate.setHours(parseInt(inputDate.split(':')[0], 10));
+      newDate.setMinutes(parseInt(inputDate.split(':')[1], 10));
     }
-
-    console.log(newDate);
     this.setState({ timeStart: newDate });
   };
 
@@ -123,12 +120,16 @@ class MatchCreate extends Component {
   handleInputIsGenderRestrictedChange = event =>
     this.setState({ isGenderRestricted: event.target.checked });
 
-  //TODO : if setting one while the other is true -> set the other as false
-  handleButtonRestrictToMaleClicked = event =>
-    this.setState({ restrictToMale: !this.state.restrictToMale });
+  // TODO : if setting one while the other is true -> set the other as false
+  handleButtonRestrictToMaleClicked = () => {
+    const { restrictToMale } = this.state;
+    this.setState({ restrictToMale: !restrictToMale });
+  };
 
-  handleButtonRestrictToFemaleClicked = event =>
-    this.setState({ restrictToFemale: !this.state.restrictToFemale });
+  handleButtonRestrictToFemaleClicked = () => {
+    const { restrictToFemale } = this.state;
+    this.setState({ restrictToFemale: !restrictToFemale });
+  };
 
   render() {
     const {
