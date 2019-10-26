@@ -42,10 +42,10 @@ const getRecommendMatchAction = recommend => {
   return { type: actionTypes.GET_RECOMMEND_MATCH, recommend };
 };
 
-export const getRecommendMatch = id => {
+export const getRecommendMatch = () => {
   return dispatch => {
     return axios
-      .get(`/api/match/recommend/${id}`)
+      .get(`/api/match/recommend`)
       .then(res => dispatch(getRecommendMatchAction(res.data)));
   };
 };

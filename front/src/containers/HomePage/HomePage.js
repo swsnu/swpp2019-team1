@@ -13,19 +13,10 @@ class HomePage extends Component {
   }
 
   componentDidMount() {
-    const {
-      user,
-      uid,
-      onGetHotMatch,
-      onGetNewMatch,
-      onGetRecommendMatch,
-    } = this.props;
-
+    const { onGetHotMatch, onGetNewMatch, onGetRecommendMatch } = this.props;
     onGetHotMatch();
     onGetNewMatch();
-    if (user) {
-      onGetRecommendMatch(uid);
-    }
+    onGetRecommendMatch();
   }
 
   // TODO match should be input
@@ -33,6 +24,7 @@ class HomePage extends Component {
     const { onClickMatch } = this.props;
     return (
       <HomeMatchTile
+        key={match.id}
         title={match.title}
         host={match.host}
         location={match.location}
@@ -67,25 +59,35 @@ class HomePage extends Component {
   }
 }
 HomePage.propTypes = {
-  // TODO set types after user reducer finished
-  user: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  ).isRequired,
-  uid: PropTypes.number.isRequired,
   matchHot: PropTypes.arrayOf(
-    PropTypes.objectOf(
-      PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    ),
+    PropTypes.shape({
+      id: PropTypes.number,
+      title: PropTypes.string,
+      host: PropTypes.string,
+      location: PropTypes.arrayOf(PropTypes.number),
+      time: PropTypes.arrayOf(PropTypes.number),
+      capacity: PropTypes.number,
+    }),
   ).isRequired,
   matchNew: PropTypes.arrayOf(
-    PropTypes.objectOf(
-      PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    ),
+    PropTypes.shape({
+      id: PropTypes.number,
+      title: PropTypes.string,
+      host: PropTypes.string,
+      location: PropTypes.arrayOf(PropTypes.number),
+      time: PropTypes.arrayOf(PropTypes.number),
+      capacity: PropTypes.number,
+    }),
   ).isRequired,
   matchRecommend: PropTypes.arrayOf(
-    PropTypes.objectOf(
-      PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    ),
+    PropTypes.shape({
+      id: PropTypes.number,
+      title: PropTypes.string,
+      host: PropTypes.string,
+      location: PropTypes.arrayOf(PropTypes.number),
+      time: PropTypes.arrayOf(PropTypes.number),
+      capacity: PropTypes.number,
+    }),
   ).isRequired,
   onGetHotMatch: PropTypes.func.isRequired,
   onGetNewMatch: PropTypes.func.isRequired,
@@ -95,8 +97,6 @@ HomePage.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    user: state.user,
-    uid: state.user.id,
     matchHot: state.match.hot,
     matchNew: state.match.new,
     matchRecommend: state.match.recommend,
@@ -107,7 +107,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onGetHotMatch: () => dispatch(actionCreators.getHotMatch()),
     onGetNewMatch: () => dispatch(actionCreators.getNewMatch()),
-    onGetRecommendMatch: uid => dispatch(actionCreators.getRecommendMatch(uid)),
+    onGetRecommendMatch: () => dispatch(actionCreators.getRecommendMatch()),
     onClickMatch: mid => dispatch(push(`/match/${mid}`)),
   };
 };
