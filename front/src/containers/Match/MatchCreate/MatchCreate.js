@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unused-state */
 /*
  *  TODO : input validation + all TODOs in the lines
  */

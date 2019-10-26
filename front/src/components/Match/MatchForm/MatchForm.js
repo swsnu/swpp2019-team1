@@ -1,7 +1,5 @@
-/* eslint-disable prefer-template */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const MatchForm = ({
   title,
@@ -23,8 +21,8 @@ const MatchForm = ({
   restrictAgeTo,
   isGenderRestricted,
   // restrictToMale and restrictToFemale will be implemented later with CSS
-  restrictToMale,
-  restrictToFemale,
+  // restrictToMale,
+  // restrictToFemale,
   handleInputTitleChange,
   handleInputCategoryIDChange,
   handleInputMaxCapacityChange,
@@ -93,24 +91,17 @@ const MatchForm = ({
       <input
         id="match-start-date-input"
         type="date"
-        value={
-          timeStart.getFullYear() +
-          '-' +
-          ('0' + (timeStart.getMonth() + 1)).slice(-2) +
-          '-' +
-          ('0' + timeStart.getDate()).slice(-2)
-        }
+        value={`${timeStart.getFullYear()}-${`0${timeStart.getMonth() +
+          1}`.slice(-2)}-${`0${timeStart.getDate()}`.slice(-2)}`}
         onChange={handleInputTimeStartChange}
       />
       Time
       <input
         id="match-start-time-input"
         type="time"
-        value={
-          ('0' + timeStart.getHours()).slice(-2) +
-          ':' +
-          ('0' + timeStart.getMinutes()).slice(-2)
-        }
+        value={`${`0${timeStart.getHours()}`.slice(
+          -2,
+        )}:${`0${timeStart.getMinutes()}`.slice(-2)}`}
         onChange={handleInputTimeStartChange}
       />
       Periodic
@@ -127,24 +118,18 @@ const MatchForm = ({
       <input
         id="match-end-date-input"
         type="date"
-        value={
-          timeEnd.getFullYear() +
-          '-' +
-          ('0' + (timeEnd.getMonth() + 1)).slice(-2) +
-          '-' +
-          ('0' + timeEnd.getDate()).slice(-2)
-        }
+        value={`${timeEnd.getFullYear()}-${`0${timeEnd.getMonth() + 1}`.slice(
+          -2,
+        )}-${`0${timeEnd.getDate()}`.slice(-2)}`}
         onChange={handleInputTimeEndChange}
       />
       Time
       <input
         id="match-end-time-input"
         type="time"
-        value={
-          ('0' + timeEnd.getHours()).slice(-2) +
-          ':' +
-          ('0' + timeEnd.getMinutes()).slice(-2)
-        }
+        value={`${`0${timeEnd.getHours()}`.slice(
+          -2,
+        )}:${`0${timeEnd.getMinutes()}`.slice(-2)}`}
         onChange={handleInputTimeEndChange}
       />
       Every
@@ -214,5 +199,46 @@ const MatchForm = ({
       />
     </div>
   );
+};
+MatchForm.propTypes = {
+  title: PropTypes.string.isRequired,
+  // matchThumbnail,
+  categoryID: PropTypes.number.isRequired,
+  maxCapacity: PropTypes.number.isRequired,
+  isOnline: PropTypes.bool.isRequired,
+  locationText: PropTypes.string.isRequired,
+  // latitude and longitude will be implemented or removed after applying Google Map API
+  // locationLatitude: PropTypes.number.isRequired,
+  // locationLongitude: PropTypes.number.isRequired,
+  timeStart: PropTypes.instanceOf(Date).isRequired,
+  timeEnd: PropTypes.instanceOf(Date).isRequired,
+  additionalInfo: PropTypes.string.isRequired,
+  isPeriodic: PropTypes.bool.isRequired,
+  interval: PropTypes.number.isRequired,
+  isAgeRestricted: PropTypes.bool.isRequired,
+  restrictAgeFrom: PropTypes.number.isRequired,
+  restrictAgeTo: PropTypes.number.isRequired,
+  isGenderRestricted: PropTypes.bool.isRequired,
+  // restrictToMale and restrictToFemale will be implemented later with CSS
+  // restrictToMale: PropTypes.bool.isRequired,
+  // restrictToFemale: PropTypes.bool.isRequired,
+  handleInputTitleChange: PropTypes.func.isRequired,
+  handleInputCategoryIDChange: PropTypes.func.isRequired,
+  handleInputMaxCapacityChange: PropTypes.func.isRequired,
+  handleInputIsOnlineChange: PropTypes.func.isRequired,
+  handleInputLocationTextChange: PropTypes.func.isRequired,
+  // handleInputLocationLatitudeChange: PropTypes.func.isRequired,
+  // handleInputLocationLongitudeChange: PropTypes.func.isRequired,
+  handleInputTimeStartChange: PropTypes.func.isRequired,
+  handleInputTimeEndChange: PropTypes.func.isRequired,
+  handleInputAdditionalInfoChange: PropTypes.func.isRequired,
+  handleInputIsPeriodicChange: PropTypes.func.isRequired,
+  handleInputIntervalChange: PropTypes.func.isRequired,
+  handleInputIsAgeRestrictedChange: PropTypes.func.isRequired,
+  handleInputRestrictAgeFromChange: PropTypes.func.isRequired,
+  handleInputRestrictAgeToChange: PropTypes.func.isRequired,
+  handleInputIsGenderRestrictedChange: PropTypes.func.isRequired,
+  handleButtonRestrictToMaleClicked: PropTypes.func.isRequired,
+  handleButtonRestrictToFemaleClicked: PropTypes.func.isRequired,
 };
 export default MatchForm;
