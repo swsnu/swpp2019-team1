@@ -145,35 +145,5 @@ describe('<MatchCreate />', () => {
     expect(wrapper.length).toBe(1);
     wrapper.simulate('click');
     expect(createInstance.state.restrictToFemale).toEqual(restrictToFemale);
-    // // locationText change
-    // const locationText = 'TEST_LOCATION_TEXT';
-    // wrapper = component.find('#match-location-text-input');
-    // expect(wrapper.length).toBe(1);
-    // wrapper.simulate('change', { target: { value: locationText } });
-    // expect(createInstance.state.locationText).toEqual(locationText);
-    // // locationText change
-    // const locationText = 'TEST_LOCATION_TEXT';
-    // wrapper = component.find('#match-location-text-input');
-    // expect(wrapper.length).toBe(1);
-    // wrapper.simulate('change', { target: { value: locationText } });
-    // expect(createInstance.state.locationText).toEqual(locationText);
-    // // locationText change
-    // const locationText = 'TEST_LOCATION_TEXT';
-    // wrapper = component.find('#match-location-text-input');
-    // expect(wrapper.length).toBe(1);
-    // wrapper.simulate('change', { target: { value: locationText } });
-    // expect(createInstance.state.locationText).toEqual(locationText);
-    // // locationText change
-    // const locationText = 'TEST_LOCATION_TEXT';
-    // wrapper = component.find('#match-location-text-input');
-    // expect(wrapper.length).toBe(1);
-    // wrapper.simulate('change', { target: { value: locationText } });
-    // expect(createInstance.state.locationText).toEqual(locationText);
-    // // locationText change
-    // const locationText = 'TEST_LOCATION_TEXT';
-    // wrapper = component.find('#match-location-text-input');
-    // expect(wrapper.length).toBe(1);
-    // wrapper.simulate('change', { target: { value: locationText } });
-    // expect(createInstance.state.locationText).toEqual(locationText);
   });
 });
