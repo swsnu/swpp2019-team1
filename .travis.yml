@@ -1,0 +1,25 @@
+matrix:
+  include:
+    - language: node_js
+      # Your language e.g. node_js, python
+      node_js:
+        - "10"
+      # node_js version
+      before_install: # Script to run before install
+        - cd front
+      install:
+        # Script to install required packages
+        - yarn install
+      script:
+        # Script to test your build
+        - ./node_modules/.bin/eslint src
+        - yarn test --coverage --watchAll=false
+    - language: python
+      python: 3.7.4
+      before_install:
+        - cd back
+      install:
+        - pip install -r requirements.txt
+      script:
+        - coverage run --branch --source='./matchmaker' manage.py test
+        - coverage report -m
