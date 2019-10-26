@@ -26,8 +26,8 @@ export const getHotMatch = () => {
   };
 };
 
-const getNewMatchAction = newmatch => {
-  return { type: actionTypes.GET_NEW_MATCH, new: newmatch };
+const getNewMatchAction = newMatches => {
+  return { type: actionTypes.GET_NEW_MATCH, newMatches };
 };
 
 export const getNewMatch = () => {
@@ -50,14 +50,30 @@ export const getRecommendMatch = id => {
   };
 };
 
+// skeleton
+export const joinMatchAction = id => {
+  return { type: actionTypes.JOIN_MATCH, id };
+};
+
+// skeleton
 export const joinMatch = id => {
-  return () => {
-    return axios.post(`/api/match/${id}/join`, null);
+  return dispatch => {
+    return axios
+      .post(`/api/match/${id}/join`)
+      .then(() => dispatch(joinMatchAction(id)));
   };
 };
 
+// skeleton
+export const quitMatchAction = id => {
+  return { type: actionTypes.QUIT_MATCH, id };
+};
+
+// skeleton
 export const quitMatch = id => {
-  return () => {
-    return axios.delete(`/api/match/${id}/join`);
+  return dispatch => {
+    return axios
+      .delete(`/api/match/${id}/join`)
+      .then(() => dispatch(quitMatchAction(id)));
   };
 };
