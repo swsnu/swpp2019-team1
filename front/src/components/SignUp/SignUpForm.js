@@ -1,6 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const LoginForm = ({
+const SignUpForm = ({
   email,
   password,
   passwordConfirm,
@@ -10,24 +11,25 @@ const LoginForm = ({
   phone,
   gender,
   birthdate,
-  inputEmailChange,
-  inputPasswordChange,
-  inputPasswordConfirmChange,
-  inputUsernameChange,
-  inputFirstNameChange,
-  inputLastNameChange,
-  inputPhoneChange,
-  inputGenderChange,
-  inputBirthdateChange,
+  changeEmail,
+  changePassword,
+  changePasswordConfirm,
+  changeUsername,
+  changeFirstName,
+  changeLastName,
+  changePhone,
+  changeGender,
+  changeBirthDate,
 }) => (
-  <div className="LoginForm">
+  <div className="SignUpForm">
     <label htmlFor="email-input">
       Email
       <input
         id="email-input"
-        type="text"
+        type="email"
         value={email}
-        onChange={inputEmailChange}
+        onChange={changeEmail}
+        required
       />
     </label>
     <label htmlFor="password-input">
@@ -36,7 +38,8 @@ const LoginForm = ({
         id="password-input"
         type="password"
         value={password}
-        onChange={inputPasswordChange}
+        onChange={changePassword}
+        required
       />
     </label>
     <label htmlFor="password-confirm-input">
@@ -45,7 +48,8 @@ const LoginForm = ({
         id="password-confirm-input"
         type="password"
         value={passwordConfirm}
-        onChange={inputPasswordConfirmChange}
+        onChange={changePasswordConfirm}
+        required
       />
     </label>
     <label htmlFor="username-input">
@@ -54,7 +58,8 @@ const LoginForm = ({
         id="username-input"
         type="text"
         value={username}
-        onChange={inputUsernameChange}
+        onChange={changeUsername}
+        required
       />
     </label>
     <label htmlFor="first-name-input">
@@ -63,7 +68,8 @@ const LoginForm = ({
         id="first-name-input"
         type="text"
         value={firstName}
-        onChange={inputFirstNameChange}
+        onChange={changeFirstName}
+        required
       />
     </label>
     <label htmlFor="last-name-input">
@@ -72,7 +78,8 @@ const LoginForm = ({
         id="last-name-input"
         type="text"
         value={lastName}
-        onChange={inputLastNameChange}
+        onChange={changeLastName}
+        required
       />
     </label>
     <label htmlFor="phone-input">
@@ -81,14 +88,28 @@ const LoginForm = ({
         id="phone-input"
         type="text"
         value={phone}
-        onChange={inputPhoneChange}
+        onChange={changePhone}
+        required
       />
     </label>
     <label htmlFor="gender-input">
       Gender
-      <input type="radio" name="check-gender-input" value="true" />
+      <input
+        type="radio"
+        name="gender-radio-input"
+        value="male"
+        checked={!!gender}
+        onChange={changeGender}
+        required
+      />
       Male
-      <input type="radio" name="check-gender-input" value="false" />
+      <input
+        type="radio"
+        name="gender-radio-input"
+        value="female"
+        checked={!gender}
+        onChange={changeGender}
+      />
       Female
     </label>
     <label htmlFor="birthdate-input">
@@ -97,9 +118,33 @@ const LoginForm = ({
         id="birthdate-input"
         type="date"
         value={birthdate}
-        onChange={inputBirthdateChange}
+        onChange={changeBirthDate}
+        required
       />
     </label>
   </div>
 );
-export default LoginForm;
+SignUpForm.propTypes = {
+  email: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  passwordConfirm: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
+  phone: PropTypes.string.isRequired,
+  gender: PropTypes.bool,
+  birthdate: PropTypes.objectOf(Date).isRequired,
+  changeEmail: PropTypes.func.isRequired,
+  changePassword: PropTypes.func.isRequired,
+  changePasswordConfirm: PropTypes.func.isRequired,
+  changeUsername: PropTypes.func.isRequired,
+  changeFirstName: PropTypes.func.isRequired,
+  changeLastName: PropTypes.func.isRequired,
+  changePhone: PropTypes.func.isRequired,
+  changeGender: PropTypes.func.isRequired,
+  changeBirthDate: PropTypes.func.isRequired,
+};
+SignUpForm.defaultProps = {
+  gender: undefined,
+};
+export default SignUpForm;

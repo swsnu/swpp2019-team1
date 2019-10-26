@@ -7,7 +7,7 @@ const initialState = {
   searchResult: [],
   selected: null,
 };
-
+// eslint-disable-next-line no-unused-vars
 const testinitialState = {
   hot: [],
   new: [],

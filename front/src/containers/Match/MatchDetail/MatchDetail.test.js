@@ -7,7 +7,6 @@ import { Route, Switch } from 'react-router-dom';
 import MatchDetail from './MatchDetail';
 import getMockStore from '../../../test-utils/mocks';
 import { history } from '../../../store/store';
-import * as userActionCreators from '../../../store/actions/user';
 import * as matchActionCreators from '../../../store/actions/match';
 
 const stubUser = {};
@@ -42,18 +41,18 @@ describe('<MatchDetail />', () => {
     );
     spyGetMatch = jest
       .spyOn(matchActionCreators, 'getMatch')
-      .mockImplementation(id => {
-        return dispatch => {};
+      .mockImplementation(() => {
+        return () => {};
       });
     spyJoinMatch = jest
       .spyOn(matchActionCreators, 'joinMatch')
-      .mockImplementation(id => {
-        return dispatch => {};
+      .mockImplementation(() => {
+        return () => {};
       });
     spyQuitMatch = jest
       .spyOn(matchActionCreators, 'quitMatch')
-      .mockImplementation(id => {
-        return dispatch => {};
+      .mockImplementation(() => {
+        return () => {};
       });
   });
 
@@ -61,12 +60,13 @@ describe('<MatchDetail />', () => {
     const component = mount(matchDetail);
     const wrapper = component.find('.MatchDetail');
     expect(wrapper.length).toBe(1);
+    expect(spyGetMatch).toBeCalledTimes(1);
   });
 
   it('should redirected to match edit page when edit button clicked', () => {
     const spyHistoryPush = jest
       .spyOn(history, 'push')
-      .mockImplementation(path => {});
+      .mockImplementation(() => {});
     const component = mount(matchDetail);
     const wrapper = component.find('#edit-match-button');
     wrapper.simulate('click');
@@ -76,9 +76,9 @@ describe('<MatchDetail />', () => {
   it('should redirected to user profile page when host clicked', () => {
     const spyHistoryPush = jest
       .spyOn(history, 'push')
-      .mockImplementation(path => {});
+      .mockImplementation(() => {});
     const component = mount(matchDetail);
-    const wrapper = component.find('.Detail-Host');
+    const wrapper = component.find('#host-profile-button');
     wrapper.simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledWith('/profile/2');
   });

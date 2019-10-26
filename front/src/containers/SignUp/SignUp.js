@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import PropTypes from 'prop-types';
 import * as actionCreators from '../../store/actions';
 import SignUpForm from '../../components/SignUp/SignUpForm';
 
@@ -15,40 +16,64 @@ class SignUp extends Component {
       firstName: '',
       lastName: '',
       phone: '',
-      gender: null,
-      birthdate: null,
+      gender: undefined,
+      birthdate: new Date(),
     };
   }
 
-  onClickSignUp = (email, password, { signUp }) => {
-    signUp(email, password);
+  clickSignUpHandler = () => {
+    const { onSignUp } = this.props;
+    const {
+      email,
+      password,
+      username,
+      firstName,
+      lastName,
+      phone,
+      gender,
+      birthdate,
+    } = this.state;
+    const signUpInfo = {
+      email,
+      password,
+      username,
+      firstName,
+      lastName,
+      phone,
+      gender,
+      birthdate,
+    };
+    onSignUp(signUpInfo);
   };
 
-  handleInputEmailChange = event =>
-    this.setState({ email: event.target.value });
+  changeEmailHandler = event => this.setState({ email: event.target.value });
 
-  handleInputPasswordChange = event =>
+  changePasswordHandler = event =>
     this.setState({ password: event.target.value });
 
-  handleInputPasswordConfirmChange = event =>
+  changePasswordConfirmHandler = event =>
     this.setState({ passwordConfirm: event.target.value });
 
-  handleInputUsernameChange = event =>
+  changeUsernameHandler = event =>
     this.setState({ username: event.target.value });
 
-  handleInputFirstNameChange = event =>
+  changeFirstNameHandler = event =>
     this.setState({ firstName: event.target.value });
 
-  handleInputLastNameChange = event =>
+  changeLastNameHandler = event =>
     this.setState({ lastName: event.target.value });
 
-  handleInputPhoneChange = event =>
-    this.setState({ phone: event.target.value });
+  changePhoneHandler = event => this.setState({ phone: event.target.value });
 
-  handleInputGenderChange = event =>
-    this.setState({ gender: event.target.value });
+  changeGenderHandler = event => {
+    if (event.target.value === 'male') {
+      this.setState({ gender: true });
+    } else {
+      this.setState({ gender: false });
+    }
+  };
 
-  handleInputBirthdateChange = event =>
+  changeBirthDateHandler = event =>
     this.setState({ birthdate: event.target.value });
 
   render() {
@@ -75,29 +100,33 @@ class SignUp extends Component {
           phone={phone}
           gender={gender}
           birthdate={birthdate}
-          inputEmailChange={event => this.handleInputEmailChange(event)}
-          inputPasswordChange={event => this.handleInputPasswordChange(event)}
-          inputPasswordConfirmChange={event =>
-            this.handleInputPasswordConfirmChange(event)}
-          inputUsernameChange={event => this.handleInputUsernameChange(event)}
-          inputFirstNameChange={event => this.handleInputFirstNameChange(event)}
-          inputLastNameChange={event => this.handleInputLastNameChange(event)}
-          inputPhoneChange={event => this.handleInputPhoneChange(event)}
-          inputGenderChange={event => this.handleInputGenderChange(event)}
-          inputBirthDateChange={event => this.handleInputBirthDateChange(event)}
+          changeEmail={this.changeEmailHandler}
+          changePassword={this.changePasswordHandler}
+          changePasswordConfirm={this.changePasswordConfirmHandler}
+          changeUsername={this.changeUsernameHandler}
+          changeFirstName={this.changeFirstNameHandler}
+          changeLastName={this.changeLastNameHandler}
+          changePhone={this.changePhoneHandler}
+          changeGender={this.changeGenderHandler}
+          changeBirthDate={this.changeBirthDateHandler}
         />
-        <button type="button" id="login-button" onClick={this.onClickSignUp}>
-          Login
+        <button
+          type="submit"
+          id="sign-up-button"
+          onClick={this.clickSignUpHandler}
+        >
+          SignUp
         </button>
       </div>
     );
   }
 }
-
+SignUp.propTypes = {
+  onSignUp: PropTypes.func.isRequired,
+};
 const mapDispatchToProps = dispatch => {
   return {
-    signUp: (email, password) =>
-      dispatch(actionCreators.SignUp(email, password)),
+    onSignUp: signUpInfo => dispatch(actionCreators.createUser(signUpInfo)),
   };
 };
 export default connect(

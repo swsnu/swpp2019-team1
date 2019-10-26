@@ -3,7 +3,7 @@
 
 import React from 'react';
 
-const SearchMatchTile = props => {
+const SearchMatchTile = () => {
   return (
     <div className="SearchMatchTile">
       <h1>SearchMatchTile</h1>

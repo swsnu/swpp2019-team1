@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
