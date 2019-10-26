@@ -1,19 +1,26 @@
-// import axios from 'axios';
-// import { push } from 'connected-react-router';
-// import * as actionTypes from './actionTypes';
+import axios from 'axios';
+import { push } from 'connected-react-router';
+import * as actionTypes from './actionTypes';
 
-const createUser_ = () => {
+const createUserAction = () => {
   return {
     type: actionTypes.CREATE_USER,
   };
 };
 
-export const createUser = input => {
+// eslint-disable-next-line import/prefer-default-export
+export const createUser = () => {
   return dispatch => {
-    return axios
-      .post(`/api/signup`)
-      .then(() => dispatch(createUser_()).then(push('/home')))
-      .catch(() => alert('Email is duplicated'));
+    return (
+      axios
+        .post(`/api/signup`)
+        .then(() => {
+          dispatch(createUserAction());
+          dispatch(push('/home'));
+        })
+        // eslint-disable-next-line no-alert
+        .catch(() => alert('Email is duplicated'))
+    );
   };
 };
 

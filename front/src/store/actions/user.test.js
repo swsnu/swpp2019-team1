@@ -1,8 +1,8 @@
 import axios from 'axios';
 import * as actionCreators from './user';
-import store from '../store';
+import store, { history } from '../store';
 
-const stubUser = {
+const stubSignUpInfo = {
   email: '',
   password: '',
   passwordConfirm: '',
@@ -19,20 +19,37 @@ describe('ActionMatch', () => {
     jest.clearAllMocks();
   });
 
-  it(`'getMatch' should fetch user correctly`, done => {
-    const spy = jest.spyOn(axios, 'post').mockImplementation(url => {
-      return new Promise((resolve, reject) => {
+  it(`If 'createUser' successed, it should push /home`, done => {
+    const spyPostSuccess = jest.spyOn(axios, 'post').mockImplementation(() => {
+      return new Promise(resolve => {
         const result = {
-          status: 200,
+          status: 201,
         };
         resolve(result);
       });
     });
-
-    store.dispatch(actionCreators.createUser(stubUser)).then(() => {
-      const newState = store.getState();
-      expect(newState.user.selected).toBe(stubUser);
-      expect(spy).toHaveBeenCalledTimes(1);
+    const spyPush = jest
+      .spyOn(history, 'push')
+      .mockImplementation(path => path);
+    store.dispatch(actionCreators.createUser(stubSignUpInfo)).then(() => {
+      expect(spyPostSuccess).toHaveBeenCalledTimes(1);
+      expect(spyPush).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+  it(`If 'createUser' failed, it should alert that email is duplicated`, done => {
+    const spyPostFail = jest.spyOn(axios, 'post').mockImplementation(() => {
+      return new Promise((_resolve, reject) => {
+        const result = {
+          status: 500, // TODO: Implement check email duplication button
+        };
+        reject(result);
+      });
+    });
+    const spyAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});
+    store.dispatch(actionCreators.createUser(stubSignUpInfo)).then(() => {
+      expect(spyPostFail).toHaveBeenCalledTimes(1);
+      expect(spyAlert).toHaveBeenCalledTimes(1);
       done();
     });
   });
