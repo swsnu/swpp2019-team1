@@ -4,15 +4,15 @@
 import React from 'react';
 
 const MatchForm = ({
-  matchName,
+  title,
   // matchThumbnail,
   categoryID,
   maxCapacity,
   isOnline,
   locationText,
   // latitude and longitude will be implemented or removed after applying Google Map API
-  locationLatitude,
-  locationLongitude,
+  // locationLatitude,
+  // locationLongitude,
   timeStart,
   timeEnd,
   additionalInfo,
@@ -25,14 +25,13 @@ const MatchForm = ({
   // restrictToMale and restrictToFemale will be implemented later with CSS
   restrictToMale,
   restrictToFemale,
-  handleInputMatchNameChange,
+  handleInputTitleChange,
   handleInputCategoryIDChange,
   handleInputMaxCapacityChange,
   handleInputIsOnlineChange,
   handleInputLocationTextChange,
-  // latitude and longitude will be implemented or removed after applying Google Map API
-  handleInputLocationLatitudeChange,
-  handleInputLocationLongitudeChange,
+  // handleInputLocationLatitudeChange,
+  // handleInputLocationLongitudeChange,
   handleInputTimeStartChange,
   handleInputTimeEndChange,
   handleInputAdditionalInfoChange,
@@ -50,20 +49,23 @@ const MatchForm = ({
       <h1>Create Activity</h1>
       Title
       <input
+        id="match-title-input"
         type="text"
-        value={matchName}
-        onChange={handleInputMatchNameChange}
+        value={title}
+        onChange={handleInputTitleChange}
       />
       <button type="button">Upload Thumbnail</button>
       <br />
       Category
       <input
+        id="match-category-id-input"
         type="text"
         value={categoryID}
         onChange={handleInputCategoryIDChange}
       />
       Up to
       <input
+        id="match-max-capacity-input"
         type="number"
         value={maxCapacity}
         onChange={handleInputMaxCapacityChange}
@@ -72,12 +74,14 @@ const MatchForm = ({
       <br />
       Location
       <input
+        id="match-location-text-input"
         type="text"
         value={locationText}
         onChange={handleInputLocationTextChange}
       />
       Online
       <input
+        id="match-is-online-input"
         type="checkbox"
         checked={isOnline}
         onChange={handleInputIsOnlineChange}
@@ -87,6 +91,7 @@ const MatchForm = ({
       <br />
       Date
       <input
+        id="match-start-date-input"
         type="date"
         value={
           timeStart.getFullYear() +
@@ -99,6 +104,7 @@ const MatchForm = ({
       />
       Time
       <input
+        id="match-start-time-input"
         type="time"
         value={
           ('0' + timeStart.getHours()).slice(-2) +
@@ -109,6 +115,7 @@ const MatchForm = ({
       />
       Periodic
       <input
+        id="match-is-periodic-input"
         type="checkbox"
         checked={isPeriodic}
         onChange={handleInputIsPeriodicChange}
@@ -118,6 +125,7 @@ const MatchForm = ({
       <br />
       Date
       <input
+        id="match-end-date-input"
         type="date"
         value={
           timeEnd.getFullYear() +
@@ -130,6 +138,7 @@ const MatchForm = ({
       />
       Time
       <input
+        id="match-end-time-input"
         type="time"
         value={
           ('0' + timeEnd.getHours()).slice(-2) +
@@ -140,6 +149,7 @@ const MatchForm = ({
       />
       Every
       <input
+        id="match-interval-input"
         type="number"
         value={interval}
         onChange={handleInputIntervalChange}
@@ -149,6 +159,7 @@ const MatchForm = ({
       <br />
       Additional Information
       <input
+        id="match-additional-info-input"
         type="text"
         value={additionalInfo}
         onChange={handleInputAdditionalInfoChange}
@@ -159,12 +170,14 @@ const MatchForm = ({
       <br />
       Age
       <input
+        id="match-is-age-restricted-input"
         type="checkbox"
         checked={isAgeRestricted}
         onChange={handleInputIsAgeRestrictedChange}
       />
       From
       <input
+        id="match-restrict-age-from-input"
         type="number"
         value={restrictAgeFrom}
         onChange={handleInputRestrictAgeFromChange}
@@ -172,6 +185,7 @@ const MatchForm = ({
       />
       To
       <input
+        id="match-restrict-age-to-input"
         type="number"
         value={restrictAgeTo}
         onChange={handleInputRestrictAgeToChange}
@@ -179,17 +193,20 @@ const MatchForm = ({
       />
       Gender
       <input
+        id="match-is-gender-restricted-input"
         type="checkbox"
         checked={isGenderRestricted}
         onChange={handleInputIsGenderRestrictedChange}
       />
       <input
+        id="match-restrict-to-male-input"
         type="button"
         value="M"
         disabled={!isGenderRestricted}
         onClick={handleButtonRestrictToMaleClicked}
       />
       <input
+        id="match-restrict-to-female-input"
         type="button"
         value="F"
         disabled={!isGenderRestricted}

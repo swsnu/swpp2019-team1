@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unused-state */
 /*
- *
+ *  TODO : input validation + all TODOs in the lines
  */
 
 import React, { Component } from 'react';
@@ -11,14 +11,15 @@ class MatchCreate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      matchName: '',
+      title: '',
       // matchThumbnail
       categoryID: 0,
       maxCapacity: 0,
       isOnline: false,
       locationText: '',
-      locationLatitude: '',
-      locationLongitude: '',
+      // latitude and longitude will be implemented or removed after applying Google Map API
+      // locationLatitude: '',
+      // locationLongitude: '',
       timeStart: new Date(),
       timeEnd: new Date(),
       additionalInfo: '',
@@ -35,17 +36,18 @@ class MatchCreate extends Component {
 
   componentDidMount() {}
 
-  onClickCreate = () => {};
+  // TODO
+  // onClickCreate = () => {};
 
-  validateForm = () => {};
+  // this will be implemented or removed after applying Google Map API
+  // handleLocationSearch = () => {};
 
-  handleLocationSearch = () => {};
-
-  handleInputMatchNameChange = event =>
-    this.setState({ matchName: event.target.value });
+  handleInputTitleChange = event =>
+    this.setState({ title: event.target.value });
 
   // handleNewMatchThumbnailUploaded
 
+  // TODO : implement dropdown
   handleInputCategoryIDChange = event =>
     this.setState({ categoryID: event.target.value });
 
@@ -58,11 +60,11 @@ class MatchCreate extends Component {
   handleInputLocationTextChange = event =>
     this.setState({ locationText: event.target.value });
 
-  handleInputLocationLatitudeChange = event =>
-    this.setState({ locationLatitude: event.target.value });
+  // handleInputLocationLatitudeChange = event =>
+  //   this.setState({ locationLatitude: event.target.value });
 
-  handleInputLocationLongitudeChange = event =>
-    this.setState({ locationLongitude: event.target.value });
+  // handleInputLocationLongitudeChange = event =>
+  //   this.setState({ locationLongitude: event.target.value });
 
   handleInputTimeStartChange = event => {
     const { timeStart } = this.state;
@@ -133,14 +135,14 @@ class MatchCreate extends Component {
 
   render() {
     const {
-      matchName,
+      title,
       // matchThumbnail
       categoryID,
       maxCapacity,
       isOnline,
       locationText,
-      locationLatitude,
-      locationLongitude,
+      // locationLatitude,
+      // locationLongitude,
       timeStart,
       timeEnd,
       additionalInfo,
@@ -157,14 +159,14 @@ class MatchCreate extends Component {
     return (
       <div className="MatchCreate">
         <MatchForm
-          matchName={matchName}
+          title={title}
           // matchThumbnail
           categoryID={categoryID}
           maxCapacity={maxCapacity}
           isOnline={isOnline}
           locationText={locationText}
-          locationLatitude={locationLatitude}
-          locationLongitude={locationLongitude}
+          // locationLatitude={locationLatitude}
+          // locationLongitude={locationLongitude}
           timeStart={timeStart}
           timeEnd={timeEnd}
           additionalInfo={additionalInfo}
@@ -176,17 +178,17 @@ class MatchCreate extends Component {
           isGenderRestricted={isGenderRestricted}
           restrictToMale={restrictToMale}
           restrictToFemale={restrictToFemale}
-          handleInputMatchNameChange={this.handleInputMatchNameChange}
+          handleInputTitleChange={this.handleInputTitleChange}
           handleInputCategoryIDChange={this.handleInputCategoryIDChange}
           handleInputMaxCapacityChange={this.handleInputMaxCapacityChange}
           handleInputIsOnlineChange={this.handleInputIsOnlineChange}
           handleInputLocationTextChange={this.handleInputLocationTextChange}
-          handleInputLocationLatitudeChange={
-            this.handleInputLocationLatitudeChange
-          }
-          handleInputLocationLongitudeChange={
-            this.handleInputLocationLongitudeChange
-          }
+          // handleInputLocationLatitudeChange={
+          //   this.handleInputLocationLatitudeChange
+          // }
+          // handleInputLocationLongitudeChange={
+          //   this.handleInputLocationLongitudeChange
+          // }
           handleInputTimeStartChange={this.handleInputTimeStartChange}
           handleInputTimeEndChange={this.handleInputTimeEndChange}
           handleInputAdditionalInfoChange={this.handleInputAdditionalInfoChange}
