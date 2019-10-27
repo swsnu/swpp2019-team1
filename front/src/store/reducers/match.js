@@ -33,17 +33,22 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GET_MATCH:
       return { ...state, selected: action.match };
     case actionTypes.GET_HOT_MATCH:
-      return { ...state, hot: state.hot.concat(action.hot) };
+      return { ...state, hot: action.hot };
     case actionTypes.GET_NEW_MATCH:
-      return { ...state, new: state.new.concat(action.newMatches) };
+      return { ...state, new: action.newMatches };
     case actionTypes.GET_RECOMMEND_MATCH:
-      return { ...state, recommend: state.recommend.concat(action.recommend) };
+      return { ...state, recommend: action.recommend };
     case actionTypes.JOIN_MATCH:
       return { ...state, myMatch: state.myMatch.concat(action.id) };
     case actionTypes.QUIT_MATCH:
       return {
         ...state,
         myMatch: state.myMatch.filter(id => id !== action.id),
+      };
+    case actionTypes.SEARCH_MATCH:
+      return {
+        ...state,
+        searchResult: action.searchResult,
       };
     default:
       break;

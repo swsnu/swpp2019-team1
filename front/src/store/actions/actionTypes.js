@@ -9,3 +9,4 @@ export const GET_NEW_MATCH = 'GET_NEW_MATCH';
 export const GET_RECOMMEND_MATCH = 'GET_RECOMMEND_MATCH';
 export const JOIN_MATCH = 'JOIN_MATCH';
 export const QUIT_MATCH = 'QUIT_MATCH';
+export const SEARCH_MATCH = 'SEARCH_MATCH';

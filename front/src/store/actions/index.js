@@ -12,4 +12,5 @@ export {
   getRecommendMatch,
   joinMatch,
   quitMatch,
+  searchMatch,
 } from './match';

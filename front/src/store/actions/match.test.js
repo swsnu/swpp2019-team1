@@ -46,7 +46,7 @@ describe('ActionMatch', () => {
       return new Promise(resolve => {
         const result = {
           status: 200,
-          data: stubNew,
+          data: [stubNew],
         };
         resolve(result);
       });
@@ -64,7 +64,7 @@ describe('ActionMatch', () => {
       return new Promise(resolve => {
         const result = {
           status: 200,
-          data: stubHot,
+          data: [stubHot],
         };
         resolve(result);
       });
@@ -82,7 +82,7 @@ describe('ActionMatch', () => {
       return new Promise(resolve => {
         const result = {
           status: 200,
-          data: stubRecommend,
+          data: [stubRecommend],
         };
         resolve(result);
       });
@@ -124,5 +124,49 @@ describe('ActionMatch', () => {
         done();
       });
     });
+  });
+  it(`'searchMatch' with no query should display 'No Results'`, done => {
+    const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
+      return new Promise(resolve => {
+        const result = {
+          status: 200,
+          data: [],
+        };
+        resolve(result);
+      });
+    });
+
+    store.dispatch(actionCreators.searchMatch()).then(() => {
+      const newState = store.getState();
+      expect(newState.match.searchResult.length).toBe(0);
+      expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+  it(`'searchMatch' with query should display proper result`, done => {
+    const query = 'query';
+    const time = 'time';
+    const location = 'location';
+    const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
+      return new Promise(resolve => {
+        const result = {
+          status: 200,
+          data: [stubNew, stubHot],
+        };
+        resolve(result);
+      });
+    });
+
+    store
+      .dispatch(actionCreators.searchMatch(query, time, location))
+      .then(() => {
+        const newState = store.getState();
+        expect(newState.match.searchResult.length).toBe(2);
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy).toBeCalledWith(
+          `/api/search?query=${query}&time=${time}&loc=${location}`,
+        );
+        done();
+      });
   });
 });
