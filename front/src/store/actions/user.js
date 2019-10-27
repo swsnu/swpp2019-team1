@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { push } from 'connected-react-router';
+import { message } from 'antd';
+
 import * as actionTypes from './actionTypes';
 
 const createUserAction = () => {
@@ -19,7 +21,7 @@ export const createUser = () => {
           dispatch(push('/home'));
         })
         // eslint-disable-next-line no-alert
-        .catch(() => alert('Email is duplicated'))
+        .catch(() => message.error('Email is duplicated'))
     );
   };
 };

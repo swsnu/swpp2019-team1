@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { message } from 'antd';
+
 import * as actionCreators from './user';
 import store, { history } from '../store';
 
@@ -14,7 +16,7 @@ const stubSignUpInfo = {
   birthdate: null,
 };
 
-describe('ActionMatch', () => {
+describe('User Actions', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -46,7 +48,7 @@ describe('ActionMatch', () => {
         reject(result);
       });
     });
-    const spyAlert = jest.spyOn(window, 'alert').mockImplementation(() => {});
+    const spyAlert = jest.spyOn(message, 'error').mockImplementation(() => {});
     store.dispatch(actionCreators.createUser(stubSignUpInfo)).then(() => {
       expect(spyPostFail).toHaveBeenCalledTimes(1);
       expect(spyAlert).toHaveBeenCalledTimes(1);
