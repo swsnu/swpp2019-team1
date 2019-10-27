@@ -3,7 +3,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const HomeMatchTile = props => {
-  const { title, host, location, time, capacity, clickHandler } = props;
+  const {
+    title,
+    host,
+    location,
+    time,
+    numOfParticipants,
+    capacity,
+    clickHandler,
+  } = props;
   return (
     <button type="button" id="HomeMatchTile" onClick={clickHandler}>
       HomeMatchTile
@@ -11,6 +19,7 @@ const HomeMatchTile = props => {
       <div className="host">{`Host: ${host}`}</div>
       <div className="location">{`Location: ${location}`}</div>
       <div className="time">{`Time: ${time}`}</div>
+      <div className="numParticipants">{`Participants: ${numOfParticipants}`}</div>
       <div className="capacity">{`Capacity: ${capacity}`}</div>
     </button>
   );
@@ -20,6 +29,7 @@ HomeMatchTile.propTypes = {
   host: PropTypes.string.isRequired,
   location: PropTypes.arrayOf(PropTypes.number).isRequired,
   time: PropTypes.arrayOf(PropTypes.number).isRequired,
+  numOfParticipants: PropTypes.number.isRequired,
   capacity: PropTypes.number.isRequired,
   clickHandler: PropTypes.func.isRequired,
 };

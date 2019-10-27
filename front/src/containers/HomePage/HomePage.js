@@ -29,6 +29,7 @@ class HomePage extends Component {
         host={match.host}
         location={match.location}
         time={match.time}
+        numOfParticipants={match.numOfParticipants}
         capacity={match.capacity}
         clickHandler={() => onClickMatch(match.id)}
       />
@@ -66,6 +67,7 @@ HomePage.propTypes = {
       host: PropTypes.string,
       location: PropTypes.arrayOf(PropTypes.number),
       time: PropTypes.arrayOf(PropTypes.number),
+      numOfParticipants: PropTypes.number,
       capacity: PropTypes.number,
     }),
   ).isRequired,

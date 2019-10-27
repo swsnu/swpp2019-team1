@@ -12,6 +12,7 @@ describe('<HomeMatchTile />', () => {
         host="Host"
         location={[1, 2]}
         time={[2019, 9, 1, 12, 23]}
+        numOfParticipants={2}
         capacity={3}
         clickHandler={mockHandler}
       />,
