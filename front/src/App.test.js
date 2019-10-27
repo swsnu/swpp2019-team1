@@ -7,7 +7,11 @@ import getMockStore from './test-utils/mocks';
 import { history } from './store/store';
 
 const stubInitUser = {};
-const stubInitMatch = {};
+const stubInitMatch = {
+  hot: [],
+  new: [],
+  recommend: [],
+};
 const mockStore = getMockStore(stubInitUser, stubInitMatch);
 
 describe('App', () => {
