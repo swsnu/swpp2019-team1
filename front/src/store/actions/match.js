@@ -51,7 +51,7 @@ export const getRecommendMatch = id => {
 };
 
 // skeleton
-export const joinMatchAction = id => {
+const joinMatchAction = id => {
   return { type: actionTypes.JOIN_MATCH, id };
 };
 
@@ -65,7 +65,7 @@ export const joinMatch = id => {
 };
 
 // skeleton
-export const quitMatchAction = id => {
+const quitMatchAction = id => {
   return { type: actionTypes.QUIT_MATCH, id };
 };
 
@@ -75,5 +75,27 @@ export const quitMatch = id => {
     return axios
       .delete(`/api/match/${id}/join`)
       .then(() => dispatch(quitMatchAction(id)));
+  };
+};
+
+const searchMatchAction = searchResult => {
+  return { type: actionTypes.SEARCH_MATCH, searchResult };
+};
+
+export const searchMatch = (query, time, location) => {
+  let parameter = ``;
+  if (query) {
+    parameter += `?query=${query}`;
+  }
+  if (time) {
+    parameter += `&time=${time}`;
+  }
+  if (location) {
+    parameter += `&loc=${location}`;
+  }
+  return dispatch => {
+    return axios
+      .get(`/api/search${parameter}`)
+      .then(res => dispatch(searchMatchAction(res.data)));
   };
 };
