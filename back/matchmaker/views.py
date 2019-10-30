@@ -47,7 +47,8 @@ def match(request):
         except (KeyError, JSONDecodeError):
             return HttpResponseBadRequest()
         new_match = Match(title=match_title,
-                          # host=request.user, need to be changed according to our implementation of user
+                          # host=request.user, need to be changed
+                          # according to our implementation of user
                           # thumbnail=SOMETHING,
                           categoryID=match_category_id,
                           capacity=match_capacity,
