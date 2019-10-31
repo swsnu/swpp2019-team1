@@ -1,10 +1,16 @@
 matrix:
   include:
+    # Your language e.g. node_js, python
     - language: node_js
-      # Your language e.g. node_js, python
+      # node_js version
       node_js:
         - "10"
-      # node_js version
+      # sonar cloud setting
+      dist: trusty
+      addons:
+        sonarcloud:
+          organization: "swsnu"
+
       before_install: # Script to run before install
         - cd front
       install:
@@ -14,8 +20,15 @@ matrix:
         # Script to test your build
         - ./node_modules/.bin/eslint src
         - yarn test --coverage --watchAll=false
+        - sonar-scanner -Dsonar.verbose=true -X
     - language: python
       python: 3.7.4
+      # sonar cloud setting
+      dist: xenial
+      addons:
+        sonarcloud:
+          organization: "swsnu"
+
       before_install:
         - cd back
       install:
@@ -23,3 +36,4 @@ matrix:
       script:
         - coverage run --branch --source='./matchmaker' manage.py test
         - coverage report --fail-under=80 -m
+        - sonar-scanner -Dsonar.verbose=true -X

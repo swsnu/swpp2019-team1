@@ -1,0 +1,10 @@
+{
+  "eslint.workingDirectories": [
+    { "directory": "./front", "changeProcessCWD": true }
+  ],
+  "python.envFile": "/Users/HaeseongMac/Workspace/swpp/swpp2019-team1/back/.env",
+  "python.pythonPath": "/Users/HaeseongMac/anaconda3/envs/swpp/bin/python",
+  "python.linting.pylintEnabled": true,
+  "python.linting.enabled": true,
+  "python.linting.pylintArgs": ["--rcfile", "./back/.pylintrc"]
+}
