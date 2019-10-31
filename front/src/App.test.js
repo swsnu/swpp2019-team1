@@ -15,13 +15,16 @@ const stubInitMatch = {
 const mockStore = getMockStore(stubInitUser, stubInitMatch);
 
 describe('App', () => {
-  it('renders without crashing', () => {
+  it('should render', async () => {
     const app = (
       <Provider store={mockStore}>
         <App history={history} />
       </Provider>
     );
     const component = mount(app);
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    expect(component.find('.App').length).toBe(1);
     expect(component.find('.HomePage').length).toBe(1);
   });
 });
