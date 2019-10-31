@@ -18,20 +18,22 @@ import UserProfile from './containers/UserProfile/UserProfile';
 function App(props) {
   const { history } = props;
   return (
-    <ConnectedRouter history={history}>
-      <Header />
-      <Switch>
-        <Route path="/home" exact component={HomePage} />
-        <Route path="/search" exact component={Search} />
-        <Route path="/match/create" exact component={MatchCreate} />
-        <Route path="/match/:id" exact component={MatchDetail} />
-        <Route path="/signin" exact component={SignIn} />
-        <Route path="/signup" exact component={SignUp} />
-        <Route path="/profile" exact component={UserProfile} />
-        <Redirect from="/" to="/home" />
-      </Switch>
-      <Footer />
-    </ConnectedRouter>
+    <div className="App">
+      <ConnectedRouter history={history}>
+        <Header />
+        <Switch>
+          <Route path="/home" exact component={HomePage} />
+          <Route path="/search" exact component={Search} />
+          <Route path="/match/create" exact component={MatchCreate} />
+          <Route path="/match/:id" exact component={MatchDetail} />
+          <Route path="/signin" exact component={SignIn} />
+          <Route path="/signup" exact component={SignUp} />
+          <Route path="/profile" exact component={UserProfile} />
+          <Redirect from="/" to="/home" />
+        </Switch>
+        <Footer />
+      </ConnectedRouter>
+    </div>
   );
 }
 App.propTypes = {

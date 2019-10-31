@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { push } from 'connected-react-router';
+import { message } from 'antd';
 import * as actionTypes from './actionTypes';
 
 const getMatchAction = match => {
@@ -8,9 +9,32 @@ const getMatchAction = match => {
 
 export const getMatch = id => {
   return dispatch => {
-    return axios
-      .get(`/api/match/${id}`)
-      .then(res => dispatch(getMatchAction(res.data)));
+    return (
+      axios
+        .get(`/api/match/${id}`)
+        .then(res => dispatch(getMatchAction(res.data)))
+        // eslint-disable-next-line no-unused-vars
+        .catch(error => {
+          /* if (error.response) {
+          // TODO: error handling
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        } */
+          // console.log(error.config);
+          message.error('ERROR!');
+        })
+    );
   };
 };
 
@@ -20,9 +44,32 @@ const getHotMatchAction = hot => {
 
 export const getHotMatch = () => {
   return dispatch => {
-    return axios
-      .get('/api/match/hot')
-      .then(res => dispatch(getHotMatchAction(res.data)));
+    return (
+      axios
+        .get('/api/match/hot')
+        .then(res => dispatch(getHotMatchAction(res.data)))
+        // eslint-disable-next-line no-unused-vars
+        .catch(error => {
+          /* if (error.response) {
+          // TODO: error handling
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        } */
+          // console.log(error.config);
+          message.error('ERROR!');
+        })
+    );
   };
 };
 
@@ -32,9 +79,32 @@ const getNewMatchAction = newMatches => {
 
 export const getNewMatch = () => {
   return dispatch => {
-    return axios
-      .get('/api/match/new')
-      .then(res => dispatch(getNewMatchAction(res.data)));
+    return (
+      axios
+        .get('/api/match/new')
+        .then(res => dispatch(getNewMatchAction(res.data)))
+        // eslint-disable-next-line no-unused-vars
+        .catch(error => {
+          /* if (error.response) {
+          // TODO: error handling
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        } */
+          // console.log(error.config);
+          message.error('ERROR!');
+        })
+    );
   };
 };
 
@@ -44,9 +114,32 @@ const getRecommendMatchAction = recommend => {
 
 export const getRecommendMatch = () => {
   return dispatch => {
-    return axios
-      .get(`/api/match/recommend`)
-      .then(res => dispatch(getRecommendMatchAction(res.data)));
+    return (
+      axios
+        .get(`/api/match/recommend`)
+        .then(res => dispatch(getRecommendMatchAction(res.data)))
+        // eslint-disable-next-line no-unused-vars
+        .catch(error => {
+          /* if (error.response) {
+          // TODO: error handling
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        } */
+          // console.log(error.config);
+          message.error('ERROR!');
+        })
+    );
   };
 };
 
@@ -74,9 +167,32 @@ const joinMatchAction = id => {
 // skeleton
 export const joinMatch = id => {
   return dispatch => {
-    return axios
-      .post(`/api/match/${id}/join`)
-      .then(() => dispatch(joinMatchAction(id)));
+    return (
+      axios
+        .post(`/api/match/${id}/join`)
+        .then(() => dispatch(joinMatchAction(id)))
+        // eslint-disable-next-line no-unused-vars
+        .catch(error => {
+          /* if (error.response) {
+          // TODO: error handling
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        } */
+          // console.log(error.config);
+          message.error('ERROR!');
+        })
+    );
   };
 };
 
@@ -88,9 +204,32 @@ const quitMatchAction = id => {
 // skeleton
 export const quitMatch = id => {
   return dispatch => {
-    return axios
-      .delete(`/api/match/${id}/join`)
-      .then(() => dispatch(quitMatchAction(id)));
+    return (
+      axios
+        .delete(`/api/match/${id}/join`)
+        .then(() => dispatch(quitMatchAction(id)))
+        // eslint-disable-next-line no-unused-vars
+        .catch(error => {
+          /* if (error.response) {
+          // TODO: error handling
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        } */
+          // console.log(error.config);
+          message.error('ERROR!');
+        })
+    );
   };
 };
 
@@ -110,8 +249,32 @@ export const searchMatch = (query, time, location) => {
     parameter += `&loc=${location}`;
   }
   return dispatch => {
-    return axios
-      .get(`/api/search${parameter}`)
-      .then(res => dispatch(searchMatchAction(res.data)));
+    return (
+      axios
+        .get(`/api/search${parameter}`)
+        .then(res => dispatch(searchMatchAction(res.data)))
+        // eslint-disable-next-line no-unused-vars
+        .catch(error => {
+          /* if (error.response) {
+          // TODO: error handling
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          message.error('ERROR!');
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        } */
+          // console.log(error.config);
+          message.error('ERROR!');
+        })
+    );
   };
 };

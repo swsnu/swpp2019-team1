@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { message } from 'antd';
 import * as actionCreators from './match';
 import store, { history } from '../store';
 
@@ -8,7 +9,6 @@ const stubHot = { dummy: 'hot' };
 const stubRecommend = { dummy: 'recommend' };
 
 const stubMatchId = 2;
-
 // eslint-disable-next-line no-unused-vars
 const stubMatch = {
   hot: [],
@@ -64,6 +64,24 @@ describe('ActionMatch', () => {
       done();
     });
   });
+
+  it(`'getMatch' should handle error correctly`, done => {
+    const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
+      return new Promise((_resolve, reject) => {
+        const dummyError = {};
+        reject(dummyError);
+      });
+    });
+    const spyMessageError = jest
+      .spyOn(message, 'error')
+      .mockImplementation(() => {});
+    store.dispatch(actionCreators.getMatch(0)).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
+      done();
+    });
+  });
+
   it(`'getNewMatch' should fetch new match correctly`, done => {
     const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
       return new Promise(resolve => {
@@ -82,6 +100,24 @@ describe('ActionMatch', () => {
       done();
     });
   });
+
+  it(`'getNewMatch' should handle error correctly`, done => {
+    const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
+      return new Promise((_resolve, reject) => {
+        const dummyError = {};
+        reject(dummyError);
+      });
+    });
+    const spyMessageError = jest
+      .spyOn(message, 'error')
+      .mockImplementation(() => {});
+    store.dispatch(actionCreators.getNewMatch()).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
+      done();
+    });
+  });
+
   it(`'getHotMatch' should fetch hot match correctly`, done => {
     const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
       return new Promise(resolve => {
@@ -100,6 +136,24 @@ describe('ActionMatch', () => {
       done();
     });
   });
+
+  it(`'getHotMatch' should handle error correctly`, done => {
+    const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
+      return new Promise((_resolve, reject) => {
+        const dummyError = {};
+        reject(dummyError);
+      });
+    });
+    const spyMessageError = jest
+      .spyOn(message, 'error')
+      .mockImplementation(() => {});
+    store.dispatch(actionCreators.getHotMatch()).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
+      done();
+    });
+  });
+
   it(`'getRecommendMatch' should fetch recommend match correctly`, done => {
     const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
       return new Promise(resolve => {
@@ -115,6 +169,23 @@ describe('ActionMatch', () => {
       const newState = store.getState();
       expect(newState.match.recommend[0]).toBe(stubRecommend);
       expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it(`'getRecommendMatch' should handle error correctly`, done => {
+    const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
+      return new Promise((_resolve, reject) => {
+        const dummyError = {};
+        reject(dummyError);
+      });
+    });
+    const spyMessageError = jest
+      .spyOn(message, 'error')
+      .mockImplementation(() => {});
+    store.dispatch(actionCreators.getRecommendMatch(0)).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
       done();
     });
   });
@@ -139,16 +210,8 @@ describe('ActionMatch', () => {
     });
   });
 
-  it(`'joinMatch' should request match join and quit correctly`, done => {
+  it(`'joinMatch' should request match join correctly`, done => {
     const spyPost = jest.spyOn(axios, 'post').mockImplementation(() => {
-      return new Promise(resolve => {
-        const result = {
-          status: 200,
-        };
-        resolve(result);
-      });
-    });
-    const spyDelete = jest.spyOn(axios, 'delete').mockImplementation(() => {
       return new Promise(resolve => {
         const result = {
           status: 200,
@@ -158,17 +221,64 @@ describe('ActionMatch', () => {
     });
 
     store.dispatch(actionCreators.joinMatch(stubMatchId)).then(() => {
-      let newState = store.getState();
+      const newState = store.getState();
       expect(newState.match.myMatch[0]).toBe(stubMatchId);
       expect(spyPost).toHaveBeenCalledTimes(1);
-      store.dispatch(actionCreators.quitMatch(stubMatchId)).then(() => {
-        newState = store.getState();
-        expect(newState.match.myMatch.length).toBe(0);
-        expect(spyDelete).toHaveBeenCalledTimes(1);
-        done();
-      });
+      done();
     });
   });
+
+  it(`'joinMatch' should handle error correctly`, done => {
+    const spyPost = jest.spyOn(axios, 'post').mockImplementation(() => {
+      return new Promise((_resolve, reject) => {
+        const dummyError = {};
+        reject(dummyError);
+      });
+    });
+    const spyMessageError = jest
+      .spyOn(message, 'error')
+      .mockImplementation(() => {});
+    store.dispatch(actionCreators.joinMatch(stubMatchId)).then(() => {
+      expect(spyPost).toHaveBeenCalledTimes(1);
+      expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
+      done();
+    });
+  });
+
+  it(`'quitMatch' should quit match correctly`, done => {
+    const spyDelete = jest.spyOn(axios, 'delete').mockImplementation(() => {
+      return new Promise(resolve => {
+        const result = {
+          status: 200,
+        };
+        resolve(result);
+      });
+    });
+    store.dispatch(actionCreators.quitMatch(stubMatchId)).then(() => {
+      const newState = store.getState();
+      expect(newState.match.myMatch.length).toBe(0);
+      expect(spyDelete).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it(`'quitMatch' should handle error correctly`, done => {
+    const spyDelete = jest.spyOn(axios, 'delete').mockImplementation(() => {
+      return new Promise((_resolve, reject) => {
+        const dummyError = {};
+        reject(dummyError);
+      });
+    });
+    const spyMessageError = jest
+      .spyOn(message, 'error')
+      .mockImplementation(() => {});
+    store.dispatch(actionCreators.quitMatch(stubMatchId)).then(() => {
+      expect(spyDelete).toHaveBeenCalledTimes(1);
+      expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
+      done();
+    });
+  });
+
   it(`'searchMatch' with no query should display 'No Results'`, done => {
     const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
       return new Promise(resolve => {
@@ -187,6 +297,7 @@ describe('ActionMatch', () => {
       done();
     });
   });
+
   it(`'searchMatch' with query should display proper result`, done => {
     const query = 'query';
     const time = 'time';
@@ -210,6 +321,28 @@ describe('ActionMatch', () => {
         expect(spy).toBeCalledWith(
           `/api/search?query=${query}&time=${time}&loc=${location}`,
         );
+        done();
+      });
+  });
+
+  it(`'searchMatch' should handle error correctly`, done => {
+    const query = 'query';
+    const time = 'time';
+    const location = 'location';
+    const spyGet = jest.spyOn(axios, 'get').mockImplementation(() => {
+      return new Promise((_resolve, reject) => {
+        const dummyError = {};
+        reject(dummyError);
+      });
+    });
+    const spyMessageError = jest
+      .spyOn(message, 'error')
+      .mockImplementation(() => {});
+    store
+      .dispatch(actionCreators.searchMatch(query, time, location))
+      .then(() => {
+        expect(spyGet).toHaveBeenCalledTimes(1);
+        expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
         done();
       });
   });
