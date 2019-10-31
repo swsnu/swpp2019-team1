@@ -5,6 +5,12 @@ matrix:
       node_js:
         - "10"
       # node_js version
+      dist: trusty
+        addons:
+          sonarcloud:
+            organization: "your SonarCloud organization key"
+            token: "9c2300fca4da71b0443457c22d6c748ac06be5cf"
+              secure: "inrcBlqkfNbel1Jq3frTgmDgYX2AenrHHXIz6wAAWWcCemY03EJV0mny/Y2VX93SK36xKqS79bTWDi/k9DW6OmR1+BqK8IfRGXaOZMyrEJUZD2d87eVJJ1v9MLO+g+P1hDPKpMIU9pc6qsH3RcUuRslcKeTSuZUmsj18qwa93qH5oRJ2dDkrkL3fiJe4hdWYjqxApIEwWm8SKqOe+brsbNzf3l47AWklU8u0XtMSHlypBSci38ZSbBuhkxOq96xk+pI8eYmI8txXDWLsCngW54/KZSv8WF6F7DtepqmS2eY/0Dy63ncRbcg7X2egXFygceQseFtP0KB2rwaa/Ub2L1CFni02/JB6ofLT6inRSLbyEWim7Lkx6FnWmV1YL5UQBubRm961DwUIwv/MgLb/UIb3e33mTTAv+YOeoBPYQd3DhOiJ/J1UKAOOBkraDFgF7tSbCAboinqdg73e4vme02k6lK56T3Ym3IoPsqNVazMqDVshKU9QLxh8j1c+iT61KoGdU3RYbGO6E/ZHk/hqYZcsMlNcVzL3Vfr5dgMBchfBidJG7dowDpksy3fnyB/AJ+5qrP42G97reVlxOhHL751lBpKdlKY5Su6tgbXED59egrlAPyQa30eO1qFzawJUCyBVgEW8D7Tx4x5iFTSCgTqjVaaaP7nwFXXLfQJRctA="
       before_install: # Script to run before install
         - cd front
       install:
@@ -14,6 +20,7 @@ matrix:
         # Script to test your build
         - ./node_modules/.bin/eslint src
         - yarn test --coverage --watchAll=false
+        - sonar-scanner
     - language: python
       python: 3.7.4
       before_install:
