@@ -19,7 +19,28 @@ export const createUser = () => {
         dispatch(createUserAction());
         dispatch(push('/home'));
       })
-      .catch(() => message.error('Email is duplicated'));
+      .catch(error => {
+        // TODO: error handling
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          message.error('Email is duplicated.');
+          // console.log(error.response.data);
+          // console.log(error.response.status);
+          // console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          // console.log(error.request);
+          message.error('No response from server.');
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          // console.log('Error', error.message);
+          message.error('Failed to set up request.');
+        }
+        // console.log(error.config);
+      });
   };
 };
 

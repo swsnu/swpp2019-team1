@@ -39,19 +39,59 @@ describe('User Actions', () => {
       done();
     });
   });
-  it(`If 'createUser' failed, it should alert that email is duplicated`, done => {
+  it(`If 'createUser' failed with response, it should alert that email is duplicated`, done => {
     const spyPostFail = jest.spyOn(axios, 'post').mockImplementation(() => {
       return new Promise((_resolve, reject) => {
-        const result = {
-          status: 500, // TODO: Implement check email duplication button
+        const dummyError = {
+          response: {
+            status: 500, // TODO: Implement error handling
+            headers: '',
+            data: '',
+          },
         };
-        reject(result);
+        reject(dummyError);
       });
     });
-    const spyAlert = jest.spyOn(message, 'error').mockImplementation(() => {});
+    const spyMessageError = jest
+      .spyOn(message, 'error')
+      .mockImplementation(() => {});
     store.dispatch(actionCreators.createUser(stubSignUpInfo)).then(() => {
       expect(spyPostFail).toHaveBeenCalledTimes(1);
-      expect(spyAlert).toHaveBeenCalledTimes(1);
+      expect(spyMessageError).toHaveBeenCalledWith('Email is duplicated.');
+      done();
+    });
+  });
+  it(`If 'createUser' failed without response, it should alert error`, done => {
+    const spyPostFail = jest.spyOn(axios, 'post').mockImplementation(() => {
+      return new Promise((_resolve, reject) => {
+        const dummyError = {
+          request: {},
+        };
+        reject(dummyError);
+      });
+    });
+    const spyMessageError = jest
+      .spyOn(message, 'error')
+      .mockImplementation(() => {});
+    store.dispatch(actionCreators.createUser(stubSignUpInfo)).then(() => {
+      expect(spyPostFail).toHaveBeenCalledTimes(1);
+      expect(spyMessageError).toHaveBeenCalledWith('No response from server.');
+      done();
+    });
+  });
+  it(`If 'createUser' failed to set up request, it should alert error`, done => {
+    const spyPostFail = jest.spyOn(axios, 'post').mockImplementation(() => {
+      return new Promise((_resolve, reject) => {
+        const dummyError = {};
+        reject(dummyError);
+      });
+    });
+    const spyMessageError = jest
+      .spyOn(message, 'error')
+      .mockImplementation(() => {});
+    store.dispatch(actionCreators.createUser(stubSignUpInfo)).then(() => {
+      expect(spyPostFail).toHaveBeenCalledTimes(1);
+      expect(spyMessageError).toHaveBeenCalledWith('Failed to set up request.');
       done();
     });
   });
