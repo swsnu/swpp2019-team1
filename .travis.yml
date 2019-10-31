@@ -1,17 +1,18 @@
 matrix:
   include:
-      # Your language e.g. node_js, python
+    # Your language e.g. node_js, python
     - language: node_js
       # node_js version
       node_js:
         - "10"
       # sonar cloud setting
       dist: trusty
-        addons:
-          sonarcloud:
-            organization: "swsnu"
-            token:
-              secure: "inrcBlqkfNbel1Jq3frTgmDgYX2AenrHHXIz6wAAWWcCemY03EJV0mny/Y2VX93SK36xKqS79bTWDi/k9DW6OmR1+BqK8IfRGXaOZMyrEJUZD2d87eVJJ1v9MLO+g+P1hDPKpMIU9pc6qsH3RcUuRslcKeTSuZUmsj18qwa93qH5oRJ2dDkrkL3fiJe4hdWYjqxApIEwWm8SKqOe+brsbNzf3l47AWklU8u0XtMSHlypBSci38ZSbBuhkxOq96xk+pI8eYmI8txXDWLsCngW54/KZSv8WF6F7DtepqmS2eY/0Dy63ncRbcg7X2egXFygceQseFtP0KB2rwaa/Ub2L1CFni02/JB6ofLT6inRSLbyEWim7Lkx6FnWmV1YL5UQBubRm961DwUIwv/MgLb/UIb3e33mTTAv+YOeoBPYQd3DhOiJ/J1UKAOOBkraDFgF7tSbCAboinqdg73e4vme02k6lK56T3Ym3IoPsqNVazMqDVshKU9QLxh8j1c+iT61KoGdU3RYbGO6E/ZHk/hqYZcsMlNcVzL3Vfr5dgMBchfBidJG7dowDpksy3fnyB/AJ+5qrP42G97reVlxOhHL751lBpKdlKY5Su6tgbXED59egrlAPyQa30eO1qFzawJUCyBVgEW8D7Tx4x5iFTSCgTqjVaaaP7nwFXXLfQJRctA="
+      addons:
+        sonarcloud:
+          organization: "swsnu"
+          token:
+            secure: "NG8h21VSxeWxlg1X8A4DuNGunX1Y5v1Q8tseyY4tZllt4J49jbZ+0xBACDLY1u7f/wTGaeAwKfGeKNFMogcZAVzgUn8h7RwxtCt1CkUfDpH4keACswdhWd1hWaRHYYxp4RcJqHco73XUayZiylzjlrLlLfJovS3jfEVNPFX6Gp0wyDv7Me8pJf9jJZtXXY1WHTZvijEDXpoYZdZbrj569thQ1NPhWoCf0+L5SJy5dJY6bzDI9MQyqiaeGv60LqVPBcmtmDkg8DDVzXepKurinT5yWZunGbnl+gexdDrzBlHsj1qu7vPRIPNhHyFOundqMq5wqPqzCyUgpvcb6+eOa3FtlOhmWEj089E6fiOimgkMBzkiBdb3ppjj8g9ojntvkzL5H4kf1DW9HefD1oLZZSu91RtrHudc9yH5BSuFPIiDxXG3bq8+2tp7BetFj7fAe/C9gLbTiaHUeWQYqaV9RBWa9i43ilG7GTw6Nfc4q8mQo6eYdI/A5a6XHA9myXtOViy03OJiyYHeRzBcCpK5brqKqG/NJA15YTqfLTSnFN5gg9VXlUMxA+y+0k7igVXRRG2wNo6hjYeB/ZW9u6iZvRhlFt6gS9BfjSGwyCHdoqLwz90mYBKLIupbnAU9qdbezjdlhfxoVdazZMVIzf0+2lLvg7VZIige0myRLh4X4kg="
+
       before_install: # Script to run before install
         - cd front
       install:
@@ -21,16 +22,17 @@ matrix:
         # Script to test your build
         - ./node_modules/.bin/eslint src
         - yarn test --coverage --watchAll=false
-        - cd .. && sonar-scanner
+        - sonar-scanner
     - language: python
       python: 3.7.4
       # sonar cloud setting
-      dist: trusty
-        addons:
-          sonarcloud:
-            organization: "swsnu"
-            token:
-              secure: "inrcBlqkfNbel1Jq3frTgmDgYX2AenrHHXIz6wAAWWcCemY03EJV0mny/Y2VX93SK36xKqS79bTWDi/k9DW6OmR1+BqK8IfRGXaOZMyrEJUZD2d87eVJJ1v9MLO+g+P1hDPKpMIU9pc6qsH3RcUuRslcKeTSuZUmsj18qwa93qH5oRJ2dDkrkL3fiJe4hdWYjqxApIEwWm8SKqOe+brsbNzf3l47AWklU8u0XtMSHlypBSci38ZSbBuhkxOq96xk+pI8eYmI8txXDWLsCngW54/KZSv8WF6F7DtepqmS2eY/0Dy63ncRbcg7X2egXFygceQseFtP0KB2rwaa/Ub2L1CFni02/JB6ofLT6inRSLbyEWim7Lkx6FnWmV1YL5UQBubRm961DwUIwv/MgLb/UIb3e33mTTAv+YOeoBPYQd3DhOiJ/J1UKAOOBkraDFgF7tSbCAboinqdg73e4vme02k6lK56T3Ym3IoPsqNVazMqDVshKU9QLxh8j1c+iT61KoGdU3RYbGO6E/ZHk/hqYZcsMlNcVzL3Vfr5dgMBchfBidJG7dowDpksy3fnyB/AJ+5qrP42G97reVlxOhHL751lBpKdlKY5Su6tgbXED59egrlAPyQa30eO1qFzawJUCyBVgEW8D7Tx4x5iFTSCgTqjVaaaP7nwFXXLfQJRctA="
+      dist: xenial
+      addons:
+        sonarcloud:
+          organization: "swsnu"
+          token:
+            secure: "NG8h21VSxeWxlg1X8A4DuNGunX1Y5v1Q8tseyY4tZllt4J49jbZ+0xBACDLY1u7f/wTGaeAwKfGeKNFMogcZAVzgUn8h7RwxtCt1CkUfDpH4keACswdhWd1hWaRHYYxp4RcJqHco73XUayZiylzjlrLlLfJovS3jfEVNPFX6Gp0wyDv7Me8pJf9jJZtXXY1WHTZvijEDXpoYZdZbrj569thQ1NPhWoCf0+L5SJy5dJY6bzDI9MQyqiaeGv60LqVPBcmtmDkg8DDVzXepKurinT5yWZunGbnl+gexdDrzBlHsj1qu7vPRIPNhHyFOundqMq5wqPqzCyUgpvcb6+eOa3FtlOhmWEj089E6fiOimgkMBzkiBdb3ppjj8g9ojntvkzL5H4kf1DW9HefD1oLZZSu91RtrHudc9yH5BSuFPIiDxXG3bq8+2tp7BetFj7fAe/C9gLbTiaHUeWQYqaV9RBWa9i43ilG7GTw6Nfc4q8mQo6eYdI/A5a6XHA9myXtOViy03OJiyYHeRzBcCpK5brqKqG/NJA15YTqfLTSnFN5gg9VXlUMxA+y+0k7igVXRRG2wNo6hjYeB/ZW9u6iZvRhlFt6gS9BfjSGwyCHdoqLwz90mYBKLIupbnAU9qdbezjdlhfxoVdazZMVIzf0+2lLvg7VZIige0myRLh4X4kg="
+
       before_install:
         - cd back
       install:
@@ -38,5 +40,5 @@ matrix:
       script:
         - coverage run --branch --source='./matchmaker' manage.py test
         - coverage report --fail-under=80 -m
-        - cd .. && sonar-scanner # TODO: should be removed or not?
+        - sonar-scanner # TODO: should be removed or not?
 
