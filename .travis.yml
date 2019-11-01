@@ -6,7 +6,7 @@ matrix:
       node_js:
         - "10"
       # sonar cloud setting
-      dist: trusty
+    - dist: trusty
       addons:
         sonarcloud:
           organization: "swsnu"
@@ -23,16 +23,15 @@ matrix:
         - sonar-scanner -Dsonar.verbose=true -X
     - language: python
       python: 3.7.4
-      # sonar cloud setting
-      dist: xenial
-      addons:
-        sonarcloud:
-          organization: "swsnu"
-
       before_install:
         - cd back
       install:
         - pip install -r requirements.txt
+      # sonar cloud setting
+    - dist: trusty
+      addons:
+        sonarcloud:
+          organization: "swsnu"
       script:
         - coverage run --branch --source='./matchmaker' manage.py test
         - coverage report --fail-under=80 -m
