@@ -17,6 +17,9 @@ matrix:
         - "./node_modules/.bin/eslint src"
         - yarn test --coverage --watchAll=false
         - sonar-scanner
+      after_success:
+        - cat coverage/lcov-report/lcov.info | coveralls
+
     - language: python
       python: 3.7.4
       dist: xenial
@@ -33,3 +36,5 @@ matrix:
         - coverage run --branch --source='./matchmaker' manage.py test
         - coverage report --fail-under=80 -m
         - sonar-scanner -Dsonar.verbose=true -X
+      after_success:
+        - coveralls
