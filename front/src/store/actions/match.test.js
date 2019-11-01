@@ -118,9 +118,6 @@ describe('ActionMatch', () => {
       done();
     });
   });
-<<<<<<< Updated upstream
-  it(`'joinMatch' should request match join and quit correctly`, done => {
-=======
   it(`'getRecommendMatch' should handle error correctly`, done => {
     const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
       return new Promise((_resolve, reject) => {
@@ -159,7 +156,6 @@ describe('ActionMatch', () => {
   });
 
   it(`'joinMatch' should request match join correctly`, done => {
->>>>>>> Stashed changes
     const spyPost = jest.spyOn(axios, 'post').mockImplementation(() => {
       return new Promise(resolve => {
         const result = {
