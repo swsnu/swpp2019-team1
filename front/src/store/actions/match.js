@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { push } from 'connected-react-router';
-// import { message } from 'antd';
 import * as actionTypes from './actionTypes';
 
 const getMatchAction = match => {

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as actionCreators from './match';
 import store, { history } from '../store';
+import { message } from 'antd';
 
 const stubMatchA = { dummy: 'dummy' };
 const stubNew = { dummy: 'new' };
