@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import { push } from 'connected-react-router';
+import { push } from 'connected-react-router';
 import * as actionTypes from './actionTypes';
 
 const getMatchAction = match => {
@@ -47,6 +47,22 @@ export const getRecommendMatch = () => {
     return axios
       .get(`/api/match/recommend`)
       .then(res => dispatch(getRecommendMatchAction(res.data)));
+  };
+};
+
+const createMatchAction = () => {
+  return {
+    type: actionTypes.CREATE_MATCH,
+  };
+};
+
+export const createMatch = match => {
+  return dispatch => {
+    return axios.post(`/api/match/create`, match).then(() => {
+      dispatch(createMatchAction());
+      // later change this
+      dispatch(push('/home'));
+    });
   };
 };
 

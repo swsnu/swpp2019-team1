@@ -3,6 +3,10 @@
  */
 
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import PropTypes from 'prop-types';
+import * as actionCreators from '../../../store/actions';
 import MatchForm from '../../../components/Match/MatchForm/MatchForm';
 // import LocationPopUp from ''
 
@@ -132,6 +136,28 @@ class MatchCreate extends Component {
     this.setState({ restrictToFemale: !restrictToFemale });
   };
 
+  onClickCreate = () => {
+    const { onCreate } = this.props;
+    const { timeStart, timeEnd } = this.state;
+    onCreate({
+      ...this.state,
+      timeStart: [
+        timeStart.getFullYear(),
+        timeStart.getMonth(),
+        timeStart.getDate(),
+        timeStart.getHours(),
+        timeStart.getMinutes(),
+      ],
+      timeEnd: [
+        timeEnd.getFullYear(),
+        timeEnd.getMonth(),
+        timeEnd.getDate(),
+        timeEnd.getHours(),
+        timeEnd.getMinutes(),
+      ],
+    });
+  };
+
   render() {
     const {
       title,
@@ -211,10 +237,27 @@ class MatchCreate extends Component {
           }
         />
         {/* <LocationPopUp /> */}
-        <button type="button">Create</button>
+        <button
+          id="match-create-button"
+          type="button"
+          onClick={this.onClickCreate}
+        >
+          Create
+        </button>
       </div>
     );
   }
 }
-
-export default MatchCreate;
+MatchCreate.propTypes = {
+  onCreate: PropTypes.func.isRequired,
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    onCreate: createMatchInfo =>
+      dispatch(actionCreators.createMatch(createMatchInfo)),
+  };
+};
+export default connect(
+  null,
+  mapDispatchToProps,
+)(withRouter(MatchCreate));

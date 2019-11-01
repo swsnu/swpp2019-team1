@@ -10,6 +10,7 @@ export {
   getHotMatch,
   getNewMatch,
   getRecommendMatch,
+  createMatch,
   joinMatch,
   quitMatch,
   searchMatch,
