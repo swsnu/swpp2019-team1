@@ -9,6 +9,8 @@ coverage==4.5.4
 coveralls==1.8.2
 decorator==4.4.0
 Django==2.2.5
+django-rest-framework==0.1.0
+djangorestframework==3.10.3
 docopt==0.6.2
 entrypoints==0.3
 flake8==3.7.8
@@ -20,9 +22,11 @@ isort==4.3.21
 jedi==0.15.1
 lazy-object-proxy==1.4.2
 mccabe==0.6.1
+olefile==0.46
 parso==0.5.1
 pexpect==4.7.0
 pickleshare==0.7.5
+Pillow==6.2.0
 prompt-toolkit==2.0.10
 ptyprocess==0.6.0
 pycodestyle==2.5.0
