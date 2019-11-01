@@ -1,7 +1,6 @@
 import axios from 'axios';
 import * as actionCreators from './match';
 import store, { history } from '../store';
-import { message } from 'antd';
 
 const stubMatchA = { dummy: 'dummy' };
 const stubNew = { dummy: 'new' };
@@ -119,22 +118,6 @@ describe('ActionMatch', () => {
       done();
     });
   });
-  it(`'getRecommendMatch' should handle error correctly`, done => {
-    const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
-      return new Promise((_resolve, reject) => {
-        const dummyError = {};
-        reject(dummyError);
-      });
-    });
-    const spyMessageError = jest
-      .spyOn(message, 'error')
-      .mockImplementation(() => {});
-    store.dispatch(actionCreators.getRecommendMatch(0)).then(() => {
-      expect(spy).toHaveBeenCalledTimes(1);
-      expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
-      done();
-    });
-  });
 
   // change destination later from /home to detail page
   it(`'createMatch' should request match create correctly and push /home on success`, done => {
@@ -156,7 +139,7 @@ describe('ActionMatch', () => {
     });
   });
 
-  it(`'joinMatch' should request match join correctly`, done => {
+  it(`'joinMatch' should request match join and quit correctly`, done => {
     const spyPost = jest.spyOn(axios, 'post').mockImplementation(() => {
       return new Promise(resolve => {
         const result = {
