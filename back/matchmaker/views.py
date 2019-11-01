@@ -4,6 +4,8 @@ Handle requests.
 import json
 from json import JSONDecodeError
 from datetime import datetime
+# uncomment after implementing login
+# from functools import wraps
 # from django.contrib.auth import authenticate
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, JsonResponse
@@ -13,9 +15,10 @@ from .models import Match
 
 # uncomment after implementing login
 # def check_authenticated(func):
-#     def wrapper(request):
-#         if request.user.is_authenticated:
-#             return func(request)
+#     @wraps(func)
+#     def wrapper(*args, **kwargs):
+#         if args and args[0].user.is_authenticated:
+#             return func(*args, **kwargs)
 #         else:
 #             return HttpResponse(status=401)
 #     return wrapper

@@ -1,6 +1,8 @@
 # Matchmaker
 
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![Build Status](https://travis-ci.org/swsnu/swpp2019-team1.svg?branch=master)](https://travis-ci.org/swsnu/swpp2019-team1)
+[![Coverage Status](https://coveralls.io/repos/github/swsnu/swpp2019-team1/badge.svg?branch=master)](https://coveralls.io/github/swsnu/swpp2019-team1?branch=master)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=swsnu_swpp2019-team1&metric=alert_status)](https://sonarcloud.io/dashboard?id=swsnu_swpp2019-team1)
 
 # How to run
 ## Frontend
@@ -19,4 +21,3 @@ We used Enzyme for frontend testing
 - coverage report
 - coverage run --branch --source='./matchmaker' manage.py test
 - coverage report
-
