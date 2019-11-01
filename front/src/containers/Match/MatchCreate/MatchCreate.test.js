@@ -1,21 +1,65 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'connected-react-router';
+import { Route, Switch } from 'react-router-dom';
+
 import MatchCreate from './MatchCreate';
+import getMockStore from '../../../test-utils/mocks';
+import { history } from '../../../store/store';
+import * as actionCreators from '../../../store/actions/match';
+
+const stubUser = {};
+const stubMatch = {
+  selected: {
+    id: 1,
+    hostId: 2,
+    title: 'TEST_TITLE',
+    time: 'TEST_TIME',
+    location: 'TEST_LOCATION',
+    hostName: 'TEST_HOSTNAME',
+    restriction: 'TEST_RESTRICTION',
+    additionalInfo: 'TEST_ADITIONALINFO',
+  },
+};
+const mockStore = getMockStore(stubUser, stubMatch);
 
 describe('<MatchCreate />', () => {
+  let matchCreate;
+  let spyCreateMatch;
+  beforeEach(() => {
+    matchCreate = (
+      <Provider store={mockStore}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path="/" exact component={MatchCreate} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    spyCreateMatch = jest
+      .spyOn(actionCreators, 'createMatch')
+      .mockImplementation(() => {
+        return () => {};
+      });
+  });
+
   it('should render without errors', () => {
-    const component = mount(<MatchCreate />);
+    const component = mount(matchCreate);
     const wrapper = component.find('.MatchCreate');
     expect(wrapper.length).toBe(1);
   });
+
   it('should handle input changes', () => {
-    const component = mount(<MatchCreate />);
+    const component = mount(matchCreate);
     // title change
     const title = 'TEST_TITLE';
     let wrapper = component.find('#match-title-input');
     expect(wrapper.length).toBe(1);
     wrapper.simulate('change', { target: { value: title } });
-    const createInstance = component.find(MatchCreate).instance();
+    const createInstance = component
+      .find(MatchCreate.WrappedComponent)
+      .instance();
     expect(createInstance.state.title).toEqual(title);
     // categoryId change
     const categoryID = 3;
@@ -145,5 +189,13 @@ describe('<MatchCreate />', () => {
     expect(wrapper.length).toBe(1);
     wrapper.simulate('click');
     expect(createInstance.state.restrictToFemale).toEqual(restrictToFemale);
+  });
+
+  it('should be able to create a match', () => {
+    const component = mount(matchCreate);
+    const wrapper = component.find('#match-create-button');
+    expect(wrapper.length).toBe(1);
+    wrapper.simulate('click');
+    expect(spyCreateMatch).toBeCalledTimes(1);
   });
 });

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as actionCreators from './match';
-import store from '../store';
+import store, { history } from '../store';
 
 const stubMatchA = { dummy: 'dummy' };
 const stubNew = { dummy: 'new' };
@@ -16,6 +16,29 @@ const stubMatch = {
   recommend: [],
   searchResult: [],
   selected: null,
+};
+
+const stubNewMatch = {
+  title: '',
+  // matchThumbnail
+  categoryID: 0,
+  maxCapacity: 0,
+  isOnline: false,
+  locationText: '',
+  // latitude and longitude will be implemented or removed after applying Google Map API
+  // locationLatitude: '',
+  // locationLongitude: '',
+  timeStart: new Date(),
+  timeEnd: new Date(),
+  additionalInfo: '',
+  isPeriodic: false,
+  interval: 0,
+  isAgeRestricted: false,
+  restrictAgeFrom: 0,
+  restrictAgeTo: 0,
+  isGenderRestricted: false,
+  restrictToMale: false,
+  restrictToFemale: false,
 };
 
 describe('ActionMatch', () => {
@@ -95,7 +118,48 @@ describe('ActionMatch', () => {
       done();
     });
   });
+<<<<<<< Updated upstream
   it(`'joinMatch' should request match join and quit correctly`, done => {
+=======
+  it(`'getRecommendMatch' should handle error correctly`, done => {
+    const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
+      return new Promise((_resolve, reject) => {
+        const dummyError = {};
+        reject(dummyError);
+      });
+    });
+    const spyMessageError = jest
+      .spyOn(message, 'error')
+      .mockImplementation(() => {});
+    store.dispatch(actionCreators.getRecommendMatch(0)).then(() => {
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
+      done();
+    });
+  });
+
+  // change destination later from /home to detail page
+  it(`'createMatch' should request match create correctly and push /home on success`, done => {
+    const spyPost = jest.spyOn(axios, 'post').mockImplementation(() => {
+      return new Promise(resolve => {
+        const result = {
+          status: 200,
+        };
+        resolve(result);
+      });
+    });
+    const spyPush = jest
+      .spyOn(history, 'push')
+      .mockImplementation(path => path);
+    store.dispatch(actionCreators.createMatch(stubNewMatch)).then(() => {
+      expect(spyPost).toHaveBeenCalledTimes(1);
+      expect(spyPush).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it(`'joinMatch' should request match join correctly`, done => {
+>>>>>>> Stashed changes
     const spyPost = jest.spyOn(axios, 'post').mockImplementation(() => {
       return new Promise(resolve => {
         const result = {
