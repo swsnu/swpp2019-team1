@@ -18,7 +18,7 @@ const stubMatch = {
     hostName: 'TEST_HOSTNAME',
     additionalInfo: 'TEST_ADITIONALINFO',
     // matchThumbnail
-    categoryID: 0,
+    categoryId: 0,
     capacity: 0,
     isOnline: false,
     locationText: '',

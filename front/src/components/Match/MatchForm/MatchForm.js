@@ -24,7 +24,7 @@ const MatchForm = ({
   // restrictMale,
   // restrictFemale,
   titleChange,
-  categoryIDChange,
+  categoryIdChange,
   capacityChange,
   isOnlineChange,
   locationTextChange,
@@ -57,8 +57,8 @@ const MatchForm = ({
       <input
         id="match-category-id-input"
         type="text"
-        value={categoryID}
-        onChange={categoryIDChange}
+        value={categoryId}
+        onChange={categoryIdChange}
       />
       Up to
       <input
@@ -226,7 +226,7 @@ export const MatchPropTypes = {
 MatchForm.propTypes = {
   ...MatchPropTypes,
   titleChange: PropTypes.func.isRequired,
-  categoryIDChange: PropTypes.func.isRequired,
+  categoryIdChange: PropTypes.func.isRequired,
   capacityChange: PropTypes.func.isRequired,
   isOnlineChange: PropTypes.func.isRequired,
   locationTextChange: PropTypes.func.isRequired,

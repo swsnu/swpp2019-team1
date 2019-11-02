@@ -157,26 +157,24 @@ class MatchMakerTestCase(TestCase):
                                            'restrictedGender': settings.MALE,
                                            'timeBegin': '2019-11-03T08:07:46+09:00',
                                            'timeEnd': '2019-11-03T08:07:46+09:00', }),
-                               content_type='application/json',
-                               HTTP_X_CSRFTOKEN=csrftoken)
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
 
         response = client.put(f'/api/match/{test_match.id}/',
-                               json.dumps({'title': 'TEST_TITLE',
-                                           'categoryId': test_category.id,
-                                           'capacity': 'TEST_ERR_STR',
-                                           'locationText': 'TEST_LOCATION_TEXT',
-                                           'period': 'TEST_ERR_STR',
-                                           'additionalInfo': 'TEST_ADDITIONAL_INFO',
-                                           'isAgeRestricted': 'TEST_ERR_STR',
-                                           'restrictAgeFrom': 'TEST_ERR_STR',
-                                           'restrictAgeTo': 'TEST_ERR_STR',
-                                           'isGenderRestricted': 'TEST_ERR_STR',
-                                           'restrictedGender': settings.MALE,
-                                           'timeBegin': '2019-11-03T08:07:46+09:00',
-                                           'timeEnd': '2019-11-03T08:07:46+09:00', }),
-                               content_type='application/json',
-                               HTTP_X_CSRFTOKEN=csrftoken)
+                              json.dumps({'title': 'TEST_TITLE',
+                                          'categoryId': test_category.id,
+                                          'capacity': 'TEST_ERR_STR',
+                                          'locationText': 'TEST_LOCATION_TEXT',
+                                          'period': 'TEST_ERR_STR',
+                                          'additionalInfo': 'TEST_ADDITIONAL_INFO',
+                                          'isAgeRestricted': 'TEST_ERR_STR',
+                                          'restrictAgeFrom': 'TEST_ERR_STR',
+                                          'restrictAgeTo': 'TEST_ERR_STR',
+                                          'isGenderRestricted': 'TEST_ERR_STR',
+                                          'restrictedGender': settings.MALE,
+                                          'timeBegin': '2019-11-03T08:07:46+09:00',
+                                          'timeEnd': '2019-11-03T08:07:46+09:00', }),
+                              content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
 
         response = client.put(f'/api/match/{test_match.id}/',

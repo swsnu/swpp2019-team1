@@ -17,7 +17,7 @@ class MatchEdit extends Component {
       id,
       title: '',
       // matchThumbnail
-      categoryID: 0,
+      categoryId: 0,
       capacity: 0,
       isOnline: false,
       locationText: '',

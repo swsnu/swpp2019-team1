@@ -6,7 +6,7 @@ import store, { history } from '../store';
 const stubMatchRespFieldsA = {
   title: '',
   // matchThumbnail
-  categoryID: 0,
+  categoryId: 0,
   capacity: 0,
   isOnline: false,
   locationText: '',
@@ -29,7 +29,7 @@ const stubMatchRespA = { fields: stubMatchRespFieldsA };
 const stubMatchRespFieldsB = {
   title: '',
   // matchThumbnail
-  categoryID: 0,
+  categoryId: 0,
   capacity: 0,
   isOnline: false,
   locationText: '',
@@ -52,7 +52,7 @@ const stubMatchRespB = { fields: stubMatchRespFieldsB };
 const stubMatchA = {
   title: '',
   // matchThumbnail
-  categoryID: 0,
+  categoryId: 0,
   capacity: 0,
   isOnline: false,
   locationText: '',

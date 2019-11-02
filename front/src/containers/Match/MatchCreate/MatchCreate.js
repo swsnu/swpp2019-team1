@@ -16,8 +16,8 @@ export const titleChange = (event, context) =>
 // NewMatchThumbnailUploaded
 
 // TODO : implement dropdown
-export const categoryIDChange = (event, context) =>
-  context.setState({ categoryID: event.target.value });
+export const categoryIdChange = (event, context) =>
+  context.setState({ categoryId: event.target.value });
 
 export const capacityChange = (event, context) =>
   context.setState({ capacity: event.target.value });
@@ -103,7 +103,7 @@ export const restrictFemaleClicked = context => {
 
 export const binder = context => {
   titleChange.bind(context);
-  categoryIDChange.bind(context);
+  categoryIdChange.bind(context);
   capacityChange.bind(context);
   isOnlineChange.bind(context);
   locationTextChange.bind(context);
@@ -126,7 +126,7 @@ export const matchFormCreator = (context, state) => {
   const {
     title,
     // matchThumbnail
-    categoryID,
+    categoryId,
     capacity,
     isOnline,
     locationText,
@@ -149,7 +149,7 @@ export const matchFormCreator = (context, state) => {
     <MatchForm
       title={title}
       // matchThumbnail
-      categoryID={categoryID}
+      categoryId={categoryId}
       capacity={capacity}
       isOnline={isOnline}
       locationText={locationText}
@@ -167,7 +167,7 @@ export const matchFormCreator = (context, state) => {
       restrictMale={restrictMale}
       restrictFemale={restrictFemale}
       titleChange={event => titleChange(event, context)}
-      categoryIDChange={event => categoryIDChange(event, context)}
+      categoryIdChange={event => categoryIdChange(event, context)}
       capacityChange={event => capacityChange(event, context)}
       isOnlineChange={event => isOnlineChange(event, context)}
       locationTextChange={event => locationTextChange(event, context)}
