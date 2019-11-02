@@ -10,6 +10,188 @@ import * as actionCreators from '../../../store/actions';
 import MatchForm from '../../../components/Match/MatchForm/MatchForm';
 // import LocationPopUp from ''
 
+export const titleChange = (event, context) =>
+  context.setState({ title: event.target.value });
+
+// NewMatchThumbnailUploaded
+
+// TODO : implement dropdown
+export const categoryIDChange = (event, context) =>
+  context.setState({ categoryID: event.target.value });
+
+export const capacityChange = (event, context) =>
+  context.setState({ capacity: event.target.value });
+
+export const isOnlineChange = (event, context) =>
+  context.setState({ isOnline: event.target.checked });
+
+export const locationTextChange = (event, context) =>
+  context.setState({ locationText: event.target.value });
+
+// export const LocationLatitudeChange = (event, context) =>
+//   context.setState({ locationLatitude: event.target.value });
+
+// export const LocationLongitudeChange = (event, context) =>
+//   context.setState({ locationLongitude: event.target.value });
+
+export const timeBeginChange = (event, context) => {
+  const { timeBegin } = context.state;
+  const inputDate = event.target.value;
+  const newDate = timeBegin;
+  if (inputDate.split('-').length !== 1) {
+    // Date Changed
+    newDate.setFullYear(parseInt(inputDate.split('-')[0], 10));
+    newDate.setMonth(parseInt(inputDate.split('-')[1], 10) - 1);
+    newDate.setDate(parseInt(inputDate.split('-')[2], 10));
+  } else {
+    // Time Changed
+    newDate.setHours(parseInt(inputDate.split(':')[0], 10));
+    newDate.setMinutes(parseInt(inputDate.split(':')[1], 10));
+  }
+  context.setState({ timeBegin: newDate });
+};
+
+// TODO: alert error message if the end time earlier than the start time
+export const timeEndChange = (event, context) => {
+  const { timeEnd } = context.state;
+  const inputDate = event.target.value;
+  const newDate = timeEnd;
+  if (inputDate.split('-').length !== 1) {
+    // Date Changed
+    newDate.setFullYear(parseInt(inputDate.split('-')[0], 10));
+    newDate.setMonth(parseInt(inputDate.split('-')[1], 10) - 1);
+    newDate.setDate(parseInt(inputDate.split('-')[2], 10));
+  } else {
+    // Time Changed
+    newDate.setHours(parseInt(inputDate.split(':')[0], 10));
+    newDate.setMinutes(parseInt(inputDate.split(':')[1], 10));
+  }
+  context.setState({ timeEnd: newDate });
+};
+
+export const additionalInfoChange = (event, context) =>
+  context.setState({ additionalInfo: event.target.value });
+
+export const isPeriodicChange = (event, context) =>
+  context.setState({ isPeriodic: event.target.checked });
+
+export const periodChange = (event, context) =>
+  context.setState({ period: event.target.value });
+
+export const isAgeRestrictedChange = (event, context) =>
+  context.setState({ isAgeRestricted: event.target.checked });
+
+export const restrictAgeFromChange = (event, context) =>
+  context.setState({ restrictAgeFrom: event.target.value });
+
+export const restrictAgeToChange = (event, context) =>
+  context.setState({ restrictAgeTo: event.target.value });
+
+export const isGenderRestrictedTogg = (event, context) =>
+  context.setState({ isGenderRestricted: event.target.checked });
+
+// TODO : if setting one while the other is true -> set the other as false
+export const restrictMaleClicked = context => {
+  const { restrictMale } = context.state;
+  context.setState({ restrictMale: !restrictMale });
+};
+
+export const restrictFemaleClicked = context => {
+  const { restrictFemale } = context.state;
+  context.setState({ restrictFemale: !restrictFemale });
+};
+
+export const binder = context => {
+  titleChange.bind(context);
+  categoryIDChange.bind(context);
+  capacityChange.bind(context);
+  isOnlineChange.bind(context);
+  locationTextChange.bind(context);
+  // LocationLatitudeChange.bind(context)
+  // LocationLongitudeChange.bind(context)
+  timeBeginChange.bind(context);
+  timeEndChange.bind(context);
+  additionalInfoChange.bind(context);
+  isPeriodicChange.bind(context);
+  periodChange.bind(context);
+  isAgeRestrictedChange.bind(context);
+  restrictAgeFromChange.bind(context);
+  restrictAgeToChange.bind(context);
+  isGenderRestrictedTogg.bind(context);
+  restrictMaleClicked.bind(context);
+  restrictFemaleClicked.bind(context);
+};
+
+export const matchFormCreator = (context, state) => {
+  const {
+    title,
+    // matchThumbnail
+    categoryID,
+    capacity,
+    isOnline,
+    locationText,
+    // locationLatitude,
+    // locationLongitude,
+    timeBegin,
+    timeEnd,
+    additionalInfo,
+    isPeriodic,
+    period,
+    isAgeRestricted,
+    restrictAgeFrom,
+    restrictAgeTo,
+    isGenderRestricted,
+    restrictMale,
+    restrictFemale,
+  } = state;
+
+  return (
+    <MatchForm
+      title={title}
+      // matchThumbnail
+      categoryID={categoryID}
+      capacity={capacity}
+      isOnline={isOnline}
+      locationText={locationText}
+      // locationLatitude={locationLatitude}
+      // locationLongitude={locationLongitude}
+      timeBegin={timeBegin}
+      timeEnd={timeEnd}
+      additionalInfo={additionalInfo}
+      isPeriodic={isPeriodic}
+      period={period}
+      isAgeRestricted={isAgeRestricted}
+      restrictAgeFrom={restrictAgeFrom}
+      restrictAgeTo={restrictAgeTo}
+      isGenderRestricted={isGenderRestricted}
+      restrictMale={restrictMale}
+      restrictFemale={restrictFemale}
+      titleChange={event => titleChange(event, context)}
+      categoryIDChange={event => categoryIDChange(event, context)}
+      capacityChange={event => capacityChange(event, context)}
+      isOnlineChange={event => isOnlineChange(event, context)}
+      locationTextChange={event => locationTextChange(event, context)}
+      // LocationLatitudeChange={
+      //   event => LocationLatitudeChange
+      // (event, context)}
+      // LocationLongitudeChange={
+      //   event => LocationLongitudeChange
+      // (event, context)}
+      timeBeginChange={event => timeBeginChange(event, context)}
+      timeEndChange={event => timeEndChange(event, context)}
+      additionalInfoChange={event => additionalInfoChange(event, context)}
+      isPeriodicChange={event => isPeriodicChange(event, context)}
+      periodChange={event => periodChange(event, context)}
+      isAgeRestrictedChange={event => isAgeRestrictedChange(event, context)}
+      restrictAgeFromChange={event => restrictAgeFromChange(event, context)}
+      restrictAgeToChange={event => restrictAgeToChange(event, context)}
+      isGenderRestrictedTogg={event => isGenderRestrictedTogg(event, context)}
+      restrictMaleClicked={() => restrictMaleClicked(context)}
+      restrictFemaleClicked={() => restrictFemaleClicked(context)}
+    />
+  );
+};
+
 class MatchCreate extends Component {
   constructor(props) {
     super(props);
@@ -32,9 +214,10 @@ class MatchCreate extends Component {
       restrictAgeFrom: 0,
       restrictAgeTo: 0,
       isGenderRestricted: false,
-      restrictToMale: false,
-      restrictToFemale: false,
+      restrictMale: false,
+      restrictFemale: false,
     };
+    binder(this);
   }
 
   componentDidMount() {}
@@ -43,203 +226,39 @@ class MatchCreate extends Component {
   // onClickCreate = () => {};
 
   // this will be implemented or removed after applying Google Map API
-  // handleLocationSearch = () => {};
-
-  handleInputTitleChange = event =>
-    this.setState({ title: event.target.value });
-
-  // handleNewMatchThumbnailUploaded
-
-  // TODO : implement dropdown
-  handleInputCategoryIDChange = event =>
-    this.setState({ categoryId: event.target.value });
-
-  handleInputCapacityChange = event =>
-    this.setState({ capacity: event.target.value });
-
-  handleInputIsOnlineChange = event =>
-    this.setState({ isOnline: event.target.checked });
-
-  handleInputLocationTextChange = event =>
-    this.setState({ locationText: event.target.value });
-
-  // handleInputLocationLatitudeChange = event =>
-  //   this.setState({ locationLatitude: event.target.value });
-
-  // handleInputLocationLongitudeChange = event =>
-  //   this.setState({ locationLongitude: event.target.value });
-
-  handleInputTimeBeginChange = event => {
-    const { timeBegin } = this.state;
-    const inputDate = event.target.value;
-    const newDate = timeBegin;
-    if (inputDate.split('-').length !== 1) {
-      // Date Changed
-      newDate.setFullYear(parseInt(inputDate.split('-')[0], 10));
-      newDate.setMonth(parseInt(inputDate.split('-')[1], 10) - 1);
-      newDate.setDate(parseInt(inputDate.split('-')[2], 10));
-    } else {
-      // Time Changed
-      newDate.setHours(parseInt(inputDate.split(':')[0], 10));
-      newDate.setMinutes(parseInt(inputDate.split(':')[1], 10));
-    }
-    this.setState({ timeBegin: newDate });
-  };
-
-  // TODO: alert error message if the end time earlier than the start time
-  handleInputTimeEndChange = event => {
-    const { timeEnd } = this.state;
-    const inputDate = event.target.value;
-    const newDate = timeEnd;
-    if (inputDate.split('-').length !== 1) {
-      // Date Changed
-      newDate.setFullYear(parseInt(inputDate.split('-')[0], 10));
-      newDate.setMonth(parseInt(inputDate.split('-')[1], 10) - 1);
-      newDate.setDate(parseInt(inputDate.split('-')[2], 10));
-    } else {
-      // Time Changed
-      newDate.setHours(parseInt(inputDate.split(':')[0], 10));
-      newDate.setMinutes(parseInt(inputDate.split(':')[1], 10));
-    }
-    this.setState({ timeBegin: newDate });
-  };
-
-  handleInputAdditionalInfoChange = event =>
-    this.setState({ additionalInfo: event.target.value });
-
-  handleInputIsPeriodicChange = event =>
-    this.setState({ isPeriodic: event.target.checked });
-
-  handleInputPeriodChange = event =>
-    this.setState({ period: event.target.value });
-
-  handleInputIsAgeRestrictedChange = event =>
-    this.setState({ isAgeRestricted: event.target.checked });
-
-  handleInputRestrictAgeFromChange = event =>
-    this.setState({ restrictAgeFrom: event.target.value });
-
-  handleInputRestrictAgeToChange = event =>
-    this.setState({ restrictAgeTo: event.target.value });
-
-  handleInputIsGenderRestrictedChange = event =>
-    this.setState({ isGenderRestricted: event.target.checked });
-
-  // TODO : if setting one while the other is true -> set the other as false
-  handleButtonRestrictToMaleClicked = () => {
-    const { restrictToMale } = this.state;
-    this.setState({ restrictToMale: !restrictToMale });
-  };
-
-  handleButtonRestrictToFemaleClicked = () => {
-    const { restrictToFemale } = this.state;
-    this.setState({ restrictToFemale: !restrictToFemale });
-  };
+  // LocationSearch = () => {};
 
   onClickCreate = () => {
     const { onCreate } = this.props;
-    const { timeBegin, timeEnd, restrictToMale } = this.state;
+    const { timeBegin, timeEnd, restrictMale } = this.state;
     const matchInfo = {
       ...this.state,
       timeBegin: [
         timeBegin.getFullYear(),
-        timeBegin.getMonth(),
+        timeBegin.getMonth() + 1,
         timeBegin.getDate(),
         timeBegin.getHours(),
         timeBegin.getMinutes(),
       ],
       timeEnd: [
         timeEnd.getFullYear(),
-        timeEnd.getMonth(),
+        timeEnd.getMonth() + 1,
         timeEnd.getDate(),
         timeEnd.getHours(),
         timeEnd.getMinutes(),
       ],
-      restrictedGender: restrictToMale,
+      restrictedGender: restrictMale,
     };
-    delete matchInfo.restrictToMale;
-    delete matchInfo.restrictToFemale;
+    delete matchInfo.restrictMale;
+    delete matchInfo.restrictFemale;
     onCreate(matchInfo);
   };
 
   render() {
-    const {
-      title,
-      // matchThumbnail
-      categoryId,
-      capacity,
-      isOnline,
-      locationText,
-      // locationLatitude,
-      // locationLongitude,
-      timeBegin,
-      timeEnd,
-      additionalInfo,
-      isPeriodic,
-      period,
-      isAgeRestricted,
-      restrictAgeFrom,
-      restrictAgeTo,
-      isGenderRestricted,
-      restrictToMale,
-      restrictToFemale,
-    } = this.state;
-
     return (
       <div className="MatchCreate">
-        <MatchForm
-          title={title}
-          // matchThumbnail
-          categoryId={categoryId}
-          capacity={capacity}
-          isOnline={isOnline}
-          locationText={locationText}
-          // locationLatitude={locationLatitude}
-          // locationLongitude={locationLongitude}
-          timeBegin={timeBegin}
-          timeEnd={timeEnd}
-          additionalInfo={additionalInfo}
-          isPeriodic={isPeriodic}
-          period={period}
-          isAgeRestricted={isAgeRestricted}
-          restrictAgeFrom={restrictAgeFrom}
-          restrictAgeTo={restrictAgeTo}
-          isGenderRestricted={isGenderRestricted}
-          restrictToMale={restrictToMale}
-          restrictToFemale={restrictToFemale}
-          handleInputTitleChange={this.handleInputTitleChange}
-          handleInputCategoryIDChange={this.handleInputCategoryIDChange}
-          handleInputCapacityChange={this.handleInputCapacityChange}
-          handleInputIsOnlineChange={this.handleInputIsOnlineChange}
-          handleInputLocationTextChange={this.handleInputLocationTextChange}
-          // handleInputLocationLatitudeChange={
-          //   this.handleInputLocationLatitudeChange
-          // }
-          // handleInputLocationLongitudeChange={
-          //   this.handleInputLocationLongitudeChange
-          // }
-          handleInputTimeBeginChange={this.handleInputTimeBeginChange}
-          handleInputTimeEndChange={this.handleInputTimeEndChange}
-          handleInputAdditionalInfoChange={this.handleInputAdditionalInfoChange}
-          handleInputIsPeriodicChange={this.handleInputIsPeriodicChange}
-          handleInputPeriodChange={this.handleInputPeriodChange}
-          handleInputIsAgeRestrictedChange={
-            this.handleInputIsAgeRestrictedChange
-          }
-          handleInputRestrictAgeFromChange={
-            this.handleInputRestrictAgeFromChange
-          }
-          handleInputRestrictAgeToChange={this.handleInputRestrictAgeToChange}
-          handleInputIsGenderRestrictedChange={
-            this.handleInputIsGenderRestrictedChange
-          }
-          handleButtonRestrictToMaleClicked={
-            this.handleButtonRestrictToMaleClicked
-          }
-          handleButtonRestrictToFemaleClicked={
-            this.handleButtonRestrictToFemaleClicked
-          }
-        />
+        <h1>Create Match</h1>
+        {matchFormCreator(this, this.state)}
         {/* <LocationPopUp /> */}
         <button
           id="match-create-button"

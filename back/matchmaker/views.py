@@ -1,20 +1,22 @@
-"""
+'''
 matchmaker views
 Handle requests.
-"""
-from json import JSONDecodeError
+'''
 from django.http import HttpResponse, HttpResponseBadRequest, \
     HttpResponseNotAllowed, HttpResponseNotFound, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
-from djangorestframework_camel_case.parser import CamelCaseJSONParser
+from django.core import serializers
+from django.shortcuts import get_object_or_404
 import arrow
-#from userapp.models import User
+from djangorestframework_camel_case.parser import CamelCaseJSONParser
+
+# from userapp.models import User
 from .models import Category, Match
 from .serializers import MatchSerializer
 
 
 def match_simple_serializer(match_object):
-    """Simple serializer"""
+    '''Simple serializer'''
     return {
         'id': match_object.id,
         'title': match_object.title,
@@ -23,9 +25,14 @@ def match_simple_serializer(match_object):
     }
 
 
+# pylint: disable-msg=too-many-locals
+
+# uncomment after implementing login
+# @check_authenticated
+
 def match(request):
     # pylint: disable=too-many-locals
-    """Makes and returns a new match."""
+    '''Makes and returns a new match.'''
     if request.method == 'POST':
         try:
             data = CamelCaseJSONParser().parse(request)
@@ -67,15 +74,55 @@ def match(request):
 
 @ensure_csrf_cookie
 def match_new(request):
-    """Returns new three matches."""
+    '''Returns new three matches.'''
     if request.method == 'GET':
         # not yet implemented
         return HttpResponse(status=200)
     return HttpResponseNotAllowed(['GET'])
 
 
+# pylint: disable-msg=too-many-locals
+def match_detail(request, match_id):
+    '''Handles requests about a match'''
+    if request.method == 'GET':
+        match_obj = get_object_or_404(Match, pk=match_id)
+        match_json = serializers.serialize('json', [match_obj])
+        return JsonResponse(match_json, safe=False, status=200)
+    if request.method == 'PUT':
+        match_obj = get_object_or_404(Match, pk=match_id)
+        # add author check below after implementing login
+        # and putting author in the match model
+        try:
+            data = CamelCaseJSONParser().parse(request)
+            category_id = data['category_id']
+            time_begin = arrow.get(data['time_begin']).datetime
+            time_end = arrow.get(data['time_end']).datetime
+            data['time_begin'] = time_begin
+            data['time_end'] = time_end
+        except (KeyError, arrow.parser.ParserError):
+            # 400
+            return HttpResponseBadRequest()
+        category = get_object_or_404(Category, pk=category_id)
+        data[category_id] = category.id
+        match_serializer = MatchSerializer(match_obj, data=data, partial=True)
+        if match_serializer.is_valid():
+            match_serializer.save()
+            return JsonResponse(match_serializer.data, status=200)
+        # 400
+        return HttpResponseBadRequest()
+    # if request.method == 'PATCH':
+    #     # not yet implemented
+    #     return HttpResponse(status=200)
+    # if request.method == 'DELETE':
+    #     # not yet implemented
+    #     return HttpResponse(status=200)
+    return HttpResponseNotAllowed(['GET', 'PUT', 'PATCH', 'DELETE'])
+
+# pylint: enable-msg=too-many-locals
+
+
 def search(request):
-    """Returns search result."""
+    '''Returns search result.'''
     if request.method == 'GET':
         query = request.GET['query']
         search_result_raw = list(Match.objects.filter(title__contains=query))

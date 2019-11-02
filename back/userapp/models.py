@@ -54,7 +54,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     birthdate = models.DateField()
     message = models.CharField(max_length=100, blank=True)
     profile_picture = models.ImageField(
-        upload_to="profile/", null=True, blank=True)
+        upload_to='profile/', null=True, blank=True)
     is_email_public = models.BooleanField(blank=False)
     is_schedule_public = models.BooleanField(default=False, blank=True)
     is_interest_public = models.BooleanField(blank=False)

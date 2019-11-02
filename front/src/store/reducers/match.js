@@ -5,28 +5,28 @@ const initialState = {
   new: [],
   recommend: [],
   searchResult: [],
-  selected: null,
+  selected: undefined,
   // the following may not be needed
   myMatch: [],
 };
-// eslint-disable-next-line no-unused-vars
-const testinitialState = {
-  hot: [],
-  new: [],
-  recommend: [],
-  searchResult: [],
-  selected: {
-    id: 1,
-    hostId: 2,
-    title: 'TEST_TITLE',
-    time: 'TEST_TIME',
-    location: 'TEST_LOCATION',
-    hostName: 'TEST_HOSTNAME',
-    restriction: 'TEST_RESTRICTION',
-    additionalInfo: 'TEST_ADITIONALINFO',
-  },
-  myMatch: [],
-};
+
+// const testInitialState = {
+//   hot: [],
+//   new: [],
+//   recommend: [],
+//   searchResult: [],
+//   selected: {
+//     id: 1,
+//     hostId: 2,
+//     title: 'TEST_TITLE',
+//     time: 'TEST_TIME',
+//     location: 'TEST_LOCATION',
+//     hostName: 'TEST_HOSTNAME',
+//     restriction: 'TEST_RESTRICTION',
+//     additionalInfo: 'TEST_ADITIONALINFO',
+//   },
+//   myMatch: [],
+// };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {

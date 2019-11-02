@@ -23,7 +23,7 @@ def sign_up(request):
             data['birthdate'] = datetime.fromtimestamp(
                 data['birthdate'], tz=timezone.get_current_timezone())
         except (KeyError):
-            print("no key")
+            print('no key')
         '''
         serializer = UserSerializer(data=data)
         if serializer.is_valid():
@@ -43,7 +43,7 @@ def sign_in(request):
     if request.method == 'POST':
         data = CamelCaseJSONParser().parse(request)
         user = auth.authenticate(
-            email=data["email"], password=data["password"])
+            email=data['email'], password=data['password'])
         if user is not None:
             auth.login(request, user)
             return HttpResponse(status=204)

@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import * as actionCreators from '../../../store/actions/index';
+import { MatchPropTypes } from '../../../components/Match/MatchForm/MatchForm';
 
 class MatchDetail extends Component {
   constructor(props) {
@@ -17,27 +19,29 @@ class MatchDetail extends Component {
   }
 
   clickEditHandler = () => {
-    const { selected, onEditMatch } = this.props;
-    onEditMatch(selected.id);
+    const { match, onEditMatch } = this.props;
+    onEditMatch(match.params.id);
   };
 
   clickUserHandler = () => {
     const { selected, onUserProfile } = this.props;
-    onUserProfile(selected.hostId);
+    onUserProfile(selected.hostID);
   };
 
   clickJoinHandler = () => {
-    const { selected, onJoinMatch } = this.props;
-    onJoinMatch(selected.id);
+    const { match, onJoinMatch } = this.props;
+    onJoinMatch(match.params.id);
   };
 
   clickQuitHandler = () => {
-    const { selected, onQuitMatch } = this.props;
-    onQuitMatch(selected.id);
+    const { match, onQuitMatch } = this.props;
+    onQuitMatch(match.params.id);
   };
 
   render() {
     const { selected } = this.props;
+    if (selected === undefined)
+      return <div className="MatchDetail">Loading...</div>;
     return (
       <div className="MatchDetail">
         <div className="Detail-Header">
@@ -46,20 +50,20 @@ class MatchDetail extends Component {
           </div>
           <div className="Detail-MainInfo">
             <div className="Detail-MatchTitle">{selected.title}</div>
-            <div className="Detail-Time">{selected.time}</div>
-            <div className="Detail-Location">{selected.location}</div>
+            {/* <div className="Detail-Time">{selected.time}</div> */}
+            <div className="Detail-Location">{selected.locationText}</div>
             <div className="Detail-Host">
               <button
                 type="button"
                 id="host-profile-button"
                 onClick={() => this.clickUserHandler()}
               >
-                {selected.hostName}
+                {/* {selected.hostName} */}
               </button>
             </div>
           </div>
         </div>
-        <div className="Detail-Restriction">{selected.restriction}</div>
+        {/* <div className="Detail-Restriction">{selected.restriction}</div> */}
         <div className="Detail-Google-Map">GoogleMapAPI</div>
         <div className="Detail-Additional-Info">{selected.additionalInfo}</div>
         <div className="HostButtons">
@@ -92,7 +96,7 @@ class MatchDetail extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user.userid,
+    // user: state.user.userid,
     selected: state.match.selected,
   };
 };
@@ -109,9 +113,10 @@ const mapDispatchToProps = dispatch => {
 
 MatchDetail.propTypes = {
   // user: PropTypes.object.isRequired,
-  selected: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  ).isRequired,
+  selected: PropTypes.shape({
+    ...MatchPropTypes,
+    hostID: PropTypes.number.isRequired,
+  }),
   onGetMatch: PropTypes.func.isRequired,
   onJoinMatch: PropTypes.func.isRequired,
   onQuitMatch: PropTypes.func.isRequired,
@@ -119,6 +124,7 @@ MatchDetail.propTypes = {
   onUserProfile: PropTypes.func.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
 };
+MatchDetail.defaultProps = { selected: undefined };
 
 export default connect(
   mapStateToProps,

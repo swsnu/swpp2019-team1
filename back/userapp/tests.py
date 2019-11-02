@@ -10,10 +10,10 @@ from userapp.models import User
 
 def create_dummy_user():
     '''create dummy user'''
-    return User.objects.create_user(email="TEST_EMAIL@test.com", password="TEST_PASSWORD",
-                                    username="TEST_USERNAME", first_name="TEST_FIRST_NAME",
-                                    last_name="TEST_LAST_NAME", phone_number="010-1234-5678",
-                                    gender=settings.MALE, birthdate="2000-01-01",
+    return User.objects.create_user(email='TEST_EMAIL@test.com', password='TEST_PASSWORD',
+                                    username='TEST_USERNAME', first_name='TEST_FIRST_NAME',
+                                    last_name='TEST_LAST_NAME', phone_number='010-1234-5678',
+                                    gender=settings.MALE, birthdate='2000-01-01',
                                     is_email_public=False, is_interest_public=False)
 
 
@@ -23,7 +23,7 @@ class UserappTestCase(TestCase):
     def test_user_model(self):
         '''test user model'''
         with self.assertRaises(ValueError):
-            User.objects.create_user(email="")
+            User.objects.create_user(email='')
         test_user = create_dummy_user()
         self.assertEqual(test_user.__str__(), test_user.username)
         self.assertEqual(test_user.get_full_name(),
@@ -34,16 +34,16 @@ class UserappTestCase(TestCase):
         '''test create superuser'''
         with self.assertRaises(ValueError):
             User.objects.create_superuser(
-                email="TEST_EMAIL@test.com", password="TEST_PASSWORD",
-                username="TEST_USERNAME", first_name="TEST_FIRST_NAME",
-                last_name="TEST_LAST_NAME", phone_number="010-1234-5678",
-                gender=settings.MALE, birthdate="2000-01-01",
+                email='TEST_EMAIL@test.com', password='TEST_PASSWORD',
+                username='TEST_USERNAME', first_name='TEST_FIRST_NAME',
+                last_name='TEST_LAST_NAME', phone_number='010-1234-5678',
+                gender=settings.MALE, birthdate='2000-01-01',
                 is_email_public=False, is_interest_public=False, is_superuser=False)
         test_superuser = User.objects.create_superuser(
-            email="TEST_EMAIL@test.com", password="TEST_PASSWORD",
-            username="TEST_USERNAME", first_name="TEST_FIRST_NAME",
-            last_name="TEST_LAST_NAME", phone_number="010-1234-5678",
-            gender=settings.MALE, birthdate="2000-01-01",
+            email='TEST_EMAIL@test.com', password='TEST_PASSWORD',
+            username='TEST_USERNAME', first_name='TEST_FIRST_NAME',
+            last_name='TEST_LAST_NAME', phone_number='010-1234-5678',
+            gender=settings.MALE, birthdate='2000-01-01',
             is_email_public=False, is_interest_public=False)
         self.assertIsInstance(test_superuser, User)
 
