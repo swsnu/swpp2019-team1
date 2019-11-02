@@ -14,10 +14,10 @@ const createUserAction = () => {
 export const createUser = () => {
   return dispatch => {
     return axios
-      .post(`/api/signup`)
+      .post(`/api/signup/`)
       .then(() => {
         dispatch(createUserAction());
-        dispatch(push('/home'));
+        dispatch(push('/home/'));
       })
       .catch(error => {
         // TODO: error handling

@@ -8,7 +8,7 @@ const stubNew = { dummy: 'new' };
 const stubHot = { dummy: 'hot' };
 const stubRecommend = { dummy: 'recommend' };
 
-const stubMatchId = 2;
+const stubMatchPk = 2;
 // eslint-disable-next-line no-unused-vars
 const stubMatch = {
   hot: [],
@@ -22,7 +22,7 @@ const stubNewMatch = {
   title: '',
   // matchThumbnail
   categoryID: 0,
-  maxCapacity: 0,
+  capacity: 0,
   isOnline: false,
   locationText: '',
   // latitude and longitude will be implemented or removed after applying Google Map API
@@ -32,7 +32,7 @@ const stubNewMatch = {
   timeEnd: new Date(),
   additionalInfo: '',
   isPeriodic: false,
-  interval: 0,
+  period: 0,
   isAgeRestricted: false,
   restrictAgeFrom: 0,
   restrictAgeTo: 0,
@@ -190,12 +190,12 @@ describe('ActionMatch', () => {
     });
   });
 
-  // change destination later from /home to detail page
-  it(`'createMatch' should request match create correctly and push /home on success`, done => {
+  it(`'createMatch' should request match create correctly and push /match/:pk/ on success`, done => {
     const spyPost = jest.spyOn(axios, 'post').mockImplementation(() => {
       return new Promise(resolve => {
         const result = {
           status: 200,
+          data: JSON.stringify([{ pk: stubMatchPk }]),
         };
         resolve(result);
       });
@@ -220,9 +220,9 @@ describe('ActionMatch', () => {
       });
     });
 
-    store.dispatch(actionCreators.joinMatch(stubMatchId)).then(() => {
+    store.dispatch(actionCreators.joinMatch(stubMatchPk)).then(() => {
       const newState = store.getState();
-      expect(newState.match.myMatch[0]).toBe(stubMatchId);
+      expect(newState.match.myMatch[0]).toBe(stubMatchPk);
       expect(spyPost).toHaveBeenCalledTimes(1);
       done();
     });
@@ -238,7 +238,7 @@ describe('ActionMatch', () => {
     const spyMessageError = jest
       .spyOn(message, 'error')
       .mockImplementation(() => {});
-    store.dispatch(actionCreators.joinMatch(stubMatchId)).then(() => {
+    store.dispatch(actionCreators.joinMatch(stubMatchPk)).then(() => {
       expect(spyPost).toHaveBeenCalledTimes(1);
       expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
       done();
@@ -254,7 +254,7 @@ describe('ActionMatch', () => {
         resolve(result);
       });
     });
-    store.dispatch(actionCreators.quitMatch(stubMatchId)).then(() => {
+    store.dispatch(actionCreators.quitMatch(stubMatchPk)).then(() => {
       const newState = store.getState();
       expect(newState.match.myMatch.length).toBe(0);
       expect(spyDelete).toHaveBeenCalledTimes(1);
@@ -272,7 +272,7 @@ describe('ActionMatch', () => {
     const spyMessageError = jest
       .spyOn(message, 'error')
       .mockImplementation(() => {});
-    store.dispatch(actionCreators.quitMatch(stubMatchId)).then(() => {
+    store.dispatch(actionCreators.quitMatch(stubMatchPk)).then(() => {
       expect(spyDelete).toHaveBeenCalledTimes(1);
       expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
       done();
@@ -319,7 +319,7 @@ describe('ActionMatch', () => {
         expect(newState.match.searchResult.length).toBe(2);
         expect(spy).toHaveBeenCalledTimes(1);
         expect(spy).toBeCalledWith(
-          `/api/search?query=${query}&time=${time}&loc=${location}`,
+          `/api/search?query=${query}&time=${time}&loc=${location}/`,
         );
         done();
       });
