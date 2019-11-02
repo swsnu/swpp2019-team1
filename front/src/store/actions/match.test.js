@@ -319,7 +319,7 @@ describe('ActionMatch', () => {
         expect(newState.match.searchResult.length).toBe(2);
         expect(spy).toHaveBeenCalledTimes(1);
         expect(spy).toBeCalledWith(
-          `/api/search?query=${query}&time=${time}&loc=${location}/`,
+          `/api/match/search?query=${query}&time=${time}&loc=${location}`,
         );
         done();
       });

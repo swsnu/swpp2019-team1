@@ -255,7 +255,7 @@ export const searchMatch = (query, time, location) => {
   return dispatch => {
     return (
       axios
-        .get(`/api/search${parameter}/`)
+        .get(`/api/match/search${parameter}`)
         .then(res => dispatch(searchMatchAction(res.data)))
         // eslint-disable-next-line no-unused-vars
         .catch(error => {

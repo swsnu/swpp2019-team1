@@ -9,6 +9,10 @@ from .models import Match
 class MatchMakerTestCase(TestCase):
     """Tests for the app Matchmaker"""
 
+    def setUp(self):
+        Match.objects.create(
+            title='TEST_TITLE', categoryID=1, capacity=4, locationText='TEST_LOCATION')
+
     def test_csrf(self):
         """Tests CSRF"""
         client = Client(enforce_csrf_checks=True)
@@ -66,6 +70,10 @@ class MatchMakerTestCase(TestCase):
         response = client.delete('/api/match/new/', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
+        response = client.delete('/api/match/search',
+                                 HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
     def test_http_response_400(self):
         """Checks if the views module handles bad requests correctly."""
         client = Client(enforce_csrf_checks=True)
@@ -87,7 +95,7 @@ class MatchMakerTestCase(TestCase):
         response = client.get('/api/match/new/')
         test_match = Match.objects.create(
             title='TEST_TITLE_STR')
-        self.assertEqual(test_match.__str__(), "TEST_TITLE_STR")
+        self.assertEqual(str(test_match), "TEST_TITLE_STR")
 
         csrftoken = response.cookies['csrftoken'].value
         response = client.post('/api/match/',
@@ -107,3 +115,9 @@ class MatchMakerTestCase(TestCase):
                                content_type='application/json',
                                HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 201)
+
+    def test_search(self):
+        """Checks if the views module handles search query correctly."""
+        client = Client(enforce_csrf_checks=True)
+        response = client.get('/api/match/search?query=TITLE')
+        self.assertEqual(len(json.loads(response.content.decode())), 1)
