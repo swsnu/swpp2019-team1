@@ -30,7 +30,7 @@ export const getMatch = id => {
                 match.fields.isGenderRestricted && !restrictedGender,
               restrictToFemale:
                 match.fields.isGenderRestricted && restrictedGender,
-              isPeriodic: !(match.fields.period === 0),
+              isPeriodic: match.fields.period !== 0,
             }),
           );
         })
