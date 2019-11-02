@@ -24,11 +24,6 @@ from .models import Match
 #             return HttpResponse(status=401)
 #     return wrapper
 
-# pylint: disable-msg=too-many-locals
-
-# uncomment after implementing login
-# @check_authenticated
-
 
 def match_simple_serializer(matchObj):
     """Simple serializer"""
@@ -39,6 +34,11 @@ def match_simple_serializer(matchObj):
         'location': matchObj.locationText,
     }
 
+
+# pylint: disable-msg=too-many-locals
+
+# uncomment after implementing login
+# @check_authenticated
 
 def match(request):
     """Makes and returns a new match."""
@@ -95,22 +95,64 @@ def match_new(request):
     return HttpResponseNotAllowed(['GET'])
 
 
+
+# pylint: disable-msg=too-many-locals
 def match_detail(request, match_id):
     """Handles requests about a match"""
     if request.method == 'GET':
         match_obj = get_object_or_404(Match, pk=match_id)
         match_json = serializers.serialize('json', [match_obj])
         return JsonResponse(match_json, safe=False, status=200)
-    # elif request.method == 'PUT':
+    if request.method == 'PUT':
+        match_obj = get_object_or_404(Match, pk=match_id)
+        # add author check below after implementing login
+        # and putting author in the match model
+        try:
+            body = request.body.decode()
+            match_title = json.loads(body)['title']
+            match_category_id = json.loads(body)['categoryID']
+            match_capacity = json.loads(body)['capacity']
+            match_location_text = json.loads(body)['locationText']
+            match_period = json.loads(body)['period']
+            match_additional_info = json.loads(body)['additionalInfo']
+            match_is_age_restricted = json.loads(body)['isAgeRestricted']
+            match_restrict_age_from = json.loads(body)['restrictAgeFrom']
+            match_restrict_age_to = json.loads(body)['restrictAgeTo']
+            match_is_gender_restricted = json.loads(body)['isGenderRestricted']
+            match_restricted_gender = json.loads(body)['restrictedGender']
+            match_time_begin = json.loads(body)['timeBegin']
+            match_time_end = json.loads(body)['timeEnd']
+        except (KeyError, JSONDecodeError):
+            return HttpResponseBadRequest()
+        match_obj.title = match_title
+        # thumbnail=SOMETHING,match_obj.categoryID=match_category_id,
+        match_obj.categoryID = match_category_id
+        match_obj.capacity = match_capacity
+        match_obj.isFull = (match_capacity == match_obj.numParticipants)
+        match_obj.locationText = match_location_text
+        match_obj.period = match_period
+        match_obj.additionalInfo = match_additional_info
+        match_obj.isAgeRestricted = match_is_age_restricted
+        match_obj.restrictAgeFrom = match_restrict_age_from
+        match_obj.restrictAgeTo = match_restrict_age_to
+        match_obj.isGenderRestricted = match_is_gender_restricted
+        match_obj.restrictedGender = match_restricted_gender
+        # get time info in UTC
+        match_obj.timeBegin = datetime(
+            *match_time_begin, tzinfo=timezone.utc)
+        match_obj.timeEnd = datetime(*match_time_end, tzinfo=timezone.utc)
+        match_obj.save()
+        match_json = serializers.serialize('json', [match_obj])
+        return JsonResponse(match_json, safe=False, status=200)
+    # if request.method == 'PATCH':
     #     # not yet implemented
     #     return HttpResponse(status=200)
-    # elif request.method == 'PATCH':
-    #     # not yet implemented
-    #     return HttpResponse(status=200)
-    # elif request.method == 'DELETE':
+    # if request.method == 'DELETE':
     #     # not yet implemented
     #     return HttpResponse(status=200)
     return HttpResponseNotAllowed(['GET', 'PUT', 'PATCH', 'DELETE'])
+
+# pylint: enable-msg=too-many-locals
 
 def search(request):
     """Returns search result."""
