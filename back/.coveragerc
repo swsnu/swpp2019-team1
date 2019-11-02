@@ -8,7 +8,7 @@ omit =
     # utils/tirefire.py
     */migrations/*
     */__init__.py
-    back/*
+    back/*.py
     manage.py
 [paths]
 # source =
