@@ -26,7 +26,8 @@
     "react-scripts": "3.2.0",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
-    "yup": "^0.27.0"
+    "yup": "^0.27.0",
+    "concurrently": "^4.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -34,7 +35,9 @@
     "test": "react-scripts test",
     "testc": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "backend": "python3 ../backend/manage.py runserver 8000",
+    "dev": "concurrently --kill-others \"npm run backend\" \"npm run start\""
   },
   "browserslist": {
     "production": [
