@@ -4,6 +4,7 @@ import { push } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import * as actionCreators from '../../../store/actions/index';
+import { MatchPropTypes } from '../../../components/Match/MatchForm/MatchForm';
 
 class MatchDetail extends Component {
   constructor(props) {
@@ -109,31 +110,12 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export const MatchPropTypes = PropTypes.shape({
-  title: PropTypes.string.isRequired,
-  // matchThumbnail,
-  categoryID: PropTypes.number.isRequired,
-  capacity: PropTypes.number.isRequired,
-  isOnline: PropTypes.bool.isRequired,
-  locationText: PropTypes.string.isRequired,
-  // latitude and longitude will be implemented or removed after applying Google Map API
-  // locationLatitude: PropTypes.number.isRequired,
-  // locationLongitude: PropTypes.number.isRequired,
-  timeBegin: PropTypes.instanceOf(Date).isRequired,
-  timeEnd: PropTypes.instanceOf(Date).isRequired,
-  additionalInfo: PropTypes.string.isRequired,
-  isPeriodic: PropTypes.bool.isRequired,
-  period: PropTypes.number.isRequired,
-  isAgeRestricted: PropTypes.bool.isRequired,
-  restrictAgeFrom: PropTypes.number.isRequired,
-  restrictAgeTo: PropTypes.number.isRequired,
-  isGenderRestricted: PropTypes.bool.isRequired,
-  hostID: PropTypes.number.isRequired,
-});
-
 MatchDetail.propTypes = {
   // user: PropTypes.object.isRequired,
-  selected: MatchPropTypes,
+  selected: PropTypes.shape({
+    ...MatchPropTypes,
+    hostID: PropTypes.number.isRequired,
+  }),
   onGetMatch: PropTypes.func.isRequired,
   onJoinMatch: PropTypes.func.isRequired,
   onQuitMatch: PropTypes.func.isRequired,

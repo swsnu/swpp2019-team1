@@ -4,7 +4,9 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { push } from 'connected-react-router';
-import { MatchPropTypes } from '../MatchDetail';
+import MatchForm, {
+  MatchPropTypes,
+} from '../../../../components/Match/MatchForm/MatchForm';
 import * as actionCreators from '../../../../store/actions';
 import {
   titleChange,
@@ -26,7 +28,6 @@ import {
   restrictMaleClicked,
   restrictFemaleClicked,
 } from '../../MatchCreate/MatchCreate';
-import MatchForm from '../../../../components/Match/MatchForm/MatchForm';
 // import LocationPopUp from ''
 
 class MatchEdit extends Component {
@@ -201,7 +202,9 @@ MatchEdit.propTypes = {
   match: ReactRouterPropTypes.match.isRequired,
   onEdit: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
-  selected: MatchPropTypes.isRequired,
+  selected: PropTypes.shape({
+    ...MatchPropTypes,
+  }).isRequired,
 };
 
 export default connect(

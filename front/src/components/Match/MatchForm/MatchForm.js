@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import MatchPropTypes from '../../../containers/Match/MatchDetail/MatchDetail';
 
 const MatchForm = ({
   title,
@@ -200,14 +199,32 @@ const MatchForm = ({
     </div>
   );
 };
-const matchPropTypes = { ...MatchPropTypes };
-delete matchPropTypes.hostID;
-
-MatchForm.propTypes = {
-  ...matchPropTypes,
+export const MatchPropTypes = {
+  title: PropTypes.string.isRequired,
+  // matchThumbnail,
+  categoryID: PropTypes.number.isRequired,
+  capacity: PropTypes.number.isRequired,
+  isOnline: PropTypes.bool.isRequired,
+  locationText: PropTypes.string.isRequired,
+  // latitude and longitude will be implemented or removed after applying Google Map API
+  // locationLatitude: PropTypes.number.isRequired,
+  // locationLongitude: PropTypes.number.isRequired,
+  timeBegin: PropTypes.instanceOf(Date).isRequired,
+  timeEnd: PropTypes.instanceOf(Date).isRequired,
+  additionalInfo: PropTypes.string.isRequired,
+  isPeriodic: PropTypes.bool.isRequired,
+  period: PropTypes.number.isRequired,
+  isAgeRestricted: PropTypes.bool.isRequired,
+  restrictAgeFrom: PropTypes.number.isRequired,
+  restrictAgeTo: PropTypes.number.isRequired,
+  isGenderRestricted: PropTypes.bool.isRequired,
   // restrictMale and restrictFemale will be implemented later with CSS
   // restrictMale: PropTypes.bool.isRequired,
   // restrictFemale: PropTypes.bool.isRequired,
+};
+
+MatchForm.propTypes = {
+  ...MatchPropTypes,
   titleChange: PropTypes.func.isRequired,
   categoryIDChange: PropTypes.func.isRequired,
   capacityChange: PropTypes.func.isRequired,
