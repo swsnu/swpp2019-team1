@@ -13,28 +13,70 @@ const stubUser = {};
 const stubMatch = {
   selected: {
     id: 1,
-    hostId: 2,
+    hostID: 2,
     title: 'TEST_TITLE',
-    time: 'TEST_TIME',
-    location: 'TEST_LOCATION',
     hostName: 'TEST_HOSTNAME',
-    restriction: 'TEST_RESTRICTION',
     additionalInfo: 'TEST_ADITIONALINFO',
+    // matchThumbnail
+    categoryID: 0,
+    capacity: 0,
+    isOnline: false,
+    locationText: '',
+    // latitude and longitude will be implemented or removed after applying Google Map API
+    // locationLatitude: '',
+    // locationLongitude: '',
+    timeBegin: new Date(),
+    timeEnd: new Date(),
+    isPeriodic: false,
+    period: 0,
+    isAgeRestricted: false,
+    restrictAgeFrom: 0,
+    restrictAgeTo: 0,
+    isGenderRestricted: false,
+    restrictToMale: false,
+    restrictToFemale: false,
   },
 };
+const stubMatchUndef = {
+  match: { path: '/match/1/', url: '/match/1/' },
+};
 const mockStore = getMockStore(stubUser, stubMatch);
+const mockStoreUndef = getMockStore(stubUser, stubMatchUndef);
 
 describe('<MatchDetail />', () => {
   let matchDetail;
+  let matchDetailUndef;
   let spyGetMatch;
   let spyJoinMatch;
   let spyQuitMatch;
   beforeEach(() => {
+    const matchParams = {
+      params: { id: 1 },
+      path: '/match/:id/',
+      url: '/match/1/',
+    };
     matchDetail = (
       <Provider store={mockStore}>
         <ConnectedRouter history={history}>
           <Switch>
-            <Route path="/" exact component={MatchDetail} />
+            <Route
+              path="/"
+              exact
+              render={() => <MatchDetail match={matchParams} />}
+            />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    matchDetailUndef = (
+      <Provider store={mockStoreUndef}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route
+              path="/"
+              exact
+              render={() => <MatchDetail match={matchParams} />}
+            />
           </Switch>
         </ConnectedRouter>
       </Provider>
@@ -55,12 +97,22 @@ describe('<MatchDetail />', () => {
         return () => {};
       });
   });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
   it('should render without errors', () => {
     const component = mount(matchDetail);
     const wrapper = component.find('.MatchDetail');
     expect(wrapper.length).toBe(1);
     expect(spyGetMatch).toBeCalledTimes(1);
+  });
+
+  it('should render nothing but "Loading..." when selected is undefined', () => {
+    const component = mount(matchDetailUndef);
+    const wrapper = component.find('.MatchDetail');
+    expect(wrapper.length).toBe(1);
+    expect(wrapper.text()).toBe('Loading...');
   });
 
   it('should redirected to match edit page when edit button clicked', () => {

@@ -55,8 +55,25 @@ class MatchMakerTestCase(TestCase):
                                HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 201)  # Pass csrf protection
 
-    def test_HTTPResponse_405(self):
-        """Checks if the views module handles bad requests correctly."""
+    def test_http_response_404(self):
+        """Checks if the views module handles bad types of requests correctly."""
+        client = Client(enforce_csrf_checks=True)
+        response = client.get('/api/match/new/')
+        csrftoken = response.cookies['csrftoken'].value
+
+        # add signup&signin here when implemented
+
+        # starts here
+        response = client.get('/api/match/2/', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 404)
+        response = client.put('/api/match/3/',
+                              json.dumps({'x': 'hello', 'y': 'match'}),
+                              content_type='application/json',
+                              HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 404)
+
+    def test_http_response_405(self):
+        """Checks if the views module handles bad types of requests correctly."""
         client = Client(enforce_csrf_checks=True)
         response = client.get('/api/match/new/')
         csrftoken = response.cookies['csrftoken'].value
@@ -74,8 +91,14 @@ class MatchMakerTestCase(TestCase):
                                  HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
+        response = client.post('/api/match/3/',
+                               json.dumps({'title': 'TEST_TITLE', }),
+                               content_type='application/json',
+                               HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
     def test_http_response_400(self):
-        """Checks if the views module handles bad requests correctly."""
+        """Checks if the views module handles malformed requests correctly."""
         client = Client(enforce_csrf_checks=True)
         response = client.get('/api/match/new/')
         csrftoken = response.cookies['csrftoken'].value
@@ -89,15 +112,22 @@ class MatchMakerTestCase(TestCase):
                                HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
 
+        response = client.put('/api/match/1/',
+                              json.dumps({'x': 'hello', 'y': 'match'}),
+                              content_type='application/json',
+                              HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 400)
+
     def test_match(self):
         """Checks if the views module handles various match-related requests correctly."""
         client = Client(enforce_csrf_checks=True)
         response = client.get('/api/match/new/')
+        csrftoken = response.cookies['csrftoken'].value
+
         test_match = Match.objects.create(
             title='TEST_TITLE_STR')
         self.assertEqual(str(test_match), "TEST_TITLE_STR")
 
-        csrftoken = response.cookies['csrftoken'].value
         response = client.post('/api/match/',
                                json.dumps({'title': 'TEST_TITLE',
                                            'categoryID': 1,
@@ -115,6 +145,30 @@ class MatchMakerTestCase(TestCase):
                                content_type='application/json',
                                HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 201)
+
+        response = client.get('/api/match/1/', HTTP_X_CSRFTOKEN=csrftoken)
+        match = json.loads(response.json())[0]['fields']
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(match['title'], 'TEST_TITLE')
+        self.assertEqual(match['categoryID'], 1)
+
+        response = client.put('/api/match/1/',
+                              json.dumps({'title': 'TEST_PUT_TITLE',
+                                          'categoryID': 1,
+                                          'capacity': 4,
+                                          'locationText': 'TEST_PUT_LOCATION_TEXT',
+                                          'period': 3,
+                                          'additionalInfo': 'TEST_PUT_ADDITIONAL_INFO',
+                                          'isAgeRestricted': True,
+                                          'restrictAgeFrom': 4,
+                                          'restrictAgeTo': 7,
+                                          'isGenderRestricted': True,
+                                          'restrictedGender': Match.MALES_ARE_RESTRICTED,
+                                          'timeBegin': [1234, 12, 1, 21, 13, 14],
+                                          'timeEnd': [1245, 1, 12, 23, 1, 55], }),
+                              content_type='application/json',
+                              HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 200)
 
     def test_search(self):
         """Checks if the views module handles search query correctly."""
