@@ -83,4 +83,24 @@ describe('<HomePage />', () => {
     wrapper.simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledWith('/match/1');
   });
+
+  it('should redirect to match create when create button clicked', () => {
+    const spyHistoryPush = jest
+      .spyOn(history, 'push')
+      .mockImplementation(() => null);
+    const component = mount(homePage);
+    const wrapper = component.find('#Home-create-button');
+    wrapper.simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/match/create');
+  });
+
+  it('should redirect to search page when search button clicked', () => {
+    const spyHistoryPush = jest
+      .spyOn(history, 'push')
+      .mockImplementation(() => null);
+    const component = mount(homePage);
+    const wrapper = component.find('#Home-search-button');
+    wrapper.simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/search');
+  });
 });
