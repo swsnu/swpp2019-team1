@@ -10,18 +10,32 @@ import * as actionCreators from '../../../store/actions';
 import MatchForm from '../../../components/Match/MatchForm/MatchForm';
 // import LocationPopUp from ''
 
-export const handleInputTitleChange = event =>
-  this.setState({ title: event.target.value });
-export const handleInputCategoryIDChange = event =>
-  this.setState({ categoryID: event.target.value });
-export const handleInputCapacityChange = event =>
-  this.setState({ capacity: event.target.value });
-export const handleInputIsOnlineChange = event =>
-  this.setState({ isOnline: event.target.checked });
-export const handleInputLocationTextChange = event =>
-  this.setState({ locationText: event.target.value });
-export const handleInputTimeBeginChange = event => {
-  const { timeBegin } = this.state;
+export const titleChange = (event, context) =>
+  context.setState({ title: event.target.value });
+
+// NewMatchThumbnailUploaded
+
+// TODO : implement dropdown
+export const categoryIDChange = (event, context) =>
+  context.setState({ categoryID: event.target.value });
+
+export const capacityChange = (event, context) =>
+  context.setState({ capacity: event.target.value });
+
+export const isOnlineChange = (event, context) =>
+  context.setState({ isOnline: event.target.checked });
+
+export const locationTextChange = (event, context) =>
+  context.setState({ locationText: event.target.value });
+
+// export const LocationLatitudeChange = (event, context) =>
+//   context.setState({ locationLatitude: event.target.value });
+
+// export const LocationLongitudeChange = (event, context) =>
+//   context.setState({ locationLongitude: event.target.value });
+
+export const timeBeginChange = (event, context) => {
+  const { timeBegin } = context.state;
   const inputDate = event.target.value;
   const newDate = timeBegin;
   if (inputDate.split('-').length !== 1) {
@@ -34,11 +48,12 @@ export const handleInputTimeBeginChange = event => {
     newDate.setHours(parseInt(inputDate.split(':')[0], 10));
     newDate.setMinutes(parseInt(inputDate.split(':')[1], 10));
   }
-  this.setState({ timeBegin: newDate });
+  context.setState({ timeBegin: newDate });
 };
+
 // TODO: alert error message if the end time earlier than the start time
-export const handleInputTimeEndChange = event => {
-  const { timeEnd } = this.state;
+export const timeEndChange = (event, context) => {
+  const { timeEnd } = context.state;
   const inputDate = event.target.value;
   const newDate = timeEnd;
   if (inputDate.split('-').length !== 1) {
@@ -51,30 +66,60 @@ export const handleInputTimeEndChange = event => {
     newDate.setHours(parseInt(inputDate.split(':')[0], 10));
     newDate.setMinutes(parseInt(inputDate.split(':')[1], 10));
   }
-  this.setState({ timeEnd: newDate });
+  context.setState({ timeEnd: newDate });
 };
-export const handleInputAdditionalInfoChange = event =>
-  this.setState({ additionalInfo: event.target.value });
-export const handleInputIsPeriodicChange = event =>
-  this.setState({ isPeriodic: event.target.checked });
-export const handleInputPeriodChange = event =>
-  this.setState({ period: event.target.value });
-export const handleInputIsAgeRestrictedChange = event =>
-  this.setState({ isAgeRestricted: event.target.checked });
-export const handleInputRestrictAgeFromChange = event =>
-  this.setState({ restrictAgeFrom: event.target.value });
-export const handleInputRestrictAgeToChange = event =>
-  this.setState({ restrictAgeTo: event.target.value });
-export const handleInputIsGenderRestrictedChange = event =>
-  this.setState({ isGenderRestricted: event.target.checked });
+
+export const additionalInfoChange = (event, context) =>
+  context.setState({ additionalInfo: event.target.value });
+
+export const isPeriodicChange = (event, context) =>
+  context.setState({ isPeriodic: event.target.checked });
+
+export const periodChange = (event, context) =>
+  context.setState({ period: event.target.value });
+
+export const isAgeRestrictedChange = (event, context) =>
+  context.setState({ isAgeRestricted: event.target.checked });
+
+export const restrictAgeFromChange = (event, context) =>
+  context.setState({ restrictAgeFrom: event.target.value });
+
+export const restrictAgeToChange = (event, context) =>
+  context.setState({ restrictAgeTo: event.target.value });
+
+export const isGenderRestrictedTogg = (event, context) =>
+  context.setState({ isGenderRestricted: event.target.checked });
+
 // TODO : if setting one while the other is true -> set the other as false
-export const handleButtonRestrictMaleClicked = () => {
-  const { restrictMale } = this.state;
-  this.setState({ restrictMale: !restrictMale });
+export const restrictMaleClicked = context => {
+  const { restrictMale } = context.state;
+  context.setState({ restrictMale: !restrictMale });
 };
-export const handleButtonRestrictFemaleClicked = () => {
-  const { restrictFemale } = this.state;
-  this.setState({ restrictFemale: !restrictFemale });
+
+export const restrictFemaleClicked = context => {
+  const { restrictFemale } = context.state;
+  context.setState({ restrictFemale: !restrictFemale });
+};
+
+export const binder = context => {
+  titleChange.bind(context);
+  categoryIDChange.bind(context);
+  capacityChange.bind(context);
+  isOnlineChange.bind(context);
+  locationTextChange.bind(context);
+  // LocationLatitudeChange.bind(context)
+  // LocationLongitudeChange.bind(context)
+  timeBeginChange.bind(context);
+  timeEndChange.bind(context);
+  additionalInfoChange.bind(context);
+  isPeriodicChange.bind(context);
+  periodChange.bind(context);
+  isAgeRestrictedChange.bind(context);
+  restrictAgeFromChange.bind(context);
+  restrictAgeToChange.bind(context);
+  isGenderRestrictedTogg.bind(context);
+  restrictMaleClicked.bind(context);
+  restrictFemaleClicked.bind(context);
 };
 class MatchCreate extends Component {
   constructor(props) {
@@ -101,6 +146,7 @@ class MatchCreate extends Component {
       restrictMale: false,
       restrictFemale: false,
     };
+    binder(this);
   }
 
   componentDidMount() {}
@@ -109,17 +155,7 @@ class MatchCreate extends Component {
   // onClickCreate = () => {};
 
   // this will be implemented or removed after applying Google Map API
-  // handleLocationSearch = () => {};
-
-  // handleNewMatchThumbnailUploaded
-
-  // TODO : implement dropdown
-
-  // handleInputLocationLatitudeChange = event =>
-  //   this.setState({ locationLatitude: event.target.value });
-
-  // handleInputLocationLongitudeChange = event =>
-  //   this.setState({ locationLongitude: event.target.value });
+  // LocationSearch = () => {};
 
   onClickCreate = () => {
     const { onCreate } = this.props;
@@ -193,36 +229,28 @@ class MatchCreate extends Component {
           isGenderRestricted={isGenderRestricted}
           restrictMale={restrictMale}
           restrictFemale={restrictFemale}
-          handleInputTitleChange={handleInputTitleChange}
-          handleInputCategoryIDChange={handleInputCategoryIDChange}
-          handleInputCapacityChange={this.handleInputCapacityChange}
-          handleInputIsOnlineChange={this.handleInputIsOnlineChange}
-          handleInputLocationTextChange={this.handleInputLocationTextChange}
-          // handleInputLocationLatitudeChange={
-          //   this.handleInputLocationLatitudeChange
-          // }
-          // handleInputLocationLongitudeChange={
-          //   this.handleInputLocationLongitudeChange
-          // }
-          handleInputTimeBeginChange={this.handleInputTimeBeginChange}
-          handleInputTimeEndChange={this.handleInputTimeEndChange}
-          handleInputAdditionalInfoChange={this.handleInputAdditionalInfoChange}
-          handleInputIsPeriodicChange={this.handleInputIsPeriodicChange}
-          handleInputPeriodChange={this.handleInputPeriodChange}
-          handleInputIsAgeRestrictedChange={
-            this.handleInputIsAgeRestrictedChange
-          }
-          handleInputRestrictAgeFromChange={
-            this.handleInputRestrictAgeFromChange
-          }
-          handleInputRestrictAgeToChange={this.handleInputRestrictAgeToChange}
-          handleInputIsGenderRestrictedChange={
-            this.handleInputIsGenderRestrictedChange
-          }
-          handleButtonRestrictMaleClicked={this.handleButtonRestrictMaleClicked}
-          handleButtonRestrictFemaleClicked={
-            this.handleButtonRestrictFemaleClicked
-          }
+          titleChange={event => titleChange(event, this)}
+          categoryIDChange={event => categoryIDChange(event, this)}
+          capacityChange={event => capacityChange(event, this)}
+          isOnlineChange={event => isOnlineChange(event, this)}
+          locationTextChange={event => locationTextChange(event, this)}
+          // LocationLatitudeChange={
+          //   event => LocationLatitudeChange
+          // (event, this)}
+          // LocationLongitudeChange={
+          //   event => LocationLongitudeChange
+          // (event, this)}
+          timeBeginChange={event => timeBeginChange(event, this)}
+          timeEndChange={event => timeEndChange(event, this)}
+          additionalInfoChange={event => additionalInfoChange(event, this)}
+          isPeriodicChange={event => isPeriodicChange(event, this)}
+          periodChange={event => periodChange(event, this)}
+          isAgeRestrictedChange={event => isAgeRestrictedChange(event, this)}
+          restrictAgeFromChange={event => restrictAgeFromChange(event, this)}
+          restrictAgeToChange={event => restrictAgeToChange(event, this)}
+          isGenderRestrictedTogg={event => isGenderRestrictedTogg(event, this)}
+          restrictMaleClicked={() => restrictMaleClicked(this)}
+          restrictFemaleClicked={() => restrictFemaleClicked(this)}
         />
         {/* <LocationPopUp /> */}
         <button

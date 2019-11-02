@@ -23,24 +23,24 @@ const MatchForm = ({
   // restrictMale and restrictFemale will be implemented later with CSS
   // restrictMale,
   // restrictFemale,
-  handleInputTitleChange,
-  handleInputCategoryIDChange,
-  handleInputCapacityChange,
-  handleInputIsOnlineChange,
-  handleInputLocationTextChange,
-  // handleInputLocationLatitudeChange,
-  // handleInputLocationLongitudeChange,
-  handleInputTimeBeginChange,
-  handleInputTimeEndChange,
-  handleInputAdditionalInfoChange,
-  handleInputIsPeriodicChange,
-  handleInputPeriodChange,
-  handleInputIsAgeRestrictedChange,
-  handleInputRestrictAgeFromChange,
-  handleInputRestrictAgeToChange,
-  handleInputIsGenderRestrictedChange,
-  handleButtonRestrictMaleClicked,
-  handleButtonRestrictFemaleClicked,
+  titleChange,
+  categoryIDChange,
+  capacityChange,
+  isOnlineChange,
+  locationTextChange,
+  // LocationLatitudeChange,
+  // LocationLongitudeChange,
+  timeBeginChange,
+  timeEndChange,
+  additionalInfoChange,
+  isPeriodicChange,
+  periodChange,
+  isAgeRestrictedChange,
+  restrictAgeFromChange,
+  restrictAgeToChange,
+  isGenderRestrictedTogg,
+  restrictMaleClicked,
+  restrictFemaleClicked,
 }) => {
   return (
     <div className="MatchForm">
@@ -49,7 +49,7 @@ const MatchForm = ({
         id="match-title-input"
         type="text"
         value={title}
-        onChange={handleInputTitleChange}
+        onChange={titleChange}
       />
       <button type="button">Upload Thumbnail</button>
       <br />
@@ -58,14 +58,14 @@ const MatchForm = ({
         id="match-category-id-input"
         type="text"
         value={categoryID}
-        onChange={handleInputCategoryIDChange}
+        onChange={categoryIDChange}
       />
       Up to
       <input
         id="match-capacity-input"
         type="number"
         value={capacity}
-        onChange={handleInputCapacityChange}
+        onChange={capacityChange}
       />
       people
       <br />
@@ -74,14 +74,14 @@ const MatchForm = ({
         id="match-location-text-input"
         type="text"
         value={locationText}
-        onChange={handleInputLocationTextChange}
+        onChange={locationTextChange}
       />
       Online
       <input
         id="match-is-online-input"
         type="checkbox"
         checked={isOnline}
-        onChange={handleInputIsOnlineChange}
+        onChange={isOnlineChange}
       />
       <br />
       Event Start
@@ -92,7 +92,7 @@ const MatchForm = ({
         type="date"
         value={`${timeBegin.getFullYear()}-${`0${timeBegin.getMonth() +
           1}`.slice(-2)}-${`0${timeBegin.getDate()}`.slice(-2)}`}
-        onChange={handleInputTimeBeginChange}
+        onChange={timeBeginChange}
       />
       Time
       <input
@@ -101,14 +101,14 @@ const MatchForm = ({
         value={`${`0${timeBegin.getHours()}`.slice(
           -2,
         )}:${`0${timeBegin.getMinutes()}`.slice(-2)}`}
-        onChange={handleInputTimeBeginChange}
+        onChange={timeBeginChange}
       />
       Periodic
       <input
         id="match-is-periodic-input"
         type="checkbox"
         checked={isPeriodic}
-        onChange={handleInputIsPeriodicChange}
+        onChange={isPeriodicChange}
       />
       <br />
       Event Finish
@@ -120,7 +120,7 @@ const MatchForm = ({
         value={`${timeEnd.getFullYear()}-${`0${timeEnd.getMonth() + 1}`.slice(
           -2,
         )}-${`0${timeEnd.getDate()}`.slice(-2)}`}
-        onChange={handleInputTimeEndChange}
+        onChange={timeEndChange}
       />
       Time
       <input
@@ -129,14 +129,14 @@ const MatchForm = ({
         value={`${`0${timeEnd.getHours()}`.slice(
           -2,
         )}:${`0${timeEnd.getMinutes()}`.slice(-2)}`}
-        onChange={handleInputTimeEndChange}
+        onChange={timeEndChange}
       />
       Every
       <input
         id="match-period-input"
         type="number"
         value={period}
-        onChange={handleInputPeriodChange}
+        onChange={periodChange}
         disabled={!isPeriodic}
       />
       days
@@ -146,7 +146,7 @@ const MatchForm = ({
         id="match-additional-info-input"
         type="text"
         value={additionalInfo}
-        onChange={handleInputAdditionalInfoChange}
+        onChange={additionalInfoChange}
       />
       <br />
       Restriction This matching will not be exposed to members who do not meet
@@ -157,14 +157,14 @@ const MatchForm = ({
         id="match-is-age-restricted-input"
         type="checkbox"
         checked={isAgeRestricted}
-        onChange={handleInputIsAgeRestrictedChange}
+        onChange={isAgeRestrictedChange}
       />
       From
       <input
         id="match-restrict-age-from-input"
         type="number"
         value={restrictAgeFrom}
-        onChange={handleInputRestrictAgeFromChange}
+        onChange={restrictAgeFromChange}
         disabled={!isAgeRestricted}
       />
       To
@@ -172,7 +172,7 @@ const MatchForm = ({
         id="match-restrict-age-to-input"
         type="number"
         value={restrictAgeTo}
-        onChange={handleInputRestrictAgeToChange}
+        onChange={restrictAgeToChange}
         disabled={!isAgeRestricted}
       />
       Gender
@@ -180,21 +180,21 @@ const MatchForm = ({
         id="match-is-gender-restricted-input"
         type="checkbox"
         checked={isGenderRestricted}
-        onChange={handleInputIsGenderRestrictedChange}
+        onChange={isGenderRestrictedTogg}
       />
       <input
         id="match-restrict-male-input"
         type="button"
         value="M"
         disabled={!isGenderRestricted}
-        onClick={handleButtonRestrictMaleClicked}
+        onClick={restrictMaleClicked}
       />
       <input
         id="match-restrict-female-input"
         type="button"
         value="F"
         disabled={!isGenderRestricted}
-        onClick={handleButtonRestrictFemaleClicked}
+        onClick={restrictFemaleClicked}
       />
     </div>
   );
@@ -221,23 +221,24 @@ MatchForm.propTypes = {
   // restrictMale and restrictFemale will be implemented later with CSS
   // restrictMale: PropTypes.bool.isRequired,
   // restrictFemale: PropTypes.bool.isRequired,
-  handleInputTitleChange: PropTypes.func.isRequired,
-  handleInputCategoryIDChange: PropTypes.func.isRequired,
-  handleInputCapacityChange: PropTypes.func.isRequired,
-  handleInputIsOnlineChange: PropTypes.func.isRequired,
-  handleInputLocationTextChange: PropTypes.func.isRequired,
-  // handleInputLocationLatitudeChange: PropTypes.func.isRequired,
-  // handleInputLocationLongitudeChange: PropTypes.func.isRequired,
-  handleInputTimeBeginChange: PropTypes.func.isRequired,
-  handleInputTimeEndChange: PropTypes.func.isRequired,
-  handleInputAdditionalInfoChange: PropTypes.func.isRequired,
-  handleInputIsPeriodicChange: PropTypes.func.isRequired,
-  handleInputPeriodChange: PropTypes.func.isRequired,
-  handleInputIsAgeRestrictedChange: PropTypes.func.isRequired,
-  handleInputRestrictAgeFromChange: PropTypes.func.isRequired,
-  handleInputRestrictAgeToChange: PropTypes.func.isRequired,
-  handleInputIsGenderRestrictedChange: PropTypes.func.isRequired,
-  handleButtonRestrictMaleClicked: PropTypes.func.isRequired,
-  handleButtonRestrictFemaleClicked: PropTypes.func.isRequired,
+
+  titleChange: PropTypes.func.isRequired,
+  categoryIDChange: PropTypes.func.isRequired,
+  capacityChange: PropTypes.func.isRequired,
+  isOnlineChange: PropTypes.func.isRequired,
+  locationTextChange: PropTypes.func.isRequired,
+  // LocationLatitudeChange: PropTypes.func.isRequired,
+  // LocationLongitudeChange: PropTypes.func.isRequired,
+  timeBeginChange: PropTypes.func.isRequired,
+  timeEndChange: PropTypes.func.isRequired,
+  additionalInfoChange: PropTypes.func.isRequired,
+  isPeriodicChange: PropTypes.func.isRequired,
+  periodChange: PropTypes.func.isRequired,
+  isAgeRestrictedChange: PropTypes.func.isRequired,
+  restrictAgeFromChange: PropTypes.func.isRequired,
+  restrictAgeToChange: PropTypes.func.isRequired,
+  isGenderRestrictedTogg: PropTypes.func.isRequired,
+  restrictMaleClicked: PropTypes.func.isRequired,
+  restrictFemaleClicked: PropTypes.func.isRequired,
 };
 export default MatchForm;

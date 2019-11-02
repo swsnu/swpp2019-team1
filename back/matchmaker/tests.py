@@ -55,7 +55,7 @@ class MatchMakerTestCase(TestCase):
                                HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 201)  # Pass csrf protection
 
-    def test_HTTPResponse_405(self):
+    def test_http_response_405(self):
         """Checks if the views module handles bad types of requests correctly."""
         client = Client(enforce_csrf_checks=True)
         response = client.get('/api/match/new/')

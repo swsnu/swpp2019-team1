@@ -6,24 +6,24 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 import { push } from 'connected-react-router';
 import * as actionCreators from '../../../../store/actions';
 import {
-  handleInputTitleChange,
-  handleInputCategoryIDChange,
-  handleInputCapacityChange,
-  handleInputIsOnlineChange,
-  handleInputLocationTextChange,
-  // handleInputLocationLatitudeChange,
-  // handleInputLocationLongitudeChange,
-  handleInputTimeBeginChange,
-  handleInputTimeEndChange,
-  handleInputAdditionalInfoChange,
-  handleInputIsPeriodicChange,
-  handleInputPeriodChange,
-  handleInputIsAgeRestrictedChange,
-  handleInputRestrictAgeFromChange,
-  handleInputRestrictAgeToChange,
-  handleInputIsGenderRestrictedChange,
-  handleButtonRestrictMaleClicked,
-  handleButtonRestrictFemaleClicked,
+  titleChange,
+  categoryIDChange,
+  capacityChange,
+  isOnlineChange,
+  locationTextChange,
+  // LocationLatitudeChange,
+  // LocationLongitudeChange,
+  timeBeginChange,
+  timeEndChange,
+  additionalInfoChange,
+  isPeriodicChange,
+  periodChange,
+  isAgeRestrictedChange,
+  restrictAgeFromChange,
+  restrictAgeToChange,
+  isGenderRestrictedTogg,
+  restrictMaleClicked,
+  restrictFemaleClicked,
 } from '../../MatchCreate/MatchCreate';
 import MatchForm from '../../../../components/Match/MatchForm/MatchForm';
 // import LocationPopUp from ''
@@ -143,30 +143,28 @@ class MatchEdit extends Component {
           isGenderRestricted={isGenderRestricted}
           restrictMale={restrictMale}
           restrictFemale={restrictFemale}
-          handleInputTitleChange={handleInputTitleChange}
-          handleInputCategoryIDChange={handleInputCategoryIDChange}
-          handleInputCapacityChange={handleInputCapacityChange}
-          handleInputIsOnlineChange={handleInputIsOnlineChange}
-          handleInputLocationTextChange={handleInputLocationTextChange}
-          // handleInputLocationLatitudeChange={
-          //   this.handleInputLocationLatitudeChange
-          // }
-          // handleInputLocationLongitudeChange={
-          //   this.handleInputLocationLongitudeChange
-          // }
-          handleInputTimeBeginChange={handleInputTimeBeginChange}
-          handleInputTimeEndChange={handleInputTimeEndChange}
-          handleInputAdditionalInfoChange={handleInputAdditionalInfoChange}
-          handleInputIsPeriodicChange={handleInputIsPeriodicChange}
-          handleInputPeriodChange={handleInputPeriodChange}
-          handleInputIsAgeRestrictedChange={handleInputIsAgeRestrictedChange}
-          handleInputRestrictAgeFromChange={handleInputRestrictAgeFromChange}
-          handleInputRestrictAgeToChange={handleInputRestrictAgeToChange}
-          handleInputIsGenderRestrictedChange={
-            handleInputIsGenderRestrictedChange
-          }
-          handleButtonRestrictMaleClicked={handleButtonRestrictMaleClicked}
-          handleButtonRestrictFemaleClicked={handleButtonRestrictFemaleClicked}
+          titleChange={event => titleChange(event, this)}
+          categoryIDChange={event => categoryIDChange(event, this)}
+          capacityChange={event => capacityChange(event, this)}
+          isOnlineChange={event => isOnlineChange(event, this)}
+          locationTextChange={event => locationTextChange(event, this)}
+          // LocationLatitudeChange={
+          //   event => LocationLatitudeChange
+          // (event, this)}
+          // LocationLongitudeChange={
+          //   event => LocationLongitudeChange
+          // (event, this)}
+          timeBeginChange={event => timeBeginChange(event, this)}
+          timeEndChange={event => timeEndChange(event, this)}
+          additionalInfoChange={event => additionalInfoChange(event, this)}
+          isPeriodicChange={event => isPeriodicChange(event, this)}
+          periodChange={event => periodChange(event, this)}
+          isAgeRestrictedChange={event => isAgeRestrictedChange(event, this)}
+          restrictAgeFromChange={event => restrictAgeFromChange(event, this)}
+          restrictAgeToChange={event => restrictAgeToChange(event, this)}
+          isGenderRestrictedTogg={event => isGenderRestrictedTogg(event, this)}
+          restrictMaleClicked={() => restrictMaleClicked(this)}
+          restrictFemaleClicked={() => restrictFemaleClicked(this)}
         />
         {/* <LocationPopUp /> */}
         <button id="match-edit-button" type="button" onClick={this.onClickEdit}>
