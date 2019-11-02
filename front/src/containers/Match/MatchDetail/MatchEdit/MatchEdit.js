@@ -5,6 +5,26 @@ import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { push } from 'connected-react-router';
 import * as actionCreators from '../../../../store/actions';
+import {
+  handleInputTitleChange,
+  handleInputCategoryIDChange,
+  handleInputCapacityChange,
+  handleInputIsOnlineChange,
+  handleInputLocationTextChange,
+  // handleInputLocationLatitudeChange,
+  // handleInputLocationLongitudeChange,
+  handleInputTimeBeginChange,
+  handleInputTimeEndChange,
+  handleInputAdditionalInfoChange,
+  handleInputIsPeriodicChange,
+  handleInputPeriodChange,
+  handleInputIsAgeRestrictedChange,
+  handleInputRestrictAgeFromChange,
+  handleInputRestrictAgeToChange,
+  handleInputIsGenderRestrictedChange,
+  handleButtonRestrictMaleClicked,
+  handleButtonRestrictFemaleClicked,
+} from '../../MatchCreate/MatchCreate';
 import MatchForm from '../../../../components/Match/MatchForm/MatchForm';
 // import LocationPopUp from ''
 
@@ -47,97 +67,6 @@ class MatchEdit extends Component {
 
   // this will be implemented or removed after applying Google Map API
   // handleLocationSearch = () => {};
-
-  handleInputTitleChange = event =>
-    this.setState({ title: event.target.value });
-
-  // handleNewMatchThumbnailUploaded
-
-  // TODO : implement dropdown
-  handleInputCategoryIDChange = event =>
-    this.setState({ categoryID: event.target.value });
-
-  handleInputCapacityChange = event =>
-    this.setState({ capacity: event.target.value });
-
-  handleInputIsOnlineChange = event =>
-    this.setState({ isOnline: event.target.checked });
-
-  handleInputLocationTextChange = event =>
-    this.setState({ locationText: event.target.value });
-
-  // handleInputLocationLatitudeChange = event =>
-  //   this.setState({ locationLatitude: event.target.value });
-
-  // handleInputLocationLongitudeChange = event =>
-  //   this.setState({ locationLongitude: event.target.value });
-
-  handleInputTimeBeginChange = event => {
-    const { timeBegin } = this.state;
-    const inputDate = event.target.value;
-    const newDate = timeBegin;
-    if (inputDate.split('-').length !== 1) {
-      // Date Changed
-      newDate.setFullYear(parseInt(inputDate.split('-')[0], 10));
-      newDate.setMonth(parseInt(inputDate.split('-')[1], 10) - 1);
-      newDate.setDate(parseInt(inputDate.split('-')[2], 10));
-    } else {
-      // Time Changed
-      newDate.setHours(parseInt(inputDate.split(':')[0], 10));
-      newDate.setMinutes(parseInt(inputDate.split(':')[1], 10));
-    }
-    this.setState({ timeBegin: newDate });
-  };
-
-  // TODO: alert error message if the end time earlier than the start time
-  handleInputTimeEndChange = event => {
-    const { timeEnd } = this.state;
-    const inputDate = event.target.value;
-    const newDate = timeEnd;
-    if (inputDate.split('-').length !== 1) {
-      // Date Changed
-      newDate.setFullYear(parseInt(inputDate.split('-')[0], 10));
-      newDate.setMonth(parseInt(inputDate.split('-')[1], 10) - 1);
-      newDate.setDate(parseInt(inputDate.split('-')[2], 10));
-    } else {
-      // Time Changed
-      newDate.setHours(parseInt(inputDate.split(':')[0], 10));
-      newDate.setMinutes(parseInt(inputDate.split(':')[1], 10));
-    }
-    this.setState({ timeBegin: newDate });
-  };
-
-  handleInputAdditionalInfoChange = event =>
-    this.setState({ additionalInfo: event.target.value });
-
-  handleInputIsPeriodicChange = event =>
-    this.setState({ isPeriodic: event.target.checked });
-
-  handleInputPeriodChange = event =>
-    this.setState({ period: event.target.value });
-
-  handleInputIsAgeRestrictedChange = event =>
-    this.setState({ isAgeRestricted: event.target.checked });
-
-  handleInputRestrictAgeFromChange = event =>
-    this.setState({ restrictAgeFrom: event.target.value });
-
-  handleInputRestrictAgeToChange = event =>
-    this.setState({ restrictAgeTo: event.target.value });
-
-  handleInputIsGenderRestrictedChange = event =>
-    this.setState({ isGenderRestricted: event.target.checked });
-
-  // TODO : if setting one while the other is true -> set the other as false
-  handleButtonRestrictMaleClicked = () => {
-    const { restrictMale } = this.state;
-    this.setState({ restrictMale: !restrictMale });
-  };
-
-  handleButtonRestrictFemaleClicked = () => {
-    const { restrictFemale } = this.state;
-    this.setState({ restrictFemale: !restrictFemale });
-  };
 
   onClickEdit = () => {
     const { onEdit } = this.props;
@@ -214,36 +143,30 @@ class MatchEdit extends Component {
           isGenderRestricted={isGenderRestricted}
           restrictMale={restrictMale}
           restrictFemale={restrictFemale}
-          handleInputTitleChange={this.handleInputTitleChange}
-          handleInputCategoryIDChange={this.handleInputCategoryIDChange}
-          handleInputCapacityChange={this.handleInputCapacityChange}
-          handleInputIsOnlineChange={this.handleInputIsOnlineChange}
-          handleInputLocationTextChange={this.handleInputLocationTextChange}
+          handleInputTitleChange={handleInputTitleChange}
+          handleInputCategoryIDChange={handleInputCategoryIDChange}
+          handleInputCapacityChange={handleInputCapacityChange}
+          handleInputIsOnlineChange={handleInputIsOnlineChange}
+          handleInputLocationTextChange={handleInputLocationTextChange}
           // handleInputLocationLatitudeChange={
           //   this.handleInputLocationLatitudeChange
           // }
           // handleInputLocationLongitudeChange={
           //   this.handleInputLocationLongitudeChange
           // }
-          handleInputTimeBeginChange={this.handleInputTimeBeginChange}
-          handleInputTimeEndChange={this.handleInputTimeEndChange}
-          handleInputAdditionalInfoChange={this.handleInputAdditionalInfoChange}
-          handleInputIsPeriodicChange={this.handleInputIsPeriodicChange}
-          handleInputPeriodChange={this.handleInputPeriodChange}
-          handleInputIsAgeRestrictedChange={
-            this.handleInputIsAgeRestrictedChange
-          }
-          handleInputRestrictAgeFromChange={
-            this.handleInputRestrictAgeFromChange
-          }
-          handleInputRestrictAgeToChange={this.handleInputRestrictAgeToChange}
+          handleInputTimeBeginChange={handleInputTimeBeginChange}
+          handleInputTimeEndChange={handleInputTimeEndChange}
+          handleInputAdditionalInfoChange={handleInputAdditionalInfoChange}
+          handleInputIsPeriodicChange={handleInputIsPeriodicChange}
+          handleInputPeriodChange={handleInputPeriodChange}
+          handleInputIsAgeRestrictedChange={handleInputIsAgeRestrictedChange}
+          handleInputRestrictAgeFromChange={handleInputRestrictAgeFromChange}
+          handleInputRestrictAgeToChange={handleInputRestrictAgeToChange}
           handleInputIsGenderRestrictedChange={
-            this.handleInputIsGenderRestrictedChange
+            handleInputIsGenderRestrictedChange
           }
-          handleButtonRestrictMaleClicked={this.handleButtonRestrictMaleClicked}
-          handleButtonRestrictFemaleClicked={
-            this.handleButtonRestrictFemaleClicked
-          }
+          handleButtonRestrictMaleClicked={handleButtonRestrictMaleClicked}
+          handleButtonRestrictFemaleClicked={handleButtonRestrictFemaleClicked}
         />
         {/* <LocationPopUp /> */}
         <button id="match-edit-button" type="button" onClick={this.onClickEdit}>
