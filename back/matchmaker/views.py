@@ -29,6 +29,16 @@ from .models import Match
 # @check_authenticated
 
 
+def match_simple_serializer(matchObj):
+    """Simple serializer"""
+    return {
+        'id': matchObj.id,
+        'title': matchObj.title,
+        'time': matchObj.timeBegin,
+        'location': matchObj.locationText,
+    }
+
+
 def match(request):
     """Makes and returns a new match."""
     if request.method == 'POST':
@@ -81,4 +91,15 @@ def match_new(request):
     if request.method == 'GET':
         # not yet implemented
         return HttpResponse(status=200)
+    return HttpResponseNotAllowed(['GET'])
+
+
+def search(request):
+    """Returns search result."""
+    if request.method == 'GET':
+        query = request.GET['query']
+        search_result_raw = [match for match in Match.objects.filter(
+            title__contains=query)]
+        search_result = list(map(match_simple_serializer, search_result_raw))
+        return JsonResponse(search_result, safe=False)
     return HttpResponseNotAllowed(['GET'])
