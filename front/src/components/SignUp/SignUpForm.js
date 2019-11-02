@@ -42,7 +42,7 @@ const SignUpSchema = Yup.object().shape({
   lastName: Yup.string()
     .max(50, 'Too Long!')
     .required('Required'),
-  phone: Yup.string()
+  phoneNumber: Yup.string()
     .matches(phoneRegExp, 'Phone number is not valid')
     .required('Required'),
   gender: Yup.bool().required('Required'),
@@ -55,7 +55,7 @@ const SignUpForm = ({
   username,
   firstName,
   lastName,
-  phone,
+  phoneNumber,
   gender,
   birthdate,
   clickSignUp,
@@ -69,7 +69,7 @@ const SignUpForm = ({
         username,
         firstName,
         lastName,
-        phone,
+        phoneNumber,
         gender,
         birthdate,
       }}
@@ -108,8 +108,12 @@ const SignUpForm = ({
           <FormItem name="lastName" label="Last Name">
             <Input name="lastName" id="lastName" placeholder="Last Name" />
           </FormItem>
-          <FormItem name="phone" label="Phone">
-            <Input name="phone" id="phone" placeholder="Phone" />
+          <FormItem name="phoneNumber" label="Phone">
+            <Input
+              name="phoneNumber"
+              id="phoneNumber"
+              placeholder="010-1234-5678"
+            />
           </FormItem>
           <FormItem name="gender" label="Gender">
             <Radio.Group
@@ -154,7 +158,7 @@ SignUpForm.propTypes = {
   username: PropTypes.string.isRequired,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
-  phone: PropTypes.string.isRequired,
+  phoneNumber: PropTypes.string.isRequired,
   gender: PropTypes.bool,
   birthdate: PropTypes.string.isRequired,
   clickSignUp: PropTypes.func.isRequired,
