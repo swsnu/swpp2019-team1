@@ -4,6 +4,7 @@ import * as actionCreators from './match';
 import store, { history } from '../store';
 
 const stubMatchA = { dummy: 'dummy' };
+const stubMatchResponseA = { fields: stubMatchA };
 const stubNew = { dummy: 'new' };
 const stubHot = { dummy: 'hot' };
 const stubRecommend = { dummy: 'recommend' };
@@ -51,7 +52,7 @@ describe('ActionMatch', () => {
       return new Promise(resolve => {
         const result = {
           status: 200,
-          data: stubMatchA,
+          data: JSON.stringify([stubMatchResponseA]),
         };
         resolve(result);
       });
@@ -59,7 +60,7 @@ describe('ActionMatch', () => {
 
     store.dispatch(actionCreators.getMatch(0)).then(() => {
       const newState = store.getState();
-      expect(newState.match.selected).toBe(stubMatchA);
+      expect(newState.match.selected).toStrictEqual(stubMatchA);
       expect(spy).toHaveBeenCalledTimes(1);
       done();
     });
@@ -205,6 +206,26 @@ describe('ActionMatch', () => {
       .mockImplementation(path => path);
     store.dispatch(actionCreators.createMatch(stubNewMatch)).then(() => {
       expect(spyPost).toHaveBeenCalledTimes(1);
+      expect(spyPush).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it(`'editMatch' should request match create correctly and push on success`, done => {
+    const spyPut = jest.spyOn(axios, 'put').mockImplementation(() => {
+      return new Promise(resolve => {
+        const result = {
+          status: 200,
+          data: JSON.stringify([{ pk: stubMatchPk }]),
+        };
+        resolve(result);
+      });
+    });
+    const spyPush = jest
+      .spyOn(history, 'push')
+      .mockImplementation(path => path);
+    store.dispatch(actionCreators.editMatch(stubNewMatch)).then(() => {
+      expect(spyPut).toHaveBeenCalledTimes(1);
       expect(spyPush).toHaveBeenCalledTimes(1);
       done();
     });

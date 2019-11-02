@@ -101,7 +101,7 @@ class MatchCreate extends Component {
       newDate.setHours(parseInt(inputDate.split(':')[0], 10));
       newDate.setMinutes(parseInt(inputDate.split(':')[1], 10));
     }
-    this.setState({ timeBegin: newDate });
+    this.setState({ timeEnd: newDate });
   };
 
   handleInputAdditionalInfoChange = event =>
@@ -143,14 +143,14 @@ class MatchCreate extends Component {
       ...this.state,
       timeBegin: [
         timeBegin.getFullYear(),
-        timeBegin.getMonth(),
+        timeBegin.getMonth() + 1,
         timeBegin.getDate(),
         timeBegin.getHours(),
         timeBegin.getMinutes(),
       ],
       timeEnd: [
         timeEnd.getFullYear(),
-        timeEnd.getMonth(),
+        timeEnd.getMonth() + 1,
         timeEnd.getDate(),
         timeEnd.getHours(),
         timeEnd.getMinutes(),
@@ -187,6 +187,7 @@ class MatchCreate extends Component {
 
     return (
       <div className="MatchCreate">
+        <h1>Create Match</h1>
         <MatchForm
           title={title}
           // matchThumbnail

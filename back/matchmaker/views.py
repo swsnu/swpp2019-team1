@@ -11,6 +11,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, JsonResponse
 from django.core import serializers
 from django.utils import timezone
+from django.shortcuts import get_object_or_404
 from .models import Match
 
 # uncomment after implementing login
@@ -93,6 +94,23 @@ def match_new(request):
         return HttpResponse(status=200)
     return HttpResponseNotAllowed(['GET'])
 
+
+def match_detail(request, match_id):
+    """Handles requests about a match"""
+    if request.method == 'GET':
+        match_obj = get_object_or_404(Match, pk=match_id)
+        match_json = serializers.serialize('json', [match_obj])
+        return JsonResponse(match_json, safe=False, status=200)
+    # elif request.method == 'PUT':
+    #     # not yet implemented
+    #     return HttpResponse(status=200)
+    # elif request.method == 'PATCH':
+    #     # not yet implemented
+    #     return HttpResponse(status=200)
+    # elif request.method == 'DELETE':
+    #     # not yet implemented
+    #     return HttpResponse(status=200)
+    return HttpResponseNotAllowed(['GET', 'PUT', 'PATCH', 'DELETE'])
 
 def search(request):
     """Returns search result."""

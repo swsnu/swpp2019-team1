@@ -44,7 +44,6 @@ const MatchForm = ({
 }) => {
   return (
     <div className="MatchForm">
-      <h1>Create Activity</h1>
       Title
       <input
         id="match-title-input"
