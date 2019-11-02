@@ -1,12 +1,9 @@
-/*
- *  TODO : input validation + all TODOs in the lines
- */
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import { push } from 'connected-react-router';
 import * as actionCreators from '../../../../store/actions';
 import MatchForm from '../../../../components/Match/MatchForm/MatchForm';
 // import LocationPopUp from ''
@@ -14,7 +11,9 @@ import MatchForm from '../../../../components/Match/MatchForm/MatchForm';
 class MatchEdit extends Component {
   constructor(props) {
     super(props);
+    const { id } = props.match.params;
     this.state = {
+      id,
       title: '',
       // matchThumbnail
       categoryID: 0,
@@ -33,16 +32,13 @@ class MatchEdit extends Component {
       restrictAgeFrom: 0,
       restrictAgeTo: 0,
       isGenderRestricted: false,
-      restrictToMale: false,
-      restrictToFemale: false,
+      restrictMale: false,
+      restrictFemale: false,
     };
   }
 
   componentDidMount() {
     const { selected } = this.props;
-    console.log(selected);
-    console.log(selected.timeBegin);
-    console.log(typeof selected.timeBegin);
     this.setState(selected);
   }
 
@@ -133,19 +129,19 @@ class MatchEdit extends Component {
     this.setState({ isGenderRestricted: event.target.checked });
 
   // TODO : if setting one while the other is true -> set the other as false
-  handleButtonRestrictToMaleClicked = () => {
-    const { restrictToMale } = this.state;
-    this.setState({ restrictToMale: !restrictToMale });
+  handleButtonRestrictMaleClicked = () => {
+    const { restrictMale } = this.state;
+    this.setState({ restrictMale: !restrictMale });
   };
 
-  handleButtonRestrictToFemaleClicked = () => {
-    const { restrictToFemale } = this.state;
-    this.setState({ restrictToFemale: !restrictToFemale });
+  handleButtonRestrictFemaleClicked = () => {
+    const { restrictFemale } = this.state;
+    this.setState({ restrictFemale: !restrictFemale });
   };
 
-  onClickCreate = () => {
+  onClickEdit = () => {
     const { onEdit } = this.props;
-    const { timeBegin, timeEnd, restrictToMale } = this.state;
+    const { timeBegin, timeEnd, restrictMale } = this.state;
     const matchInfo = {
       ...this.state,
       timeBegin: [
@@ -162,15 +158,16 @@ class MatchEdit extends Component {
         timeEnd.getHours(),
         timeEnd.getMinutes(),
       ],
-      restrictedGender: restrictToMale,
+      restrictedGender: restrictMale,
     };
-    delete matchInfo.restrictToMale;
-    delete matchInfo.restrictToFemale;
+    delete matchInfo.restrictMale;
+    delete matchInfo.restrictFemale;
     onEdit(matchInfo);
   };
 
   render() {
     const {
+      id,
       title,
       // matchThumbnail
       categoryID,
@@ -188,9 +185,11 @@ class MatchEdit extends Component {
       restrictAgeFrom,
       restrictAgeTo,
       isGenderRestricted,
-      restrictToMale,
-      restrictToFemale,
+      restrictMale,
+      restrictFemale,
     } = this.state;
+
+    const { onCancel } = this.props;
 
     return (
       <div className="MatchEdit">
@@ -213,8 +212,8 @@ class MatchEdit extends Component {
           restrictAgeFrom={restrictAgeFrom}
           restrictAgeTo={restrictAgeTo}
           isGenderRestricted={isGenderRestricted}
-          restrictToMale={restrictToMale}
-          restrictToFemale={restrictToFemale}
+          restrictMale={restrictMale}
+          restrictFemale={restrictFemale}
           handleInputTitleChange={this.handleInputTitleChange}
           handleInputCategoryIDChange={this.handleInputCategoryIDChange}
           handleInputCapacityChange={this.handleInputCapacityChange}
@@ -241,32 +240,44 @@ class MatchEdit extends Component {
           handleInputIsGenderRestrictedChange={
             this.handleInputIsGenderRestrictedChange
           }
-          handleButtonRestrictToMaleClicked={
-            this.handleButtonRestrictToMaleClicked
-          }
-          handleButtonRestrictToFemaleClicked={
-            this.handleButtonRestrictToFemaleClicked
+          handleButtonRestrictMaleClicked={this.handleButtonRestrictMaleClicked}
+          handleButtonRestrictFemaleClicked={
+            this.handleButtonRestrictFemaleClicked
           }
         />
         {/* <LocationPopUp /> */}
-        <button
-          id="match-edit-button"
-          type="button"
-          onClick={this.onClickCreate}
-        >
+        <button id="match-edit-button" type="button" onClick={this.onClickEdit}>
           Edit
         </button>
-        <button id="match-edit-cancel-button" type="button">
+        <button
+          id="match-edit-cancel-button"
+          type="button"
+          onClick={() => onCancel(id)}
+        >
           Cancel
         </button>
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    selected: state.match.selected,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onEdit: editMatchInfo => dispatch(actionCreators.editMatch(editMatchInfo)),
+    onCancel: id => dispatch(push(`/match/${id}`)),
+  };
+};
+
 MatchEdit.propTypes = {
   match: ReactRouterPropTypes.match.isRequired,
-  getMatch: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
   selected: PropTypes.shape({
     title: PropTypes.string.isRequired,
     // matchThumbnail,
@@ -289,17 +300,6 @@ MatchEdit.propTypes = {
   }).isRequired,
 };
 
-const mapStateToProps = state => {
-  return {
-    selected: state.match.selected,
-  };
-};
-const mapDispatchToProps = dispatch => {
-  return {
-    getMatch: pk => dispatch(actionCreators.getMatch(pk)),
-    onEdit: editMatchInfo => dispatch(actionCreators.editMatch(editMatchInfo)),
-  };
-};
 export default connect(
   mapStateToProps,
   mapDispatchToProps,

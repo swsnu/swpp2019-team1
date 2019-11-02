@@ -32,8 +32,8 @@ class MatchCreate extends Component {
       restrictAgeFrom: 0,
       restrictAgeTo: 0,
       isGenderRestricted: false,
-      restrictToMale: false,
-      restrictToFemale: false,
+      restrictMale: false,
+      restrictFemale: false,
     };
   }
 
@@ -126,19 +126,19 @@ class MatchCreate extends Component {
     this.setState({ isGenderRestricted: event.target.checked });
 
   // TODO : if setting one while the other is true -> set the other as false
-  handleButtonRestrictToMaleClicked = () => {
-    const { restrictToMale } = this.state;
-    this.setState({ restrictToMale: !restrictToMale });
+  handleButtonRestrictMaleClicked = () => {
+    const { restrictMale } = this.state;
+    this.setState({ restrictMale: !restrictMale });
   };
 
-  handleButtonRestrictToFemaleClicked = () => {
-    const { restrictToFemale } = this.state;
-    this.setState({ restrictToFemale: !restrictToFemale });
+  handleButtonRestrictFemaleClicked = () => {
+    const { restrictFemale } = this.state;
+    this.setState({ restrictFemale: !restrictFemale });
   };
 
   onClickCreate = () => {
     const { onCreate } = this.props;
-    const { timeBegin, timeEnd, restrictToMale } = this.state;
+    const { timeBegin, timeEnd, restrictMale } = this.state;
     const matchInfo = {
       ...this.state,
       timeBegin: [
@@ -155,10 +155,10 @@ class MatchCreate extends Component {
         timeEnd.getHours(),
         timeEnd.getMinutes(),
       ],
-      restrictedGender: restrictToMale,
+      restrictedGender: restrictMale,
     };
-    delete matchInfo.restrictToMale;
-    delete matchInfo.restrictToFemale;
+    delete matchInfo.restrictMale;
+    delete matchInfo.restrictFemale;
     onCreate(matchInfo);
   };
 
@@ -181,8 +181,8 @@ class MatchCreate extends Component {
       restrictAgeFrom,
       restrictAgeTo,
       isGenderRestricted,
-      restrictToMale,
-      restrictToFemale,
+      restrictMale,
+      restrictFemale,
     } = this.state;
 
     return (
@@ -206,8 +206,8 @@ class MatchCreate extends Component {
           restrictAgeFrom={restrictAgeFrom}
           restrictAgeTo={restrictAgeTo}
           isGenderRestricted={isGenderRestricted}
-          restrictToMale={restrictToMale}
-          restrictToFemale={restrictToFemale}
+          restrictMale={restrictMale}
+          restrictFemale={restrictFemale}
           handleInputTitleChange={this.handleInputTitleChange}
           handleInputCategoryIDChange={this.handleInputCategoryIDChange}
           handleInputCapacityChange={this.handleInputCapacityChange}
@@ -234,11 +234,9 @@ class MatchCreate extends Component {
           handleInputIsGenderRestrictedChange={
             this.handleInputIsGenderRestrictedChange
           }
-          handleButtonRestrictToMaleClicked={
-            this.handleButtonRestrictToMaleClicked
-          }
-          handleButtonRestrictToFemaleClicked={
-            this.handleButtonRestrictToFemaleClicked
+          handleButtonRestrictMaleClicked={this.handleButtonRestrictMaleClicked}
+          handleButtonRestrictFemaleClicked={
+            this.handleButtonRestrictFemaleClicked
           }
         />
         {/* <LocationPopUp /> */}

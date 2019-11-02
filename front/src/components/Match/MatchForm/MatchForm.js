@@ -20,9 +20,9 @@ const MatchForm = ({
   restrictAgeFrom,
   restrictAgeTo,
   isGenderRestricted,
-  // restrictToMale and restrictToFemale will be implemented later with CSS
-  // restrictToMale,
-  // restrictToFemale,
+  // restrictMale and restrictFemale will be implemented later with CSS
+  // restrictMale,
+  // restrictFemale,
   handleInputTitleChange,
   handleInputCategoryIDChange,
   handleInputCapacityChange,
@@ -39,8 +39,8 @@ const MatchForm = ({
   handleInputRestrictAgeFromChange,
   handleInputRestrictAgeToChange,
   handleInputIsGenderRestrictedChange,
-  handleButtonRestrictToMaleClicked,
-  handleButtonRestrictToFemaleClicked,
+  handleButtonRestrictMaleClicked,
+  handleButtonRestrictFemaleClicked,
 }) => {
   return (
     <div className="MatchForm">
@@ -183,18 +183,18 @@ const MatchForm = ({
         onChange={handleInputIsGenderRestrictedChange}
       />
       <input
-        id="match-restrict-to-male-input"
+        id="match-restrict-male-input"
         type="button"
         value="M"
         disabled={!isGenderRestricted}
-        onClick={handleButtonRestrictToMaleClicked}
+        onClick={handleButtonRestrictMaleClicked}
       />
       <input
-        id="match-restrict-to-female-input"
+        id="match-restrict-female-input"
         type="button"
         value="F"
         disabled={!isGenderRestricted}
-        onClick={handleButtonRestrictToFemaleClicked}
+        onClick={handleButtonRestrictFemaleClicked}
       />
     </div>
   );
@@ -218,9 +218,9 @@ MatchForm.propTypes = {
   restrictAgeFrom: PropTypes.number.isRequired,
   restrictAgeTo: PropTypes.number.isRequired,
   isGenderRestricted: PropTypes.bool.isRequired,
-  // restrictToMale and restrictToFemale will be implemented later with CSS
-  // restrictToMale: PropTypes.bool.isRequired,
-  // restrictToFemale: PropTypes.bool.isRequired,
+  // restrictMale and restrictFemale will be implemented later with CSS
+  // restrictMale: PropTypes.bool.isRequired,
+  // restrictFemale: PropTypes.bool.isRequired,
   handleInputTitleChange: PropTypes.func.isRequired,
   handleInputCategoryIDChange: PropTypes.func.isRequired,
   handleInputCapacityChange: PropTypes.func.isRequired,
@@ -237,7 +237,7 @@ MatchForm.propTypes = {
   handleInputRestrictAgeFromChange: PropTypes.func.isRequired,
   handleInputRestrictAgeToChange: PropTypes.func.isRequired,
   handleInputIsGenderRestrictedChange: PropTypes.func.isRequired,
-  handleButtonRestrictToMaleClicked: PropTypes.func.isRequired,
-  handleButtonRestrictToFemaleClicked: PropTypes.func.isRequired,
+  handleButtonRestrictMaleClicked: PropTypes.func.isRequired,
+  handleButtonRestrictFemaleClicked: PropTypes.func.isRequired,
 };
 export default MatchForm;

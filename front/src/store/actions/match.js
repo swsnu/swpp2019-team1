@@ -18,12 +18,18 @@ export const getMatch = id => {
         .then(res => {
           const { data } = res;
           const match = JSON.parse(data)[0];
+          const { restrictedGender } = match.fields;
+          delete match.fields.created_on;
+          delete match.fields.restrictedGender;
           dispatch(
             getMatchAction({
               ...match.fields,
               timeBegin: new Date(match.fields.timeBegin),
               timeEnd: new Date(match.fields.timeEnd),
-              restrictToMale: !match.fields.isGenderRestricted,
+              restrictToMale:
+                match.fields.isGenderRestricted && !restrictedGender,
+              restrictToFemale:
+                match.fields.isGenderRestricted && restrictedGender,
             }),
           );
         })

@@ -177,18 +177,18 @@ describe('<MatchCreate />', () => {
     expect(wrapper.length).toBe(1);
     wrapper.simulate('change', { target: { checked: isGenderRestricted } });
     expect(createInstance.state.isGenderRestricted).toEqual(isGenderRestricted);
-    // restrictToMale change
-    const restrictToMale = true;
-    wrapper = component.find('#match-restrict-to-male-input');
+    // restrictMale change
+    const restrictMale = true;
+    wrapper = component.find('#match-restrict-male-input');
     expect(wrapper.length).toBe(1);
     wrapper.simulate('click');
-    expect(createInstance.state.restrictToMale).toEqual(restrictToMale);
-    // restrictToFemale change
-    const restrictToFemale = true;
-    wrapper = component.find('#match-restrict-to-female-input');
+    expect(createInstance.state.restrictMale).toEqual(restrictMale);
+    // restrictFemale change
+    const restrictFemale = true;
+    wrapper = component.find('#match-restrict-female-input');
     expect(wrapper.length).toBe(1);
     wrapper.simulate('click');
-    expect(createInstance.state.restrictToFemale).toEqual(restrictToFemale);
+    expect(createInstance.state.restrictFemale).toEqual(restrictFemale);
   });
 
   it('should be able to create a match', () => {

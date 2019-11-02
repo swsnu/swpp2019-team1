@@ -3,8 +3,74 @@ import { message } from 'antd';
 import * as actionCreators from './match';
 import store, { history } from '../store';
 
-const stubMatchA = { dummy: 'dummy' };
-const stubMatchResponseA = { fields: stubMatchA };
+const stubMatchRespFieldsA = {
+  title: '',
+  // matchThumbnail
+  categoryID: 0,
+  capacity: 0,
+  isOnline: false,
+  locationText: '',
+  // latitude and longitude will be implemented or removed after applying Google Map API
+  // locationLatitude: '',
+  // locationLongitude: '',
+  timeBegin: new Date().toISOString(),
+  timeEnd: new Date().toISOString(),
+  additionalInfo: '',
+  isPeriodic: false,
+  period: 0,
+  isAgeRestricted: false,
+  restrictAgeFrom: 0,
+  restrictAgeTo: 0,
+  isGenderRestricted: false,
+  restrictedGender: false,
+};
+const stubMatchRespA = { fields: stubMatchRespFieldsA };
+
+const stubMatchRespFieldsB = {
+  title: '',
+  // matchThumbnail
+  categoryID: 0,
+  capacity: 0,
+  isOnline: false,
+  locationText: '',
+  // latitude and longitude will be implemented or removed after applying Google Map API
+  // locationLatitude: '',
+  // locationLongitude: '',
+  timeBegin: new Date().toISOString(),
+  timeEnd: new Date().toISOString(),
+  additionalInfo: '',
+  isPeriodic: false,
+  period: 0,
+  isAgeRestricted: false,
+  restrictAgeFrom: 0,
+  restrictAgeTo: 0,
+  isGenderRestricted: true,
+  restrictedGender: false,
+};
+const stubMatchRespB = { fields: stubMatchRespFieldsB };
+
+const stubMatchA = {
+  title: '',
+  // matchThumbnail
+  categoryID: 0,
+  capacity: 0,
+  isOnline: false,
+  locationText: '',
+  // latitude and longitude will be implemented or removed after applying Google Map API
+  // locationLatitude: '',
+  // locationLongitude: '',
+  timeBegin: new Date(stubMatchRespFieldsA.timeBegin),
+  timeEnd: new Date(stubMatchRespFieldsA.timeEnd),
+  additionalInfo: '',
+  isPeriodic: false,
+  period: 0,
+  isAgeRestricted: false,
+  restrictAgeFrom: 0,
+  restrictAgeTo: 0,
+  isGenderRestricted: false,
+  restrictToMale: false,
+  restrictToFemale: false,
+};
 const stubNew = { dummy: 'new' };
 const stubHot = { dummy: 'hot' };
 const stubRecommend = { dummy: 'recommend' };
@@ -52,7 +118,7 @@ describe('ActionMatch', () => {
       return new Promise(resolve => {
         const result = {
           status: 200,
-          data: JSON.stringify([stubMatchResponseA]),
+          data: JSON.stringify([stubMatchRespA]),
         };
         resolve(result);
       });
@@ -62,6 +128,24 @@ describe('ActionMatch', () => {
       const newState = store.getState();
       expect(newState.match.selected).toStrictEqual(stubMatchA);
       expect(spy).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it(`'getMatch' should set restrictToMale, restrictToFemale correctly`, done => {
+    jest.spyOn(axios, 'get').mockImplementation(() => {
+      return new Promise(resolve => {
+        const result = {
+          status: 200,
+          data: JSON.stringify([stubMatchRespB]),
+        };
+        resolve(result);
+      });
+    });
+
+    store.dispatch(actionCreators.getMatch(0)).then(() => {
+      const newState = store.getState();
+      expect(newState.match.selected.restrictToMale).toBe(true);
       done();
     });
   });
