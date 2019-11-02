@@ -4,30 +4,9 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { push } from 'connected-react-router';
-import MatchForm, {
-  MatchPropTypes,
-} from '../../../../components/Match/MatchForm/MatchForm';
+import { MatchPropTypes } from '../../../../components/Match/MatchForm/MatchForm';
+import { matchFormCreator } from '../../MatchCreate/MatchCreate';
 import * as actionCreators from '../../../../store/actions';
-import {
-  titleChange,
-  categoryIDChange,
-  capacityChange,
-  isOnlineChange,
-  locationTextChange,
-  // LocationLatitudeChange,
-  // LocationLongitudeChange,
-  timeBeginChange,
-  timeEndChange,
-  additionalInfoChange,
-  isPeriodicChange,
-  periodChange,
-  isAgeRestrictedChange,
-  restrictAgeFromChange,
-  restrictAgeToChange,
-  isGenderRestrictedTogg,
-  restrictMaleClicked,
-  restrictFemaleClicked,
-} from '../../MatchCreate/MatchCreate';
 // import LocationPopUp from ''
 
 class MatchEdit extends Component {
@@ -97,77 +76,12 @@ class MatchEdit extends Component {
   };
 
   render() {
-    const {
-      id,
-      title,
-      // matchThumbnail
-      categoryID,
-      capacity,
-      isOnline,
-      locationText,
-      // locationLatitude,
-      // locationLongitude,
-      timeBegin,
-      timeEnd,
-      additionalInfo,
-      isPeriodic,
-      period,
-      isAgeRestricted,
-      restrictAgeFrom,
-      restrictAgeTo,
-      isGenderRestricted,
-      restrictMale,
-      restrictFemale,
-    } = this.state;
-
     const { onCancel } = this.props;
-
+    const { id } = this.state;
     return (
       <div className="MatchEdit">
         <h1>Edit Match</h1>
-        <MatchForm
-          title={title}
-          // matchThumbnail
-          categoryID={categoryID}
-          capacity={capacity}
-          isOnline={isOnline}
-          locationText={locationText}
-          // locationLatitude={locationLatitude}
-          // locationLongitude={locationLongitude}
-          timeBegin={timeBegin}
-          timeEnd={timeEnd}
-          additionalInfo={additionalInfo}
-          isPeriodic={isPeriodic}
-          period={period}
-          isAgeRestricted={isAgeRestricted}
-          restrictAgeFrom={restrictAgeFrom}
-          restrictAgeTo={restrictAgeTo}
-          isGenderRestricted={isGenderRestricted}
-          restrictMale={restrictMale}
-          restrictFemale={restrictFemale}
-          titleChange={event => titleChange(event, this)}
-          categoryIDChange={event => categoryIDChange(event, this)}
-          capacityChange={event => capacityChange(event, this)}
-          isOnlineChange={event => isOnlineChange(event, this)}
-          locationTextChange={event => locationTextChange(event, this)}
-          // LocationLatitudeChange={
-          //   event => LocationLatitudeChange
-          // (event, this)}
-          // LocationLongitudeChange={
-          //   event => LocationLongitudeChange
-          // (event, this)}
-          timeBeginChange={event => timeBeginChange(event, this)}
-          timeEndChange={event => timeEndChange(event, this)}
-          additionalInfoChange={event => additionalInfoChange(event, this)}
-          isPeriodicChange={event => isPeriodicChange(event, this)}
-          periodChange={event => periodChange(event, this)}
-          isAgeRestrictedChange={event => isAgeRestrictedChange(event, this)}
-          restrictAgeFromChange={event => restrictAgeFromChange(event, this)}
-          restrictAgeToChange={event => restrictAgeToChange(event, this)}
-          isGenderRestrictedTogg={event => isGenderRestrictedTogg(event, this)}
-          restrictMaleClicked={() => restrictMaleClicked(this)}
-          restrictFemaleClicked={() => restrictFemaleClicked(this)}
-        />
+        {matchFormCreator(this, this.state)}
         {/* <LocationPopUp /> */}
         <button id="match-edit-button" type="button" onClick={this.onClickEdit}>
           Edit

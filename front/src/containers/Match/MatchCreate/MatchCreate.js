@@ -121,6 +121,77 @@ export const binder = context => {
   restrictMaleClicked.bind(context);
   restrictFemaleClicked.bind(context);
 };
+
+export const matchFormCreator = (context, state) => {
+  const {
+    title,
+    // matchThumbnail
+    categoryID,
+    capacity,
+    isOnline,
+    locationText,
+    // locationLatitude,
+    // locationLongitude,
+    timeBegin,
+    timeEnd,
+    additionalInfo,
+    isPeriodic,
+    period,
+    isAgeRestricted,
+    restrictAgeFrom,
+    restrictAgeTo,
+    isGenderRestricted,
+    restrictMale,
+    restrictFemale,
+  } = state;
+
+  return (
+    <MatchForm
+      title={title}
+      // matchThumbnail
+      categoryID={categoryID}
+      capacity={capacity}
+      isOnline={isOnline}
+      locationText={locationText}
+      // locationLatitude={locationLatitude}
+      // locationLongitude={locationLongitude}
+      timeBegin={timeBegin}
+      timeEnd={timeEnd}
+      additionalInfo={additionalInfo}
+      isPeriodic={isPeriodic}
+      period={period}
+      isAgeRestricted={isAgeRestricted}
+      restrictAgeFrom={restrictAgeFrom}
+      restrictAgeTo={restrictAgeTo}
+      isGenderRestricted={isGenderRestricted}
+      restrictMale={restrictMale}
+      restrictFemale={restrictFemale}
+      titleChange={event => titleChange(event, context)}
+      categoryIDChange={event => categoryIDChange(event, context)}
+      capacityChange={event => capacityChange(event, context)}
+      isOnlineChange={event => isOnlineChange(event, context)}
+      locationTextChange={event => locationTextChange(event, context)}
+      // LocationLatitudeChange={
+      //   event => LocationLatitudeChange
+      // (event, context)}
+      // LocationLongitudeChange={
+      //   event => LocationLongitudeChange
+      // (event, context)}
+      timeBeginChange={event => timeBeginChange(event, context)}
+      timeEndChange={event => timeEndChange(event, context)}
+      additionalInfoChange={event => additionalInfoChange(event, context)}
+      isPeriodicChange={event => isPeriodicChange(event, context)}
+      periodChange={event => periodChange(event, context)}
+      isAgeRestrictedChange={event => isAgeRestrictedChange(event, context)}
+      restrictAgeFromChange={event => restrictAgeFromChange(event, context)}
+      restrictAgeToChange={event => restrictAgeToChange(event, context)}
+      isGenderRestrictedTogg={event => isGenderRestrictedTogg(event, context)}
+      restrictMaleClicked={() => restrictMaleClicked(context)}
+      restrictFemaleClicked={() => restrictFemaleClicked(context)}
+    />
+  );
+};
+
 class MatchCreate extends Component {
   constructor(props) {
     super(props);
@@ -184,74 +255,10 @@ class MatchCreate extends Component {
   };
 
   render() {
-    const {
-      title,
-      // matchThumbnail
-      categoryID,
-      capacity,
-      isOnline,
-      locationText,
-      // locationLatitude,
-      // locationLongitude,
-      timeBegin,
-      timeEnd,
-      additionalInfo,
-      isPeriodic,
-      period,
-      isAgeRestricted,
-      restrictAgeFrom,
-      restrictAgeTo,
-      isGenderRestricted,
-      restrictMale,
-      restrictFemale,
-    } = this.state;
-
     return (
       <div className="MatchCreate">
         <h1>Create Match</h1>
-        <MatchForm
-          title={title}
-          // matchThumbnail
-          categoryID={categoryID}
-          capacity={capacity}
-          isOnline={isOnline}
-          locationText={locationText}
-          // locationLatitude={locationLatitude}
-          // locationLongitude={locationLongitude}
-          timeBegin={timeBegin}
-          timeEnd={timeEnd}
-          additionalInfo={additionalInfo}
-          isPeriodic={isPeriodic}
-          period={period}
-          isAgeRestricted={isAgeRestricted}
-          restrictAgeFrom={restrictAgeFrom}
-          restrictAgeTo={restrictAgeTo}
-          isGenderRestricted={isGenderRestricted}
-          restrictMale={restrictMale}
-          restrictFemale={restrictFemale}
-          titleChange={event => titleChange(event, this)}
-          categoryIDChange={event => categoryIDChange(event, this)}
-          capacityChange={event => capacityChange(event, this)}
-          isOnlineChange={event => isOnlineChange(event, this)}
-          locationTextChange={event => locationTextChange(event, this)}
-          // LocationLatitudeChange={
-          //   event => LocationLatitudeChange
-          // (event, this)}
-          // LocationLongitudeChange={
-          //   event => LocationLongitudeChange
-          // (event, this)}
-          timeBeginChange={event => timeBeginChange(event, this)}
-          timeEndChange={event => timeEndChange(event, this)}
-          additionalInfoChange={event => additionalInfoChange(event, this)}
-          isPeriodicChange={event => isPeriodicChange(event, this)}
-          periodChange={event => periodChange(event, this)}
-          isAgeRestrictedChange={event => isAgeRestrictedChange(event, this)}
-          restrictAgeFromChange={event => restrictAgeFromChange(event, this)}
-          restrictAgeToChange={event => restrictAgeToChange(event, this)}
-          isGenderRestrictedTogg={event => isGenderRestrictedTogg(event, this)}
-          restrictMaleClicked={() => restrictMaleClicked(this)}
-          restrictFemaleClicked={() => restrictFemaleClicked(this)}
-        />
+        {matchFormCreator(this, this.state)}
         {/* <LocationPopUp /> */}
         <button
           id="match-create-button"
