@@ -5,17 +5,17 @@ const MatchForm = ({
   title,
   // matchThumbnail,
   categoryID,
-  maxCapacity,
+  capacity,
   isOnline,
   locationText,
   // latitude and longitude will be implemented or removed after applying Google Map API
   // locationLatitude,
   // locationLongitude,
-  timeStart,
+  timeBegin,
   timeEnd,
   additionalInfo,
   isPeriodic,
-  interval,
+  period,
   isAgeRestricted,
   restrictAgeFrom,
   restrictAgeTo,
@@ -25,16 +25,16 @@ const MatchForm = ({
   // restrictToFemale,
   handleInputTitleChange,
   handleInputCategoryIDChange,
-  handleInputMaxCapacityChange,
+  handleInputCapacityChange,
   handleInputIsOnlineChange,
   handleInputLocationTextChange,
   // handleInputLocationLatitudeChange,
   // handleInputLocationLongitudeChange,
-  handleInputTimeStartChange,
+  handleInputTimeBeginChange,
   handleInputTimeEndChange,
   handleInputAdditionalInfoChange,
   handleInputIsPeriodicChange,
-  handleInputIntervalChange,
+  handleInputPeriodChange,
   handleInputIsAgeRestrictedChange,
   handleInputRestrictAgeFromChange,
   handleInputRestrictAgeToChange,
@@ -63,10 +63,10 @@ const MatchForm = ({
       />
       Up to
       <input
-        id="match-max-capacity-input"
+        id="match-capacity-input"
         type="number"
-        value={maxCapacity}
-        onChange={handleInputMaxCapacityChange}
+        value={capacity}
+        onChange={handleInputCapacityChange}
       />
       people
       <br />
@@ -91,18 +91,18 @@ const MatchForm = ({
       <input
         id="match-start-date-input"
         type="date"
-        value={`${timeStart.getFullYear()}-${`0${timeStart.getMonth() +
-          1}`.slice(-2)}-${`0${timeStart.getDate()}`.slice(-2)}`}
-        onChange={handleInputTimeStartChange}
+        value={`${timeBegin.getFullYear()}-${`0${timeBegin.getMonth() +
+          1}`.slice(-2)}-${`0${timeBegin.getDate()}`.slice(-2)}`}
+        onChange={handleInputTimeBeginChange}
       />
       Time
       <input
         id="match-start-time-input"
         type="time"
-        value={`${`0${timeStart.getHours()}`.slice(
+        value={`${`0${timeBegin.getHours()}`.slice(
           -2,
-        )}:${`0${timeStart.getMinutes()}`.slice(-2)}`}
-        onChange={handleInputTimeStartChange}
+        )}:${`0${timeBegin.getMinutes()}`.slice(-2)}`}
+        onChange={handleInputTimeBeginChange}
       />
       Periodic
       <input
@@ -134,10 +134,10 @@ const MatchForm = ({
       />
       Every
       <input
-        id="match-interval-input"
+        id="match-period-input"
         type="number"
-        value={interval}
-        onChange={handleInputIntervalChange}
+        value={period}
+        onChange={handleInputPeriodChange}
         disabled={!isPeriodic}
       />
       days
@@ -204,17 +204,17 @@ MatchForm.propTypes = {
   title: PropTypes.string.isRequired,
   // matchThumbnail,
   categoryID: PropTypes.number.isRequired,
-  maxCapacity: PropTypes.number.isRequired,
+  capacity: PropTypes.number.isRequired,
   isOnline: PropTypes.bool.isRequired,
   locationText: PropTypes.string.isRequired,
   // latitude and longitude will be implemented or removed after applying Google Map API
   // locationLatitude: PropTypes.number.isRequired,
   // locationLongitude: PropTypes.number.isRequired,
-  timeStart: PropTypes.instanceOf(Date).isRequired,
+  timeBegin: PropTypes.instanceOf(Date).isRequired,
   timeEnd: PropTypes.instanceOf(Date).isRequired,
   additionalInfo: PropTypes.string.isRequired,
   isPeriodic: PropTypes.bool.isRequired,
-  interval: PropTypes.number.isRequired,
+  period: PropTypes.number.isRequired,
   isAgeRestricted: PropTypes.bool.isRequired,
   restrictAgeFrom: PropTypes.number.isRequired,
   restrictAgeTo: PropTypes.number.isRequired,
@@ -224,16 +224,16 @@ MatchForm.propTypes = {
   // restrictToFemale: PropTypes.bool.isRequired,
   handleInputTitleChange: PropTypes.func.isRequired,
   handleInputCategoryIDChange: PropTypes.func.isRequired,
-  handleInputMaxCapacityChange: PropTypes.func.isRequired,
+  handleInputCapacityChange: PropTypes.func.isRequired,
   handleInputIsOnlineChange: PropTypes.func.isRequired,
   handleInputLocationTextChange: PropTypes.func.isRequired,
   // handleInputLocationLatitudeChange: PropTypes.func.isRequired,
   // handleInputLocationLongitudeChange: PropTypes.func.isRequired,
-  handleInputTimeStartChange: PropTypes.func.isRequired,
+  handleInputTimeBeginChange: PropTypes.func.isRequired,
   handleInputTimeEndChange: PropTypes.func.isRequired,
   handleInputAdditionalInfoChange: PropTypes.func.isRequired,
   handleInputIsPeriodicChange: PropTypes.func.isRequired,
-  handleInputIntervalChange: PropTypes.func.isRequired,
+  handleInputPeriodChange: PropTypes.func.isRequired,
   handleInputIsAgeRestrictedChange: PropTypes.func.isRequired,
   handleInputRestrictAgeFromChange: PropTypes.func.isRequired,
   handleInputRestrictAgeToChange: PropTypes.func.isRequired,

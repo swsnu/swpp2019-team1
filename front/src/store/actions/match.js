@@ -3,6 +3,9 @@ import { push } from 'connected-react-router';
 import { message } from 'antd';
 import * as actionTypes from './actionTypes';
 
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+
 const getMatchAction = match => {
   return { type: actionTypes.GET_MATCH, match };
 };
@@ -11,7 +14,7 @@ export const getMatch = id => {
   return dispatch => {
     return (
       axios
-        .get(`/api/match/${id}`)
+        .get(`/api/match/${id}/`)
         .then(res => dispatch(getMatchAction(res.data)))
         // eslint-disable-next-line no-unused-vars
         .catch(error => {
@@ -46,7 +49,7 @@ export const getHotMatch = () => {
   return dispatch => {
     return (
       axios
-        .get('/api/match/hot')
+        .get('/api/match/hot/')
         .then(res => dispatch(getHotMatchAction(res.data)))
         // eslint-disable-next-line no-unused-vars
         .catch(error => {
@@ -81,7 +84,7 @@ export const getNewMatch = () => {
   return dispatch => {
     return (
       axios
-        .get('/api/match/new')
+        .get('/api/match/new/')
         .then(res => dispatch(getNewMatchAction(res.data)))
         // eslint-disable-next-line no-unused-vars
         .catch(error => {
@@ -116,7 +119,7 @@ export const getRecommendMatch = () => {
   return dispatch => {
     return (
       axios
-        .get(`/api/match/recommend`)
+        .get(`/api/match/recommend/`)
         .then(res => dispatch(getRecommendMatchAction(res.data)))
         // eslint-disable-next-line no-unused-vars
         .catch(error => {
@@ -151,10 +154,11 @@ const createMatchAction = () => {
 
 export const createMatch = match => {
   return dispatch => {
-    return axios.post(`/api/match/create`, match).then(() => {
+    return axios.post(`/api/match/`, match).then(res => {
       dispatch(createMatchAction());
-      // later change this
-      dispatch(push('/home'));
+      const { data } = res;
+      const { pk } = JSON.parse(data)[0];
+      dispatch(push(`/match/${pk}`));
     });
   };
 };
@@ -169,7 +173,7 @@ export const joinMatch = id => {
   return dispatch => {
     return (
       axios
-        .post(`/api/match/${id}/join`)
+        .post(`/api/match/${id}/join/`)
         .then(() => dispatch(joinMatchAction(id)))
         // eslint-disable-next-line no-unused-vars
         .catch(error => {
@@ -206,7 +210,7 @@ export const quitMatch = id => {
   return dispatch => {
     return (
       axios
-        .delete(`/api/match/${id}/join`)
+        .delete(`/api/match/${id}/join/`)
         .then(() => dispatch(quitMatchAction(id)))
         // eslint-disable-next-line no-unused-vars
         .catch(error => {
@@ -251,7 +255,7 @@ export const searchMatch = (query, time, location) => {
   return dispatch => {
     return (
       axios
-        .get(`/api/search${parameter}`)
+        .get(`/api/search${parameter}/`)
         .then(res => dispatch(searchMatchAction(res.data)))
         // eslint-disable-next-line no-unused-vars
         .catch(error => {

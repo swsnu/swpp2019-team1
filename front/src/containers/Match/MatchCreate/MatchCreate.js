@@ -17,17 +17,17 @@ class MatchCreate extends Component {
       title: '',
       // matchThumbnail
       categoryID: 0,
-      maxCapacity: 0,
+      capacity: 0,
       isOnline: false,
       locationText: '',
       // latitude and longitude will be implemented or removed after applying Google Map API
       // locationLatitude: '',
       // locationLongitude: '',
-      timeStart: new Date(),
+      timeBegin: new Date(),
       timeEnd: new Date(),
       additionalInfo: '',
       isPeriodic: false,
-      interval: 0,
+      period: 0,
       isAgeRestricted: false,
       restrictAgeFrom: 0,
       restrictAgeTo: 0,
@@ -54,8 +54,8 @@ class MatchCreate extends Component {
   handleInputCategoryIDChange = event =>
     this.setState({ categoryID: event.target.value });
 
-  handleInputMaxCapacityChange = event =>
-    this.setState({ maxCapacity: event.target.value });
+  handleInputCapacityChange = event =>
+    this.setState({ capacity: event.target.value });
 
   handleInputIsOnlineChange = event =>
     this.setState({ isOnline: event.target.checked });
@@ -69,10 +69,10 @@ class MatchCreate extends Component {
   // handleInputLocationLongitudeChange = event =>
   //   this.setState({ locationLongitude: event.target.value });
 
-  handleInputTimeStartChange = event => {
-    const { timeStart } = this.state;
+  handleInputTimeBeginChange = event => {
+    const { timeBegin } = this.state;
     const inputDate = event.target.value;
-    const newDate = timeStart;
+    const newDate = timeBegin;
     if (inputDate.split('-').length !== 1) {
       // Date Changed
       newDate.setFullYear(parseInt(inputDate.split('-')[0], 10));
@@ -83,7 +83,7 @@ class MatchCreate extends Component {
       newDate.setHours(parseInt(inputDate.split(':')[0], 10));
       newDate.setMinutes(parseInt(inputDate.split(':')[1], 10));
     }
-    this.setState({ timeStart: newDate });
+    this.setState({ timeBegin: newDate });
   };
 
   // TODO: alert error message if the end time earlier than the start time
@@ -101,7 +101,7 @@ class MatchCreate extends Component {
       newDate.setHours(parseInt(inputDate.split(':')[0], 10));
       newDate.setMinutes(parseInt(inputDate.split(':')[1], 10));
     }
-    this.setState({ timeStart: newDate });
+    this.setState({ timeBegin: newDate });
   };
 
   handleInputAdditionalInfoChange = event =>
@@ -110,8 +110,8 @@ class MatchCreate extends Component {
   handleInputIsPeriodicChange = event =>
     this.setState({ isPeriodic: event.target.checked });
 
-  handleInputIntervalChange = event =>
-    this.setState({ interval: event.target.value });
+  handleInputPeriodChange = event =>
+    this.setState({ period: event.target.value });
 
   handleInputIsAgeRestrictedChange = event =>
     this.setState({ isAgeRestricted: event.target.checked });
@@ -138,15 +138,15 @@ class MatchCreate extends Component {
 
   onClickCreate = () => {
     const { onCreate } = this.props;
-    const { timeStart, timeEnd } = this.state;
-    onCreate({
+    const { timeBegin, timeEnd, restrictToMale } = this.state;
+    const matchInfo = {
       ...this.state,
-      timeStart: [
-        timeStart.getFullYear(),
-        timeStart.getMonth(),
-        timeStart.getDate(),
-        timeStart.getHours(),
-        timeStart.getMinutes(),
+      timeBegin: [
+        timeBegin.getFullYear(),
+        timeBegin.getMonth(),
+        timeBegin.getDate(),
+        timeBegin.getHours(),
+        timeBegin.getMinutes(),
       ],
       timeEnd: [
         timeEnd.getFullYear(),
@@ -155,7 +155,11 @@ class MatchCreate extends Component {
         timeEnd.getHours(),
         timeEnd.getMinutes(),
       ],
-    });
+      restrictedGender: restrictToMale,
+    };
+    delete matchInfo.restrictToMale;
+    delete matchInfo.restrictToFemale;
+    onCreate(matchInfo);
   };
 
   render() {
@@ -163,16 +167,16 @@ class MatchCreate extends Component {
       title,
       // matchThumbnail
       categoryID,
-      maxCapacity,
+      capacity,
       isOnline,
       locationText,
       // locationLatitude,
       // locationLongitude,
-      timeStart,
+      timeBegin,
       timeEnd,
       additionalInfo,
       isPeriodic,
-      interval,
+      period,
       isAgeRestricted,
       restrictAgeFrom,
       restrictAgeTo,
@@ -187,16 +191,16 @@ class MatchCreate extends Component {
           title={title}
           // matchThumbnail
           categoryID={categoryID}
-          maxCapacity={maxCapacity}
+          capacity={capacity}
           isOnline={isOnline}
           locationText={locationText}
           // locationLatitude={locationLatitude}
           // locationLongitude={locationLongitude}
-          timeStart={timeStart}
+          timeBegin={timeBegin}
           timeEnd={timeEnd}
           additionalInfo={additionalInfo}
           isPeriodic={isPeriodic}
-          interval={interval}
+          period={period}
           isAgeRestricted={isAgeRestricted}
           restrictAgeFrom={restrictAgeFrom}
           restrictAgeTo={restrictAgeTo}
@@ -205,7 +209,7 @@ class MatchCreate extends Component {
           restrictToFemale={restrictToFemale}
           handleInputTitleChange={this.handleInputTitleChange}
           handleInputCategoryIDChange={this.handleInputCategoryIDChange}
-          handleInputMaxCapacityChange={this.handleInputMaxCapacityChange}
+          handleInputCapacityChange={this.handleInputCapacityChange}
           handleInputIsOnlineChange={this.handleInputIsOnlineChange}
           handleInputLocationTextChange={this.handleInputLocationTextChange}
           // handleInputLocationLatitudeChange={
@@ -214,11 +218,11 @@ class MatchCreate extends Component {
           // handleInputLocationLongitudeChange={
           //   this.handleInputLocationLongitudeChange
           // }
-          handleInputTimeStartChange={this.handleInputTimeStartChange}
+          handleInputTimeBeginChange={this.handleInputTimeBeginChange}
           handleInputTimeEndChange={this.handleInputTimeEndChange}
           handleInputAdditionalInfoChange={this.handleInputAdditionalInfoChange}
           handleInputIsPeriodicChange={this.handleInputIsPeriodicChange}
-          handleInputIntervalChange={this.handleInputIntervalChange}
+          handleInputPeriodChange={this.handleInputPeriodChange}
           handleInputIsAgeRestrictedChange={
             this.handleInputIsAgeRestrictedChange
           }

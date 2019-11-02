@@ -67,12 +67,12 @@ describe('<MatchCreate />', () => {
     expect(wrapper.length).toBe(1);
     wrapper.simulate('change', { target: { value: categoryID } });
     expect(createInstance.state.categoryID).toEqual(categoryID);
-    // maxCapacity change
-    const maxCapacity = 3;
-    wrapper = component.find('#match-max-capacity-input');
+    // capacity change
+    const capacity = 3;
+    wrapper = component.find('#match-capacity-input');
     expect(wrapper.length).toBe(1);
-    wrapper.simulate('change', { target: { value: maxCapacity } });
-    expect(createInstance.state.maxCapacity).toEqual(maxCapacity);
+    wrapper.simulate('change', { target: { value: capacity } });
+    expect(createInstance.state.capacity).toEqual(capacity);
     // locationText change
     const locationText = 'TEST_LOCATION_TEXT';
     wrapper = component.find('#match-location-text-input');
@@ -90,13 +90,13 @@ describe('<MatchCreate />', () => {
     wrapper = component.find('#match-start-date-input');
     expect(wrapper.length).toBe(1);
     wrapper.simulate('change', { target: { value: startDate } });
-    expect(createInstance.state.timeStart.getFullYear()).toEqual(
+    expect(createInstance.state.timeBegin.getFullYear()).toEqual(
       parseInt(startDate.split('-')[0], 10),
     );
-    expect(createInstance.state.timeStart.getMonth() + 1).toEqual(
+    expect(createInstance.state.timeBegin.getMonth() + 1).toEqual(
       parseInt(startDate.split('-')[1], 10),
     );
-    expect(createInstance.state.timeStart.getDate()).toEqual(
+    expect(createInstance.state.timeBegin.getDate()).toEqual(
       parseInt(startDate.split('-')[2], 10),
     );
     // startTime change
@@ -104,10 +104,10 @@ describe('<MatchCreate />', () => {
     wrapper = component.find('#match-start-time-input');
     expect(wrapper.length).toBe(1);
     wrapper.simulate('change', { target: { value: startTime } });
-    expect(createInstance.state.timeStart.getHours()).toEqual(
+    expect(createInstance.state.timeBegin.getHours()).toEqual(
       parseInt(startTime.split(':')[0], 10),
     );
-    expect(createInstance.state.timeStart.getMinutes()).toEqual(
+    expect(createInstance.state.timeBegin.getMinutes()).toEqual(
       parseInt(startTime.split(':')[1], 10),
     );
     // isPeriodic change
@@ -141,12 +141,12 @@ describe('<MatchCreate />', () => {
     expect(createInstance.state.timeEnd.getMinutes()).toEqual(
       parseInt(endTime.split(':')[1], 10),
     );
-    // interval change
-    const interval = 7;
-    wrapper = component.find('#match-interval-input');
+    // period change
+    const period = 7;
+    wrapper = component.find('#match-period-input');
     expect(wrapper.length).toBe(1);
-    wrapper.simulate('change', { target: { value: interval } });
-    expect(createInstance.state.interval).toEqual(interval);
+    wrapper.simulate('change', { target: { value: period } });
+    expect(createInstance.state.period).toEqual(period);
     // additionalInfo change
     const additionalInfo = 'TEST_ADDITIONAL_INFO';
     wrapper = component.find('#match-additional-info-input');
