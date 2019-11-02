@@ -1,9 +1,20 @@
-"""
-Tests all statements and branches.
-"""
+'''
+matchmaker tests
+'''
 import json
+import datetime
 from django.test import TestCase, Client
-from .models import Match
+from userapp.models import User
+from .models import Match, Category
+
+
+def create_dummy_user():
+    '''create dummy user'''
+    return User.objects.create_user(email="swpp@snu.ac.kr", password="test_password",
+                                    username="TEST_USERNAME", first_name="TEST_FIRST_NAME",
+                                    last_name="TEST_LAST_NAME", phone_number="010-1234-5678",
+                                    gender=True, birthdate=datetime.date(2019, 11, 2),
+                                    is_email_public=False, is_interest_public=False)
 
 
 class MatchMakerTestCase(TestCase):
@@ -16,9 +27,12 @@ class MatchMakerTestCase(TestCase):
     def test_csrf(self):
         """Tests CSRF"""
         client = Client(enforce_csrf_checks=True)
+        create_dummy_user()
+        client.login(email='swpp@snu.ac.kr', password='test_password')
+        test_category = Category.objects.create(name="TEST_NAME")
         response = client.post('/api/match/',
                                json.dumps({'title': 'TEST_TITLE',
-                                           'categoryID': 1,
+                                           'categoryID': test_category.id,
                                            'capacity': 4,
                                            'locationText': 'TEST_LOCATION_TEXT',
                                            'period': 3,
@@ -39,7 +53,7 @@ class MatchMakerTestCase(TestCase):
 
         response = client.post('/api/match/',
                                json.dumps({'title': 'TEST_TITLE',
-                                           'categoryID': 1,
+                                           'categoryID': test_category.id,
                                            'capacity': 4,
                                            'locationText': 'TEST_LOCATION_TEXT',
                                            'period': 3,
@@ -55,7 +69,7 @@ class MatchMakerTestCase(TestCase):
                                HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 201)  # Pass csrf protection
 
-    def test_HTTPResponse_405(self):
+    def test_http_response_405(self):
         """Checks if the views module handles bad requests correctly."""
         client = Client(enforce_csrf_checks=True)
         response = client.get('/api/match/new/')
@@ -93,9 +107,12 @@ class MatchMakerTestCase(TestCase):
         """Checks if the views module handles various match-related requests correctly."""
         client = Client(enforce_csrf_checks=True)
         response = client.get('/api/match/new/')
+        test_user = create_dummy_user()
+        client.login(email='swpp@snu.ac.kr', password='test_password')
+        test_category = Category.objects.create(name="TEST_CATEGORY_NAME")
         test_match = Match.objects.create(
-            title='TEST_TITLE_STR')
-        self.assertEqual(str(test_match), "TEST_TITLE_STR")
+            title='TEST_TITLE_STR', hostUserID=test_user, categoryID=test_category)
+        self.assertEqual(test_match.__str__(), "TEST_TITLE_STR")
 
         csrftoken = response.cookies['csrftoken'].value
         response = client.post('/api/match/',

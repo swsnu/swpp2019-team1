@@ -1,14 +1,18 @@
+''' Custom user model serializer '''
 from rest_framework import serializers
 from userapp.models import User
-from django.conf import settings #settings.AUTH_USER_MODEL
+# from django.conf import settings  # settings.AUTH_USER_MODEL
+
 
 class UserSerializer(serializers.ModelSerializer):
+    ''' Custom user model serializer '''
     password = serializers.CharField()
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'username', 'firstName', 'lastName', 'phoneNumber', 'gender', 'birthdate',
-                'message', 'profilePicture', 'emailPublic', 'schedulePublic', 'interestPublic','password')
+        fields = ('id', 'email', 'username', 'first_name', 'last_name', 'phone_number',
+                  'gender', 'birthdate', 'message', 'profile_picture',
+                  'is_email_public', 'is_schedule_public', 'is_interest_public', 'password')
         validators = []
 
     def create(self, validated_data):
@@ -16,15 +20,20 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
-    
+
     def update(self, instance, validated_data):
         instance.username = validated_data.get('username', instance.username)
-        instance.phoneNumber = validated_data.get('phoneNumber', instance.phoneNumber)
+        instance.phone_number = validated_data.get(
+            'phone_number', instance.phone_number)
         instance.message = validated_data.get('message', instance.message)
-        instance.profilePicture = validated_data.get('profilePicture', instance.profilePicture)
-        instance.emailPublic = validated_data.get('emailPublic', instance.emailPublic)
-        instance.schedulePublic = validated_data.get('schedulePublic', instance.schedulePublic)
-        instance.interestPublic = validated_data.get('interestPublic', instance.interestPublic)
+        instance.profile_picture = validated_data.get(
+            'profile_picture', instance.profile_picture)
+        instance.is_email_public = validated_data.get(
+            'is_email_public', instance.is_email_public)
+        instance.is_schedule_public = validated_data.get(
+            'is_schedule_public', instance.is_schedule_public)
+        instance.is_interest_public = validated_data.get(
+            'is_interest_public', instance.is_interest_public)
 
         instance.set_password(validated_data['password'])
         instance.save()

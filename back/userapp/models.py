@@ -1,5 +1,6 @@
+''' Custom user model '''
 from django.db import models
-from django.conf import settings
+# from django.conf import settings
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import Permission
@@ -9,6 +10,8 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class UserManager(BaseUserManager):
+    ''' Custom user manager '''
+
     def _create_user(self, email, password, **extra_fields):
         if not email:
             raise ValueError('The given email must be set')
@@ -20,9 +23,11 @@ class UserManager(BaseUserManager):
         return user
 
     def create_user(self, email, password=None, **extra_fields):
+        ''' create user '''
         return self._create_user(email, password, **extra_fields)
 
     def create_superuser(self, email, password, **extra_fields):
+        ''' create superuser '''
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_staff', True)
 
@@ -31,34 +36,34 @@ class UserManager(BaseUserManager):
 
         return self._create_user(email, password, **extra_fields)
 
+
 class User(AbstractBaseUser, PermissionsMixin):
-    '''
-    Required columns
-    '''
+    ''' Custom user model '''
     groups = models.ManyToManyField(Group)
     user_permissions = models.ManyToManyField(Permission)
     is_staff = models.BooleanField(_('staff'), default=False)
     is_superuser = models.BooleanField(_('superuser'), default=False)
 
-
-    email=models.EmailField(max_length=45, unique=True)
+    email = models.EmailField(max_length=45, unique=True)
     username = models.CharField(max_length=32)
-    firstName = models.CharField(max_length=32)
-    lastName = models.CharField(max_length=32)    
+    first_name = models.CharField(max_length=32)
+    last_name = models.CharField(max_length=32)
 
-    phoneNumber = models.CharField(max_length=11)
-    gender = models.PositiveSmallIntegerField(null=False,blank=False)
+    phone_number = models.CharField(max_length=13)
+    gender = models.BooleanField(blank=False)
     birthdate = models.DateField()
     message = models.CharField(max_length=100, blank=True)
-    profilePicture = models.ImageField(upload_to="profile/", null=True, blank=True)
-    emailPublic = models.BooleanField(blank=False)
-    schedulePublic = models.BooleanField(default=False, blank=True)
-    interestPublic = models.BooleanField(blank=False)
+    profile_picture = models.ImageField(
+        upload_to="profile/", null=True, blank=True)
+    is_email_public = models.BooleanField(blank=False)
+    is_schedule_public = models.BooleanField(default=False, blank=True)
+    is_interest_public = models.BooleanField(blank=False)
 
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS=['username', 'firstName', 'lastName', 'phoneNumber', 'gender', 'birthdate', 'emailPublic', 'interestPublic']
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name', 'phone_number',
+                       'gender', 'birthdate', 'is_email_public', 'is_interest_public']
 
     class Meta:
         verbose_name = _('user')
@@ -68,8 +73,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.username
 
     def get_full_name(self):
-        fullName = '%s %s' % (self.firstName, self.lastName)
-        return fullName
+        ''' get full name '''
+        full_name = '%s %s' % (self.first_name, self.last_name)
+        return full_name
 
     def get_short_name(self):
-        return self.firstName
+        ''' get short name '''
+        return self.first_name
+
+    def has_perm(self, perm, obj=None):
+        return True
+
+    def has_module_perms(self, app_label):
+        return True

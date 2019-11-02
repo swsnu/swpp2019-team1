@@ -1,32 +1,16 @@
 """
+matchmaker views
 Handle requests.
 """
 import json
 from json import JSONDecodeError
 from datetime import datetime
-# uncomment after implementing login
-# from functools import wraps
-# from django.contrib.auth import authenticate
-from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, JsonResponse
 from django.core import serializers
 from django.utils import timezone
-from .models import Match
-
-# uncomment after implementing login
-# def check_authenticated(func):
-#     @wraps(func)
-#     def wrapper(*args, **kwargs):
-#         if args and args[0].user.is_authenticated:
-#             return func(*args, **kwargs)
-#         else:
-#             return HttpResponse(status=401)
-#     return wrapper
-
-# pylint: disable-msg=too-many-locals
-
-# uncomment after implementing login
-# @check_authenticated
+from django.views.decorators.csrf import ensure_csrf_cookie
+#from userapp.models import User
+from .models import Category, Match
 
 
 def match_simple_serializer(matchObj):
@@ -40,6 +24,7 @@ def match_simple_serializer(matchObj):
 
 
 def match(request):
+    # pylint: disable=too-many-locals
     """Makes and returns a new match."""
     if request.method == 'POST':
         try:
@@ -59,11 +44,12 @@ def match(request):
             match_time_end = json.loads(body)['timeEnd']
         except (KeyError, JSONDecodeError):
             return HttpResponseBadRequest()
+        # TODO: error handle
+        category = Category.objects.get(id=match_category_id)
         new_match = Match(title=match_title,
-                          # host=request.user, need to be changed
-                          # according to our implementation of user
+                          hostUserID=request.user,
                           # thumbnail=SOMETHING,
-                          categoryID=match_category_id,
+                          categoryID=category,
                           capacity=match_capacity,
                           isFull=(match_capacity == 1),
                           locationText=match_location_text,
