@@ -2,24 +2,24 @@
 matchmaker views
 Handle requests.
 """
-import json
 from json import JSONDecodeError
-from datetime import datetime
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, JsonResponse
-from django.core import serializers
-from django.utils import timezone
+from django.http import HttpResponse, HttpResponseBadRequest, \
+    HttpResponseNotAllowed, HttpResponseNotFound, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
+from djangorestframework_camel_case.parser import CamelCaseJSONParser
+import arrow
 #from userapp.models import User
 from .models import Category, Match
+from .serializers import MatchSerializer
 
 
-def match_simple_serializer(matchObj):
+def match_simple_serializer(match_object):
     """Simple serializer"""
     return {
-        'id': matchObj.id,
-        'title': matchObj.title,
-        'time': matchObj.timeBegin,
-        'location': matchObj.locationText,
+        'id': match_object.id,
+        'title': match_object.title,
+        'time': match_object.time_begin,
+        'location': match_object.location_text,
     }
 
 
@@ -28,45 +28,39 @@ def match(request):
     """Makes and returns a new match."""
     if request.method == 'POST':
         try:
-            body = request.body.decode()
-            match_title = json.loads(body)['title']
-            match_category_id = json.loads(body)['categoryID']
-            match_capacity = json.loads(body)['capacity']
-            match_location_text = json.loads(body)['locationText']
-            match_period = json.loads(body)['period']
-            match_additional_info = json.loads(body)['additionalInfo']
-            match_is_age_restricted = json.loads(body)['isAgeRestricted']
-            match_restrict_age_from = json.loads(body)['restrictAgeFrom']
-            match_restrict_age_to = json.loads(body)['restrictAgeTo']
-            match_is_gender_restricted = json.loads(body)['isGenderRestricted']
-            match_restricted_gender = json.loads(body)['restrictedGender']
-            match_time_begin = json.loads(body)['timeBegin']
-            match_time_end = json.loads(body)['timeEnd']
-        except (KeyError, JSONDecodeError):
+            data = CamelCaseJSONParser().parse(request)
+            '''
+            capacity = data['capacity']
+            location_text = data['location_text']
+            period = data['period']
+            additional_info = data['additional_info']
+            is_age_restricted = data['is_age_restricted']
+            restrict_age_from = data['restrict_age_from']
+            restrict_age_to = data['restrict_age_to']
+            is_gender_restricted = data['is_gender_restricted']
+            restricted_gender = data['restricted_gender']
+            '''
+            category_id = data['category_id']
+            time_begin = arrow.get(data['time_begin']).datetime
+            time_end = arrow.get(data['time_end']).datetime
+            data['time_begin'] = time_begin
+            data['time_end'] = time_end
+        except (KeyError, arrow.parser.ParserError):
+            # 400
             return HttpResponseBadRequest()
-        # TODO: error handle
-        category = Category.objects.get(id=match_category_id)
-        new_match = Match(title=match_title,
-                          hostUserID=request.user,
-                          # thumbnail=SOMETHING,
-                          categoryID=category,
-                          capacity=match_capacity,
-                          isFull=(match_capacity == 1),
-                          locationText=match_location_text,
-                          period=match_period,
-                          additionalInfo=match_additional_info,
-                          isAgeRestricted=match_is_age_restricted,
-                          restrictAgeFrom=match_restrict_age_from,
-                          restrictAgeTo=match_restrict_age_to,
-                          isGenderRestricted=match_is_gender_restricted,
-                          restrictedGender=match_restricted_gender,
-                          # get time info in UTC
-                          timeBegin=datetime(
-                              *match_time_begin, tzinfo=timezone.utc),
-                          timeEnd=datetime(*match_time_end, tzinfo=timezone.utc))
-        new_match.save()
-        new_match_json = serializers.serialize('json', [new_match])
-        return JsonResponse(new_match_json, safe=False, status=201)
+        try:
+            Category.objects.get(id=category_id)
+        except Category.DoesNotExist:
+            # 404
+            return HttpResponseNotFound()
+        data['host_user_id'] = request.user.id
+        match_serializer = MatchSerializer(data=data)
+        if match_serializer.is_valid():
+            match_serializer.create(data)
+            return JsonResponse(match_serializer.data, status=201)
+        # 400
+        return HttpResponseBadRequest()
+    # 405
     return HttpResponseNotAllowed(['POST'])
 # pylint: enable-msg=too-many-locals
 
@@ -84,8 +78,7 @@ def search(request):
     """Returns search result."""
     if request.method == 'GET':
         query = request.GET['query']
-        search_result_raw = [match for match in Match.objects.filter(
-            title__contains=query)]
+        search_result_raw = list(Match.objects.filter(title__contains=query))
         search_result = list(map(match_simple_serializer, search_result_raw))
         return JsonResponse(search_result, safe=False)
     return HttpResponseNotAllowed(['GET'])

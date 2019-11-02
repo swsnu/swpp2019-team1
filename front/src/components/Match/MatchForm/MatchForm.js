@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const MatchForm = ({
   title,
   // matchThumbnail,
-  categoryID,
+  categoryId,
   capacity,
   isOnline,
   locationText,
@@ -58,7 +58,7 @@ const MatchForm = ({
       <input
         id="match-category-id-input"
         type="text"
-        value={categoryID}
+        value={categoryId}
         onChange={handleInputCategoryIDChange}
       />
       Up to
@@ -203,7 +203,7 @@ const MatchForm = ({
 MatchForm.propTypes = {
   title: PropTypes.string.isRequired,
   // matchThumbnail,
-  categoryID: PropTypes.number.isRequired,
+  categoryId: PropTypes.number.isRequired,
   capacity: PropTypes.number.isRequired,
   isOnline: PropTypes.bool.isRequired,
   locationText: PropTypes.string.isRequired,

@@ -21,7 +21,7 @@ const stubMatch = {
 const stubNewMatch = {
   title: '',
   // matchThumbnail
-  categoryID: 0,
+  categoryId: 0,
   capacity: 0,
   isOnline: false,
   locationText: '',

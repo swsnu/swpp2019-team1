@@ -10,9 +10,12 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'email', 'username', 'first_name', 'last_name', 'phone_number',
-                  'gender', 'birthdate', 'message', 'profile_picture',
-                  'is_email_public', 'is_schedule_public', 'is_interest_public', 'password')
+        fields = ('id', 'email', 'username',
+                  'first_name', 'last_name',
+                  'phone_number', 'gender', 'birthdate',
+                  'message', 'profile_picture',
+                  'is_email_public', 'is_schedule_public', 'is_interest_public',
+                  'password')
         validators = []
 
     def create(self, validated_data):
@@ -22,7 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
     def update(self, instance, validated_data):
-        instance.username = validated_data.get('username', instance.username)
+        '''instance.username = validated_data.get('username', instance.username)
         instance.phone_number = validated_data.get(
             'phone_number', instance.phone_number)
         instance.message = validated_data.get('message', instance.message)
@@ -35,6 +38,11 @@ class UserSerializer(serializers.ModelSerializer):
         instance.is_interest_public = validated_data.get(
             'is_interest_public', instance.is_interest_public)
 
-        instance.set_password(validated_data['password'])
+        instance.set_password(validated_data['password'])'''
+        super(UserSerializer, self).update(
+            instance, validated_data)
+        if "password" in validated_data:
+            instance.set_password(validated_data.get(
+                'password', instance.password))
         instance.save()
         return instance

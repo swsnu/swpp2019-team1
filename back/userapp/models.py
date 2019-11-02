@@ -81,8 +81,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         ''' get short name '''
         return self.first_name
 
-    def has_perm(self, perm, obj=None):
+    '''def has_perm(self, perm, obj=None):
         return True
 
     def has_module_perms(self, app_label):
-        return True
+        return True'''

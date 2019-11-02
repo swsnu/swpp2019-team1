@@ -16,7 +16,7 @@ class MatchCreate extends Component {
     this.state = {
       title: '',
       // matchThumbnail
-      categoryID: 0,
+      categoryId: 0,
       capacity: 0,
       isOnline: false,
       locationText: '',
@@ -52,7 +52,7 @@ class MatchCreate extends Component {
 
   // TODO : implement dropdown
   handleInputCategoryIDChange = event =>
-    this.setState({ categoryID: event.target.value });
+    this.setState({ categoryId: event.target.value });
 
   handleInputCapacityChange = event =>
     this.setState({ capacity: event.target.value });
@@ -166,7 +166,7 @@ class MatchCreate extends Component {
     const {
       title,
       // matchThumbnail
-      categoryID,
+      categoryId,
       capacity,
       isOnline,
       locationText,
@@ -190,7 +190,7 @@ class MatchCreate extends Component {
         <MatchForm
           title={title}
           // matchThumbnail
-          categoryID={categoryID}
+          categoryId={categoryId}
           capacity={capacity}
           isOnline={isOnline}
           locationText={locationText}
