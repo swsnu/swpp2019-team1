@@ -190,7 +190,7 @@ describe('ActionMatch', () => {
     });
   });
 
-  it(`'createMatch' should request match create correctly and push /match/:pk/ on success`, done => {
+  it(`'createMatch' should request match create correctly and push on success`, done => {
     const spyPost = jest.spyOn(axios, 'post').mockImplementation(() => {
       return new Promise(resolve => {
         const result = {

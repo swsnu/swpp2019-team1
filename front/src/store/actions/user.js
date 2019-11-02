@@ -17,7 +17,7 @@ export const createUser = () => {
       .post(`/api/signup/`)
       .then(() => {
         dispatch(createUserAction());
-        dispatch(push('/home/'));
+        dispatch(push('/home'));
       })
       .catch(error => {
         // TODO: error handling
