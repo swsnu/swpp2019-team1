@@ -19,7 +19,6 @@ class HomePage extends Component {
     onGetRecommendMatch();
   }
 
-  // TODO match should be input
   matchToComponent = match => {
     const { onClickMatch } = this.props;
     return (
@@ -37,12 +36,32 @@ class HomePage extends Component {
   };
 
   render() {
-    const { matchHot, matchNew, matchRecommend } = this.props;
+    const { history, matchHot, matchNew, matchRecommend } = this.props;
     const componentHot = matchHot.map(this.matchToComponent);
     const componentNew = matchNew.map(this.matchToComponent);
     const componentRecommend = matchRecommend.map(this.matchToComponent);
     return (
       <div className="HomePage">
+        <div className="Home-search">
+          <div className="Home-search-message">Find a match you want</div>
+          <button
+            id="Home-search-button"
+            type="button"
+            onClick={() => history.push('/search')}
+          >
+            Search
+          </button>
+        </div>
+        <div className="Home-create">
+          <div className="Home-create-message">Make your own matching now!</div>
+          <button
+            id="Home-create-button"
+            type="button"
+            onClick={() => history.push('/match/create')}
+          >
+            + Create Now
+          </button>
+        </div>
         <div className="HomeCategory Hot-match">
           Hot Matches
           {componentHot}
@@ -60,6 +79,9 @@ class HomePage extends Component {
   }
 }
 HomePage.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   matchHot: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,
