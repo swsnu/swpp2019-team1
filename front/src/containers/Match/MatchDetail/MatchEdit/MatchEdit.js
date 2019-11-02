@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { push } from 'connected-react-router';
+import { MatchPropTypes } from '../MatchDetail';
 import * as actionCreators from '../../../../store/actions';
 import {
   titleChange,
@@ -70,19 +71,19 @@ class MatchEdit extends Component {
 
   onClickEdit = () => {
     const { onEdit } = this.props;
-    const { timeBegin, timeEnd, restrictMale } = this.state;
+    const { id, timeBegin, timeEnd, restrictMale } = this.state;
     const matchInfo = {
       ...this.state,
       timeBegin: [
         timeBegin.getFullYear(),
-        timeBegin.getMonth(),
+        timeBegin.getMonth() + 1,
         timeBegin.getDate(),
         timeBegin.getHours(),
         timeBegin.getMinutes(),
       ],
       timeEnd: [
         timeEnd.getFullYear(),
-        timeEnd.getMonth(),
+        timeEnd.getMonth() + 1,
         timeEnd.getDate(),
         timeEnd.getHours(),
         timeEnd.getMinutes(),
@@ -91,7 +92,7 @@ class MatchEdit extends Component {
     };
     delete matchInfo.restrictMale;
     delete matchInfo.restrictFemale;
-    onEdit(matchInfo);
+    onEdit(id, matchInfo);
   };
 
   render() {
@@ -190,7 +191,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onEdit: editMatchInfo => dispatch(actionCreators.editMatch(editMatchInfo)),
+    onEdit: (id, editMatchInfo) =>
+      dispatch(actionCreators.editMatch(id, editMatchInfo)),
     onCancel: id => dispatch(push(`/match/${id}`)),
   };
 };
@@ -199,26 +201,7 @@ MatchEdit.propTypes = {
   match: ReactRouterPropTypes.match.isRequired,
   onEdit: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
-  selected: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    // matchThumbnail,
-    categoryID: PropTypes.number.isRequired,
-    capacity: PropTypes.number.isRequired,
-    isOnline: PropTypes.bool.isRequired,
-    locationText: PropTypes.string.isRequired,
-    // latitude and longitude will be implemented or removed after applying Google Map API
-    // locationLatitude: PropTypes.number.isRequired,
-    // locationLongitude: PropTypes.number.isRequired,
-    timeBegin: PropTypes.instanceOf(Date).isRequired,
-    timeEnd: PropTypes.instanceOf(Date).isRequired,
-    additionalInfo: PropTypes.string.isRequired,
-    isPeriodic: PropTypes.bool.isRequired,
-    period: PropTypes.number.isRequired,
-    isAgeRestricted: PropTypes.bool.isRequired,
-    restrictAgeFrom: PropTypes.number.isRequired,
-    restrictAgeTo: PropTypes.number.isRequired,
-    isGenderRestricted: PropTypes.bool.isRequired,
-  }).isRequired,
+  selected: MatchPropTypes.isRequired,
 };
 
 export default connect(

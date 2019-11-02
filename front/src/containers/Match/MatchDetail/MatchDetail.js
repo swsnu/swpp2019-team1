@@ -109,29 +109,31 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
+export const MatchPropTypes = PropTypes.shape({
+  title: PropTypes.string.isRequired,
+  // matchThumbnail,
+  categoryID: PropTypes.number.isRequired,
+  capacity: PropTypes.number.isRequired,
+  isOnline: PropTypes.bool.isRequired,
+  locationText: PropTypes.string.isRequired,
+  // latitude and longitude will be implemented or removed after applying Google Map API
+  // locationLatitude: PropTypes.number.isRequired,
+  // locationLongitude: PropTypes.number.isRequired,
+  timeBegin: PropTypes.instanceOf(Date).isRequired,
+  timeEnd: PropTypes.instanceOf(Date).isRequired,
+  additionalInfo: PropTypes.string.isRequired,
+  isPeriodic: PropTypes.bool.isRequired,
+  period: PropTypes.number.isRequired,
+  isAgeRestricted: PropTypes.bool.isRequired,
+  restrictAgeFrom: PropTypes.number.isRequired,
+  restrictAgeTo: PropTypes.number.isRequired,
+  isGenderRestricted: PropTypes.bool.isRequired,
+  hostID: PropTypes.number.isRequired,
+});
+
 MatchDetail.propTypes = {
   // user: PropTypes.object.isRequired,
-  selected: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    // matchThumbnail,
-    categoryID: PropTypes.number.isRequired,
-    capacity: PropTypes.number.isRequired,
-    isOnline: PropTypes.bool.isRequired,
-    locationText: PropTypes.string.isRequired,
-    // latitude and longitude will be implemented or removed after applying Google Map API
-    // locationLatitude: PropTypes.number.isRequired,
-    // locationLongitude: PropTypes.number.isRequired,
-    timeBegin: PropTypes.instanceOf(Date).isRequired,
-    timeEnd: PropTypes.instanceOf(Date).isRequired,
-    additionalInfo: PropTypes.string.isRequired,
-    isPeriodic: PropTypes.bool.isRequired,
-    period: PropTypes.number.isRequired,
-    isAgeRestricted: PropTypes.bool.isRequired,
-    restrictAgeFrom: PropTypes.number.isRequired,
-    restrictAgeTo: PropTypes.number.isRequired,
-    isGenderRestricted: PropTypes.bool.isRequired,
-    hostID: PropTypes.number.isRequired,
-  }),
+  selected: MatchPropTypes,
   onGetMatch: PropTypes.func.isRequired,
   onJoinMatch: PropTypes.func.isRequired,
   onQuitMatch: PropTypes.func.isRequired,

@@ -30,6 +30,7 @@ export const getMatch = id => {
                 match.fields.isGenderRestricted && !restrictedGender,
               restrictToFemale:
                 match.fields.isGenderRestricted && restrictedGender,
+              isPeriodic: !(match.fields.period === 0),
             }),
           );
         })
@@ -186,9 +187,9 @@ const editMatchAction = () => {
   };
 };
 
-export const editMatch = match => {
+export const editMatch = (id, match) => {
   return dispatch => {
-    return axios.put(`/api/match/`, match).then(res => {
+    return axios.put(`/api/match/${id}/`, match).then(res => {
       dispatch(editMatchAction());
       const { data } = res;
       const { pk } = JSON.parse(data)[0];
