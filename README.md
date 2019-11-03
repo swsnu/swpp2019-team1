@@ -5,26 +5,48 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=swsnu_swpp2019-team1&metric=alert_status)](https://sonarcloud.io/dashboard?id=swsnu_swpp2019-team1)
 
 # How to run
+
 ## Frontend
- - `yarn install`
- - `yarn start`
+
+- `yarn installf`
+- `yarn start`
+
 ## Backend
- - `pip install -r requirements.txt`
- - `python manage.py runserver`
+
+- `pip install -r requirements.txt` or `yarn installb`
+- `python manage.py runserver` or `yarn back`
 
 # How to test
+
 ## Frontend
+
 ### Unit Test
+
 Used `Enzyme` for frontend testing
-- `yarn testc`
+
+- `yarn testf`
+
 ### Lint Check
+
 Used `Eslint` with `eslint-config-airbnb`
-- `yarn lint`
+
+- `eslint src`or `yarn lintf`
+
 ## Backend
+
 ### Unit Test
+
 Used `Pytest` and `Coverage`
+
 - `coverage run --branch --source="." -m pytest`
 - `coverage report --fail-under=80 -m`
+
+  Or just type
+
+- `yarn testb`
+
 ### Lint Check
+
 Used `Pylint`
-- `pylint ./*/`
+
+- `pylint ./*/` or `yarn lintb`
