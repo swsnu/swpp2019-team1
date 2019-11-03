@@ -21,7 +21,7 @@ pids
 lib-cov
 
 # Coverage directory used by tools like istanbul
-coverage
+coverage/
 
 # nyc test coverage
 .nyc_output
@@ -59,17 +59,15 @@ typings/
 
 # Yarn Integrity file
 .yarn-integrity
-
 # dotenv environment variables file
 .env
 
 # dependencies
-/node_modules
 /.pnp
 .pnp.js
 
 # testing
-/coverage
+.coverage
 
 # production
 /build

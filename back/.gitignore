@@ -62,7 +62,6 @@ htmlcov/
 .tox/
 .nox/
 coverage/
-.coverage_cache/
 .coverage
 .coverage.*
 .cache
