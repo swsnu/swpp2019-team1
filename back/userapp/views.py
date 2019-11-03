@@ -1,12 +1,14 @@
 ''' custom user views '''
+from django.contrib.auth import get_user_model
 from django.contrib import auth
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseNotFound, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from djangorestframework_camel_case.parser import CamelCaseJSONParser
 
-from userapp.models import User
 from userapp.serializers import UserSerializer
+
+USER = get_user_model()
 
 
 @ensure_csrf_cookie
@@ -61,8 +63,8 @@ def sign_out(request):
 def user_detail(request, user_id):
     ''' user detail '''
     try:
-        user = User.objects.get(pk=user_id)
-    except User.DoesNotExist:
+        user = USER.objects.get(pk=user_id)
+    except USER.DoesNotExist:
         # 404
         return HttpResponseNotFound()
 

@@ -1,6 +1,6 @@
 ''' Custom user model serializer '''
 from rest_framework import serializers
-from userapp.models import User
+from django.contrib.auth import get_user_model
 # from django.conf import settings  # settings.AUTH_USER_MODEL
 
 
@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField()
 
     class Meta:
-        model = User
+        model = get_user_model()
         fields = ('id', 'email', 'username',
                   'first_name', 'last_name',
                   'phone_number', 'gender', 'birthdate',

@@ -32,8 +32,8 @@
     "testc": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject",
     "lint": "eslint src",
-    "backend": "python ../backend/manage.py runserver 8000",
-    "dev": "concurrently --kill-others \"npm run backend\" \"npm run start\"",
+    "back": "python ../back/manage.py runserver 8000",
+    "dev": "concurrently --kill-others \"yarn back\" \"yarn start\"",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
   },
   "browserslist": {

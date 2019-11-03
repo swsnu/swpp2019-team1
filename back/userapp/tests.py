@@ -4,13 +4,14 @@ userapp test
 import json
 from django.test import TestCase, Client
 from django.conf import settings
+from django.contrib.auth import get_user_model
 
-from userapp.models import User
+USER = get_user_model()
 
 
 def create_dummy_user():
     '''create dummy user'''
-    return User.objects.create_user(email='TEST_EMAIL@test.com', password='TEST_PASSWORD',
+    return USER.objects.create_user(email='TEST_EMAIL@test.com', password='TEST_PASSWORD',
                                     username='TEST_USERNAME', first_name='TEST_FIRST_NAME',
                                     last_name='TEST_LAST_NAME', phone_number='010-1234-5678',
                                     gender=settings.MALE, birthdate='2000-01-01',
@@ -23,7 +24,7 @@ class UserappTestCase(TestCase):
     def test_user_model(self):
         '''test user model'''
         with self.assertRaises(ValueError):
-            User.objects.create_user(email='')
+            USER.objects.create_user(email='')
         test_user = create_dummy_user()
         self.assertEqual(test_user.__str__(), test_user.username)
         self.assertEqual(test_user.get_full_name(),
@@ -33,19 +34,19 @@ class UserappTestCase(TestCase):
     def test_create_superuser(self):
         '''test create superuser'''
         with self.assertRaises(ValueError):
-            User.objects.create_superuser(
+            USER.objects.create_superuser(
                 email='TEST_EMAIL@test.com', password='TEST_PASSWORD',
                 username='TEST_USERNAME', first_name='TEST_FIRST_NAME',
                 last_name='TEST_LAST_NAME', phone_number='010-1234-5678',
                 gender=settings.MALE, birthdate='2000-01-01',
                 is_email_public=False, is_interest_public=False, is_superuser=False)
-        test_superuser = User.objects.create_superuser(
+        test_superuser = USER.objects.create_superuser(
             email='TEST_EMAIL@test.com', password='TEST_PASSWORD',
             username='TEST_USERNAME', first_name='TEST_FIRST_NAME',
             last_name='TEST_LAST_NAME', phone_number='010-1234-5678',
             gender=settings.MALE, birthdate='2000-01-01',
             is_email_public=False, is_interest_public=False)
-        self.assertIsInstance(test_superuser, User)
+        self.assertIsInstance(test_superuser, USER)
 
     def test_csrf(self):
         ''' test csrf '''
@@ -264,5 +265,5 @@ class UserappTestCase(TestCase):
                                 content_type='application/json',
                                 HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
-        changed_password = User.objects.get(id=test_user.id).password
+        changed_password = USER.objects.get(id=test_user.id).password
         self.assertNotEqual(changed_password, last_password)

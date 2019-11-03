@@ -36,6 +36,7 @@ matrix:
         - coverage run --branch --source="." -m pytest
         # - coverage run --branch --source='./matchmaker' manage.py test
         - coverage report --fail-under=80 -m
+        - pylint ./*/
         - sonar-scanner -Dsonar.verbose=true -X
       after_success:
         - coveralls
