@@ -27,6 +27,8 @@ def sign_up(request):
         data = CamelCaseJSONParser().parse(request)
         serializer = UserSerializer(data=data)
         if serializer.is_valid():
+            print(serializer.initial_data)
+            print("HAH2")
             user = serializer.create(data)
             auth.login(request, user)
             # 200
