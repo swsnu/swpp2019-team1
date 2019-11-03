@@ -48,4 +48,5 @@ jobs:
           token:
             secure: "BX3n/Q6NC4DDarjLl7FVlSAOu3wIumh4/p3Gzad/1p4Hk9rzkYpKva+kCfYqaFBmogtefxj0Ps9tse5GJ4IRFZedePJYmetD+Ew/3/n9nMiT5VAE2Hh7QTfNoSTEiBMavoin/rYdNuiLKeiPbXQ0urN9sFD36BghF00arKwnk2ziuvkxYhhxwgoQNvSJPAszsZV4EVbKm2ykSto4p5zCAqmEha/is8kwFm1LP/tpXGo5MKmo/CGzQS7L6bK8AtksNst22EiwMyrwrNFCy5RIKgP/obE1cZEZKz/lrmiB7PZ9ubx/X90SNCSAZTFrjcqKenBW/n+YVznJEMq492akI9z9ox7v6EfH3nI4cucNaLkj3xN2HEE+3rrjOah8TlXLokWv4BJWH1Q5tWHurmkM3pwBddrgZloNwO48CVN29xheob8iyykSiOxjqYfHu+2ovQ+sqYEmX9wstJTdN9LjYTzS7mP0TLlDE2ipLJutJRhZE+GHKOGEOBwwTPz7QWVwcmXoHpxsEQV56IbonjQDfLT772bhSD7vo4YQfuslmMOcjstfTSAeoShq02uKLc1rU704xe6/aQtmqaVXua4UqbWfVLB5xBx4BD7aSDwTm56T0y3prBE79HmtbUYm5W+alC+eMhU8/eBtbPCr6RRYKMDfWLmf7ZwyFXN7Ykf0Ds8="
       script:
+        - cat front/coverage/lcov.info
         - sonar-scanner
