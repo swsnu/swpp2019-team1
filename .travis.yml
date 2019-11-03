@@ -11,42 +11,35 @@ before_install:
 
 jobs:
   include:
-    - stage: Test
-      language: node_js
+    - language: node_js
       node_js:
         - "10"
       dist: trusty
-      before_install:
-        - cd front
       install:
+        - cd front
         - yarn install
       script:
         - "./node_modules/.bin/eslint src"
         - yarn testf_
-      after_success:
+      after_script:
         - yarn coveralls
 
-    - stage: Test
-      language: python
+    - language: python
       python: 3.7.4
       dist: xenial
-      before_install:
-        - cd back
       install:
+        - cd back
         - pip install -r requirements.txt
       script:
         - coverage run --branch --source="." -m pytest
         - coverage report --fail-under=80 -m
         - coverage xml
-      after_success:
+        - pylint ./*/
+      after_script:
         - coveralls
     - stage: Sonarcloud code anaysis
-      addons:
-        sonarcloud:
-          organization: "swsnu"
-          token:
-            secure: "BX3n/Q6NC4DDarjLl7FVlSAOu3wIumh4/p3Gzad/1p4Hk9rzkYpKva+kCfYqaFBmogtefxj0Ps9tse5GJ4IRFZedePJYmetD+Ew/3/n9nMiT5VAE2Hh7QTfNoSTEiBMavoin/rYdNuiLKeiPbXQ0urN9sFD36BghF00arKwnk2ziuvkxYhhxwgoQNvSJPAszsZV4EVbKm2ykSto4p5zCAqmEha/is8kwFm1LP/tpXGo5MKmo/CGzQS7L6bK8AtksNst22EiwMyrwrNFCy5RIKgP/obE1cZEZKz/lrmiB7PZ9ubx/X90SNCSAZTFrjcqKenBW/n+YVznJEMq492akI9z9ox7v6EfH3nI4cucNaLkj3xN2HEE+3rrjOah8TlXLokWv4BJWH1Q5tWHurmkM3pwBddrgZloNwO48CVN29xheob8iyykSiOxjqYfHu+2ovQ+sqYEmX9wstJTdN9LjYTzS7mP0TLlDE2ipLJutJRhZE+GHKOGEOBwwTPz7QWVwcmXoHpxsEQV56IbonjQDfLT772bhSD7vo4YQfuslmMOcjstfTSAeoShq02uKLc1rU704xe6/aQtmqaVXua4UqbWfVLB5xBx4BD7aSDwTm56T0y3prBE79HmtbUYm5W+alC+eMhU8/eBtbPCr6RRYKMDfWLmf7ZwyFXN7Ykf0Ds8="
       script:
         - sonar-scanner
+
 after_success:
   - aws s3 sync /home/travis/build/swsnu/swpp2019-team1 s3://travis-build-stages-shared-storage-test/$TRAVIS_BUILD_NUMBER
