@@ -11,10 +11,10 @@ const createUserAction = () => {
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export const createUser = () => {
+export const createUser = signUpInfo => {
   return dispatch => {
     return axios
-      .post(`/api/signup/`)
+      .post(`/api/user/signup/`, signUpInfo)
       .then(() => {
         dispatch(createUserAction());
         dispatch(push('/home'));
