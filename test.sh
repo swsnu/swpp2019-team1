@@ -24,12 +24,13 @@ RED='\033[01;31m'
 GREEN='\033[01;32m'
 YELLOW='\033[01;33m'
 BLUE='\033[01;34m'
-LIGHT_CYAN='\033[1;36m'
+CYAN='\033[1;36m'
 NONE='\033[00m'
 BOLD='\033[1m'
 UNDERLINE='\033[4m'
 RED_BACK='\033[41m'
 BLUE_BACK='\033[44m'
+CYAN_BACK='\033[7;36m'
 
 # frontend, backend 디렉토리 이름
 front_dir_name="front"
@@ -56,6 +57,20 @@ cnt_fail=0
 pylintrc="${back_path}/.pylintrc"
 
 if [ $# -eq 1 ]; then
+  if [ $1 = "saveb" ]; then
+    while true; do
+      read -p "Do you want to save backend requirements?(y/n) " input
+      case ${input} in
+      [Yy]*)
+        (pip freeze >${back_path}/requirements.txt)
+        echo -e "\n${BOLD}${CYAN}Requirements saved.${NONE}\n"
+        exit
+        ;;
+      [Nn]*) exit ;;
+      *) echo "Please answer yes or no." ;;
+      esac
+    done
+  fi
   while getopts "afbl" opt; do
     case $opt in
     a)
@@ -113,11 +128,11 @@ fi
 if ${do_test_front} || ${do_lint_check_front}; then
   if ${do_test_front}; then
     echo "-------------"
-    echo -e "${LIGHT_CYAN}Test frontend${NONE}"
+    echo -e "${BLUE}Test frontend${NONE}"
     echo "-------------"
-    (yarn --cwd="${front_path}" test --coverage --watchAll=false)
+    (cd ${front_path} && yarn testf_)
     if [ $? -eq 0 ]; then
-      echo -e "\n${BOLD}${BLUE_BACK}${UNDERLINE}FRONTEND TEST PASSED!${NONE}\n"
+      echo -e "\n${BOLD}${CYAN_BACK}${UNDERLINE}FRONTEND TEST PASSED!${NONE}\n"
       cnt_pass=$(expr ${cnt_pass} + 1)
     elif [ $? -eq 1 ]; then
       is_error=true
@@ -127,11 +142,11 @@ if ${do_test_front} || ${do_lint_check_front}; then
   fi
   if ${do_lint_check}; then
     echo "--------------------------"
-    echo -e "${LIGHT_CYAN}Check frontend lint errors${NONE}"
+    echo -e "${BLUE}Check frontend lint errors${NONE}"
     echo "--------------------------"
-    (yarn --cwd="${front_path}" lint)
+    (cd ${front_path} && yarn lintf_)
     if [ $? -eq 0 ]; then
-      echo -e "\n${BOLD}${BLUE_BACK}${UNDERLINE}FRONTEND LINT CHECK PASSED!${NONE}\n"
+      echo -e "\n${BOLD}${CYAN_BACK}${UNDERLINE}FRONTEND LINT CHECK PASSED!${NONE}\n"
       cnt_pass=$(expr ${cnt_pass} + 1)
     elif [ $? -eq 1 ]; then
       is_error=true
@@ -143,7 +158,7 @@ fi
 if ${do_test_back} || ${do_lint_check_back}; then
   if ${do_test_back}; then
     echo "------------"
-    echo -e "${LIGHT_CYAN}Test backend${NONE}"
+    echo -e "${BLUE}Test backend${NONE}"
     echo "------------"
     temp_COVERAGE_FILE=${COVERAGE_FILE}
     export COVERAGE_FILE="${back_path}/.coverage"
@@ -151,7 +166,7 @@ if ${do_test_back} || ${do_lint_check_back}; then
     #(coverage run --branch --source="${back_path}" ${back_path}"/"manage.py test ${back_path})
     (cd ${back_path} && coverage run --branch --source="." -m pytest) # -v for verbose
     if [ $? -eq 0 ]; then
-      echo -e "\n${BOLD}${BLUE_BACK}${UNDERLINE}BACKEND TEST PASSED!${NONE}\n"
+      echo -e "\n${BOLD}${CYAN_BACK}${UNDERLINE}BACKEND TEST PASSED!${NONE}\n"
       cnt_pass=$(expr ${cnt_pass} + 1)
     elif [ $? -eq 1 ]; then
       is_error=true
@@ -161,7 +176,7 @@ if ${do_test_back} || ${do_lint_check_back}; then
 
     (cd ${back_path} && coverage report --fail-under=80 -m)
     if [ $? -eq 0 ]; then
-      echo -e "\n${BOLD}${BLUE_BACK}${UNDERLINE}BACKEND TEST COVERAGE >= 80%${NONE}\n"
+      echo -e "\n${BOLD}${CYAN_BACK}${UNDERLINE}BACKEND TEST COVERAGE >= 80%${NONE}\n"
       cnt_pass=$(expr ${cnt_pass} + 1)
     elif [ $? -eq 1 ]; then
       is_error=true
@@ -174,11 +189,11 @@ if ${do_test_back} || ${do_lint_check_back}; then
     temp_PYLINTRC=${pylintrc}
     export PYLINTRC=${pylintrc}
     echo "-------------------------"
-    echo -e "${LIGHT_CYAN}Check backend lint errors${NONE}"
+    echo -e "${BLUE}Check backend lint errors${NONE}"
     echo "-------------------------"
     (pylint ${back_path}"/"*"/")
     if [ $? -eq 0 ]; then
-      echo -e "\n${BOLD}${BLUE_BACK}${UNDERLINE}BACKEND LINT CHECK PASSED!${NONE}\n"
+      echo -e "\n${BOLD}${CYAN_BACK}${UNDERLINE}BACKEND LINT CHECK PASSED!${NONE}\n"
       cnt_pass=$(expr ${cnt_pass} + 1)
     elif [ $? -eq 1 ]; then
       is_error=true
@@ -191,5 +206,5 @@ fi
 if ${is_error}; then
   echo -e "\n${BOLD}${RED}There are ${cnt_fail} error(s).${NONE}\n"
 else
-  echo -e "\n${BOLD}${BLUE}All(${cnt_pass}) checks have passed.${NONE}\n"
+  echo -e "\n${BOLD}${CYAN}All(${cnt_pass}) checks have passed.${NONE}\n"
 fi

@@ -1,0 +1,29 @@
+{
+  "name": "root",
+  "version": "0.1.0",
+  "private": true,
+  "license": "unlicensed",
+  "proxy": "http://localhost:8000",
+  "scripts": {
+    "start": "cd front && node_modules/.bin/react-scripts start",
+    "build": "cd front && node_modules/.bin/react-scripts build",
+    "eject": "cd front && node_modules/.bin/react-scripts eject",
+    "test_bak": "cd front && node_modules/.bin/react-scripts test",
+    "install": "cd front && yarn install && cd ../back && pip install -r requirements.txt",
+    "installf": "cd front && yarn install",
+    "installb": "cd back && pip install -r requirements.txt",
+    "saveb": "./test.sh saveb",
+    "testf": "./test.sh -f",
+    "testb": "./test.sh -b",
+    "test": "./test.sh -a",
+    "testfl": "./test.sh -fl",
+    "testbl": "./test.sh -bl",
+    "testl": "./test.sh -al",
+    "lintf": "cd front && ../test.sh -l",
+    "lintb": "cd back && ../test.sh -l",
+    "lint": "./test.sh -l",
+    "back": "python back/manage.py runserver 8000",
+    "dev": "cd front && yarn dev",
+    "coveralls": "cd front && cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
+  }
+}
