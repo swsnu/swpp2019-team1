@@ -38,6 +38,10 @@ jobs:
         - coveralls
 
     - stage: Sonarcloud code anaysis
+      cache:
+        directories:
+          - front/coverage
+          - back/.coverage_cache
       addons:
         sonarcloud:
           organization: "swsnu"
