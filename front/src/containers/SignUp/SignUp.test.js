@@ -20,7 +20,7 @@ const dummySignUpInput = {
   username: 'test_username',
   firstName: 'test_firstName',
   lastName: 'test_lastName',
-  phone: '012-3456-7890',
+  phoneNumber: '012-3456-7890',
   gender: true,
   birthdate: '2000-12-12',
 };
@@ -58,7 +58,7 @@ describe('<SignUp />', () => {
       username,
       firstName,
       lastName,
-      phone,
+      phoneNumber,
       gender,
       birthdate,
     } = dummySignUpInput;
@@ -68,7 +68,7 @@ describe('<SignUp />', () => {
       username,
       firstName,
       lastName,
-      phone,
+      phoneNumber,
       gender,
       birthdate,
     };
@@ -108,7 +108,7 @@ describe('<SignUp />', () => {
         target: { name: 'lastName', value: dummySignUpInput.lastName },
       });
       wrapper.at(6).prop('onChange')({
-        target: { name: 'phone', value: dummySignUpInput.phone },
+        target: { name: 'phoneNumber', value: dummySignUpInput.phoneNumber },
       });
       wrapper = component.find('Checkbox');
       wrapper.at(0).prop('onChange')({
@@ -142,7 +142,7 @@ describe('<SignUp />', () => {
       username,
       firstName,
       lastName,
-      phone,
+      phoneNumber,
       gender,
       birthdate,
     } = dummySignUpInput;
@@ -152,7 +152,7 @@ describe('<SignUp />', () => {
       username,
       firstName,
       lastName,
-      phone,
+      phoneNumber,
       gender,
       birthdate,
     };
@@ -180,9 +180,9 @@ describe('<SignUp />', () => {
       fireEvent.change(lastNameInput, {
         target: { value: dummySignUpInput.lastName },
       });
-      const phoneInput = signUpRendering.getByLabelText('Phone');
-      fireEvent.change(phoneInput, {
-        target: { value: dummySignUpInput.phone },
+      const phoneNumberInput = signUpRendering.getByLabelText('Phone Number');
+      fireEvent.change(phoneNumberInput, {
+        target: { value: dummySignUpInput.phoneNumber },
       });
 
       const genderInput = signUpRendering.getByLabelText('Male');

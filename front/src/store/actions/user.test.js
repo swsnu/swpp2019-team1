@@ -11,7 +11,7 @@ const stubSignUpInfo = {
   username: '',
   firstName: '',
   lastName: '',
-  phone: '',
+  phoneNumber: '',
   gender: null,
   birthdate: null,
 };

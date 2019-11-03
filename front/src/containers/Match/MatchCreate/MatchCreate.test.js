@@ -62,11 +62,11 @@ describe('<MatchCreate />', () => {
       .instance();
     expect(createInstance.state.title).toEqual(title);
     // categoryId change
-    const categoryID = 3;
+    const categoryId = 3;
     wrapper = component.find('#match-category-id-input');
     expect(wrapper.length).toBe(1);
-    wrapper.simulate('change', { target: { value: categoryID } });
-    expect(createInstance.state.categoryID).toEqual(categoryID);
+    wrapper.simulate('change', { target: { value: categoryId } });
+    expect(createInstance.state.categoryId).toEqual(categoryId);
     // capacity change
     const capacity = 3;
     wrapper = component.find('#match-capacity-input');

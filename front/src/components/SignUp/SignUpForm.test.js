@@ -11,7 +11,7 @@ describe('<SignUpForm />', () => {
       username: '',
       firstName: '',
       lastName: '',
-      phone: '',
+      phoneNumber: '',
       gender: undefined,
       birthdate: '',
     };
@@ -23,7 +23,7 @@ describe('<SignUpForm />', () => {
         username={dummySignUpState.username}
         firstName={dummySignUpState.firstName}
         lastName={dummySignUpState.lastName}
-        phone={dummySignUpState.phone}
+        phoneNumber={dummySignUpState.phoneNumber}
         gender={dummySignUpState.gender}
         birthdate={dummySignUpState.birthdate}
         clickSignUp={() => null}

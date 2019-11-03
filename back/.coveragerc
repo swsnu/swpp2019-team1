@@ -1,0 +1,16 @@
+[run]
+omit =
+    # omit anything in a .local directory anywhere
+    # */.local/*
+    # omit everything in /usr
+    # /usr/*
+    # omit this single file
+    # utils/tirefire.py
+    */migrations/*
+    */__init__.py
+    back/*.py
+    manage.py
+[paths]
+# source =
+    # /src
+    # C:\myproj\src

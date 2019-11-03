@@ -1,60 +1,59 @@
+'''
+matchmaker models
+'''
 from django.db import models
 from django.utils import timezone
 
+from userapp.models import User
+
+
+class Category(models.Model):
+    '''
+    Category model
+    '''
+    name = models.CharField(max_length=45)
+
 
 class Match(models.Model):
-
-    CATEGORY_NONE = 0
-    CATEGORY_GAME = 1
-    CATEGORY_STUDY = 2
-    CATEGORY_SPORTS = 3
-
-    CATEGORY_CHOICES = (
-        (CATEGORY_NONE, 'None'),
-        (CATEGORY_GAME, 'Game'),
-        (CATEGORY_STUDY, 'Study'),
-        (CATEGORY_SPORTS, 'Sports'),
-    )
+    '''
+    Match model
+    '''
 
     def __str__(self):
         return self.title
 
     title = models.CharField(max_length=100, default='')
-    # User model not yet implemented
-    # hostUser = models.ForeignKey(
-    #         User,
-    #         on_delete=models.CASCADE,
-    #         related_name='match_set',
-    # )
-    # thumbnail
-    categoryID = models.PositiveSmallIntegerField(
-        choices=CATEGORY_CHOICES,
-        default=CATEGORY_NONE
+    host_user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='match_set',
+        blank=False
     )
+    match_thumbnail = models.ImageField(
+        upload_to='thumbnail/', blank=True, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     capacity = models.PositiveSmallIntegerField(default=2)
-    numParticipants = models.PositiveSmallIntegerField(default=1)
-    isFull = models.BooleanField(default=False)
+    num_participants = models.PositiveSmallIntegerField(default=1)
+    is_full = models.BooleanField(default=False)
 
-    locationText = models.CharField(max_length=100, default='')
-    # locationLatitude = models.PositiveSmallIntegerField(default=0)
-    # locationLongitude = models.PositiveSmallIntegerField(default=0)
+    location_text = models.CharField(max_length=100, default='')
+    # location_latitude = models.PositiveSmallIntegerField(default=0)
+    # location_longitude = models.PositiveSmallIntegerField(default=0)
 
     # 0 means not periodic
     period = models.PositiveSmallIntegerField(default=0)
-    additionalInfo = models.TextField(default='')
+    additional_info = models.TextField(default='')
 
-    isAgeRestricted = models.BooleanField(default=False)
-    restrictAgeFrom = models.PositiveSmallIntegerField(default=0)
-    restrictAgeTo = models.PositiveSmallIntegerField(default=0)
+    is_age_restricted = models.BooleanField(default=False)
+    restrict_age_from = models.PositiveSmallIntegerField(default=0)
+    restrict_age_to = models.PositiveSmallIntegerField(default=0)
 
-    MALES_ARE_RESTRICTED = False
-    FEMALES_ARE_RESTRICTED = True
-    isGenderRestricted = models.BooleanField(default=False)
-    restrictedGender = models.BooleanField(default=False)
+    is_gender_restricted = models.BooleanField(default=False)
+    restricted_gender = models.BooleanField(default=False)
 
-    timeBegin = models.DateTimeField(default=timezone.now)
-    timeEnd = models.DateTimeField(default=timezone.now)
+    time_begin = models.DateTimeField(default=timezone.now)
+    time_end = models.DateTimeField(default=timezone.now)
 
-    viewCount = models.PositiveIntegerField(default=0)
+    view_count = models.PositiveIntegerField(default=0)
     created_on = models.DateTimeField(
         auto_now_add=True)

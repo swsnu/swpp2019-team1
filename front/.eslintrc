@@ -2,7 +2,13 @@
   "parserOptions": {
     "ecmaVersion": 6
   },
-  "extends": ["react-app", "airbnb", "plugin:prettier/recommended"],
+  "extends": [
+    "react-app",
+    "airbnb",
+    "plugin:prettier/recommended",
+    "prettier/react",
+    "prettier/standard"
+  ],
   "rules": {
     "react/jsx-filename-extension": 0
   }

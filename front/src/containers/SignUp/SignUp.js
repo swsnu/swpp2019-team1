@@ -15,7 +15,7 @@ class SignUp extends Component {
       username: '',
       firstName: '',
       lastName: '',
-      phone: '',
+      phoneNumber: '',
       gender: undefined,
       birthdate: '',
     };
@@ -30,7 +30,7 @@ class SignUp extends Component {
       username: values.username,
       firstName: values.firstName,
       lastName: values.lastName,
-      phone: values.phone,
+      phoneNumber: values.phoneNumber,
       gender: values.gender,
       birthdate: values.birthdate,
     };
@@ -45,7 +45,7 @@ class SignUp extends Component {
       username,
       firstName,
       lastName,
-      phone,
+      phoneNumber,
       gender,
       birthdate,
     } = this.state;
@@ -58,7 +58,7 @@ class SignUp extends Component {
           username={username}
           firstName={firstName}
           lastName={lastName}
-          phone={phone}
+          phoneNumber={phoneNumber}
           gender={gender}
           birthdate={birthdate}
           clickSignUp={this.clickSignUpHandler}
