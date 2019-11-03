@@ -6,18 +6,25 @@
 
 # How to run
 ## Frontend
- - yarn install
- - yarn start
+ - `yarn install`
+ - `yarn start`
 ## Backend
- - pip install -r requirements.txt
- - python manage.py runserver
+ - `pip install -r requirements.txt`
+ - `python manage.py runserver`
 
 # How to test
 ## Frontend
-We used Enzyme for frontend testing
-- yarn test --coverage --watchAll=false
+### Unit Test
+Used `Enzyme` for frontend testing
+- `yarn testc`
+### Lint Check
+Used `Eslint` with `eslint-config-airbnb`
+- `yarn lint`
 ## Backend
-- coverage run --source='./matchmaker' manage.py test
-- coverage report
-- coverage run --branch --source='./matchmaker' manage.py test
-- coverage report
+### Unit Test
+Used `Pytest` and `Coverage`
+- `coverage run --branch --source="." -m pytest`
+- `coverage report --fail-under=80 -m`
+### Lint Check
+Used `Pylint`
+- `pylint ./*/`
