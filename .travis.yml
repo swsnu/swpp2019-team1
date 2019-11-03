@@ -23,7 +23,7 @@ jobs:
       cache:
         pip: true
         directory:
-          - back/coverage
+          - back/.coverage_cache
       dist: xenial
       install:
         - cd back
@@ -31,10 +31,12 @@ jobs:
       script:
         - coverage run --branch --source="." -m pytest
         - coverage report --fail-under=80 -m
-        - coverage xml -o ./coverage/coverage.xml
+        - coverage xml -o ./.coverage_cache/coverage.xml
+        - cp .coverage ./.coverage_cache/.coverage
         - pylint ./*/
       after_script:
         - coveralls
+
     - stage: Sonarcloud code anaysis
       addons:
         sonarcloud:
