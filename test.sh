@@ -149,7 +149,7 @@ if ${do_test_back} || ${do_lint_check_back}; then
     export COVERAGE_FILE="${back_path}/.coverage"
 
     #(coverage run --branch --source="${back_path}" ${back_path}"/"manage.py test ${back_path})
-    (cd ${back_path} && coverage run --branch -m pytest) # -v for verbose
+    (cd ${back_path} && coverage run --branch --source="." -m pytest) # -v for verbose
     if [ $? -eq 0 ]; then
       echo -e "\n${BOLD}${BLUE_BACK}${UNDERLINE}BACKEND TEST PASSED!${NONE}\n"
       cnt_pass=$(expr ${cnt_pass} + 1)

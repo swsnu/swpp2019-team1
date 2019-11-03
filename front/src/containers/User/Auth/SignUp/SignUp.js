@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
-import * as actionCreators from '../../store/actions';
-import SignUpForm from '../../components/SignUp/SignUpForm';
+import * as actionCreators from '../../../../store/actions';
+import SignUpForm from '../../../../components/User/Auth/SignUp/SignUpForm';
 
 class SignUp extends Component {
   constructor(props) {
