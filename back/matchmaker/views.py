@@ -28,7 +28,6 @@ def match(request):
     '''Makes and returns a new match.'''
     if request.method == 'POST':
         try:
-            print(request.body)
             data = CamelCaseJSONParser().parse(request)
             category_id = data['category_id']
             time_begin = arrow.get(data['time_begin']).datetime
@@ -45,7 +44,6 @@ def match(request):
             return HttpResponseNotFound()
         data['host_user_id'] = request.user.id
         match_serializer = MatchSerializer(data=data)
-        print(match_serializer.initial_data)
         if match_serializer.is_valid():
             match_serializer.create(data)
             return JsonResponse(match_serializer.data, status=201)

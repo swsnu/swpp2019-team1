@@ -28,7 +28,8 @@ const initialState = {
 //   myMatch: [],
 // };
 
-const reducer = (state = initialState, action) => {
+const matchReducer = (state, action) => {
+  if (typeof state === 'undefined') return initialState;
   switch (action.type) {
     case actionTypes.GET_MATCH:
       return { ...state, selected: action.match };
@@ -56,4 +57,4 @@ const reducer = (state = initialState, action) => {
   return state;
 };
 
-export default reducer;
+export default matchReducer;

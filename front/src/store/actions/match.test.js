@@ -76,14 +76,6 @@ const stubHot = { dummy: 'hot' };
 const stubRecommend = { dummy: 'recommend' };
 
 const stubMatchPk = 2;
-// eslint-disable-next-line no-unused-vars
-const stubMatch = {
-  hot: [],
-  new: [],
-  recommend: [],
-  searchResult: [],
-  selected: null,
-};
 
 const stubNewMatch = {
   title: '',

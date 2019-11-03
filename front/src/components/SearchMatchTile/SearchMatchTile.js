@@ -4,7 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const HomeMatchTile = props => {
+const SearchMatchTile = props => {
   const {
     title,
     host,
@@ -26,7 +26,7 @@ const HomeMatchTile = props => {
     </button>
   );
 };
-HomeMatchTile.propTypes = {
+SearchMatchTile.propTypes = {
   title: PropTypes.string.isRequired,
   host: PropTypes.string.isRequired,
   location: PropTypes.arrayOf(PropTypes.number).isRequired,
@@ -35,4 +35,4 @@ HomeMatchTile.propTypes = {
   capacity: PropTypes.number.isRequired,
   clickHandler: PropTypes.func.isRequired,
 };
-export default HomeMatchTile;
+export default SearchMatchTile;

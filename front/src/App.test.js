@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 
 import App from './App';
-import getMockStore from './test-utils/mocks';
+import getMockStore from './test-utils/getMockStore';
 import { history } from './store/store';
 
 const stubInitUser = {};

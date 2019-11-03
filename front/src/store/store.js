@@ -3,8 +3,8 @@ import thunk from 'redux-thunk';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 
-import userReducer from './reducers/user';
-import matchReducer from './reducers/match';
+import userReducer from './reducers/userReducer';
+import matchReducer from './reducers/matchReducer';
 
 export const history = createBrowserHistory();
 const rootReducer = combineReducers({
@@ -12,8 +12,8 @@ const rootReducer = combineReducers({
   match: matchReducer,
   router: connectRouter(history),
 });
-export const middlewares = [thunk, routerMiddleware(history)];
 
+export const middlewares = [thunk, routerMiddleware(history)];
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   rootReducer,
