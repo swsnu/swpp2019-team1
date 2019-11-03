@@ -6,9 +6,9 @@ import { Route, Switch } from 'react-router-dom';
 import { act } from '@testing-library/react';
 import { Form, DatePicker } from 'formik-antd';
 import SignUp from './SignUp';
-import getMockStore from '../../test-utils/mocks';
-import { history } from '../../store/store';
-import * as actionCreators from '../../store/actions/user';
+import getMockStore from '../../../../test-utils/mocks';
+import { history } from '../../../../store/store';
+import * as actionCreators from '../../../../store/actions/user';
 
 const dummyUser = {};
 const dummyMatch = {};

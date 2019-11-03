@@ -12,9 +12,9 @@ import Search from './containers/Search/Search';
 import MatchCreate from './containers/Match/MatchCreate/MatchCreate';
 import MatchDetail from './containers/Match/MatchDetail/MatchDetail';
 import MatchEdit from './containers/Match/MatchDetail/MatchEdit/MatchEdit';
-import SignIn from './containers/SignIn/SignIn';
-import SignUp from './containers/SignUp/SignUp';
-import UserProfile from './containers/UserProfile/UserProfile';
+import SignIn from './containers/User/Auth/SignIn/SignIn';
+import SignUp from './containers/User/Auth/SignUp/SignUp';
+import UserProfile from './containers/User/UserProfile/UserProfile';
 
 function App(props) {
   const { history } = props;
