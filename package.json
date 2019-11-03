@@ -9,7 +9,7 @@
     "build": "cd front && node_modules/.bin/react-scripts build",
     "eject": "cd front && node_modules/.bin/react-scripts eject",
     "test_bak": "cd front && node_modules/.bin/react-scripts test",
-    "install": "cd front && yarn install && cd ../back && pip install -r requirements.txt",
+    "installa": "cd front && yarn install && cd ../back && pip install -r requirements.txt",
     "installf": "cd front && yarn install",
     "installb": "cd back && pip install -r requirements.txt",
     "saveb": "./test.sh saveb",
