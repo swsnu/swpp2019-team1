@@ -3,7 +3,8 @@
 from django.contrib import auth
 # HttpResponseForbidden,  HttpResponseBadRequest,
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseNotFound, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+# from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 # from django.conf import settings  # settings.AUTH_USER_MODEL
 from djangorestframework_camel_case.parser import CamelCaseJSONParser
@@ -12,19 +13,18 @@ from userapp.models import User
 from userapp.serializers import UserSerializer
 
 
-@csrf_exempt
+@ensure_csrf_cookie
+def token(request):
+    ''' get csrf token '''
+    if request.method == 'GET':
+        return HttpResponse(status=204)
+    return HttpResponseNotAllowed(['GET'])
+
+
 def sign_up(request):
-    # pylint: disable=too-many-locals
     ''' sign up '''
     if request.method == 'POST':
         data = CamelCaseJSONParser().parse(request)
-        '''
-        try:
-            data['birthdate'] = datetime.fromtimestamp(
-                data['birthdate'], tz=timezone.get_current_timezone())
-        except (KeyError):
-            print('no key')
-        '''
         serializer = UserSerializer(data=data)
         if serializer.is_valid():
             user = serializer.create(data)
@@ -37,7 +37,6 @@ def sign_up(request):
     return HttpResponseNotAllowed(['POST'])
 
 
-@csrf_exempt
 def sign_in(request):
     ''' sign in '''
     if request.method == 'POST':
@@ -52,7 +51,6 @@ def sign_in(request):
     return HttpResponseNotAllowed(['POST'])
 
 
-@csrf_exempt
 def sign_out(request):
     ''' sign out '''
     if request.method == 'POST':
@@ -64,7 +62,6 @@ def sign_out(request):
     return HttpResponseNotAllowed(['POST'])
 
 
-@csrf_exempt
 def user_detail(request, user_id):
     ''' user detail '''
     try:

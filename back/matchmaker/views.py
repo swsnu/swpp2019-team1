@@ -25,28 +25,11 @@ def match_simple_serializer(match_object):
     }
 
 
-# pylint: disable-msg=too-many-locals
-
-# uncomment after implementing login
-# @check_authenticated
-
 def match(request):
-    # pylint: disable=too-many-locals
     '''Makes and returns a new match.'''
     if request.method == 'POST':
         try:
             data = CamelCaseJSONParser().parse(request)
-            '''
-            capacity = data['capacity']
-            location_text = data['location_text']
-            period = data['period']
-            additional_info = data['additional_info']
-            is_age_restricted = data['is_age_restricted']
-            restrict_age_from = data['restrict_age_from']
-            restrict_age_to = data['restrict_age_to']
-            is_gender_restricted = data['is_gender_restricted']
-            restricted_gender = data['restricted_gender']
-            '''
             category_id = data['category_id']
             time_begin = arrow.get(data['time_begin']).datetime
             time_end = arrow.get(data['time_end']).datetime
@@ -69,7 +52,6 @@ def match(request):
         return HttpResponseBadRequest()
     # 405
     return HttpResponseNotAllowed(['POST'])
-# pylint: enable-msg=too-many-locals
 
 
 @ensure_csrf_cookie
@@ -81,7 +63,6 @@ def match_new(request):
     return HttpResponseNotAllowed(['GET'])
 
 
-# pylint: disable-msg=too-many-locals
 def match_detail(request, match_id):
     '''Handles requests about a match'''
     if request.method == 'GET':
@@ -117,8 +98,6 @@ def match_detail(request, match_id):
     #     # not yet implemented
     #     return HttpResponse(status=200)
     return HttpResponseNotAllowed(['GET', 'PUT', 'PATCH', 'DELETE'])
-
-# pylint: enable-msg=too-many-locals
 
 
 def search(request):

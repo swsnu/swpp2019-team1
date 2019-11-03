@@ -50,6 +50,7 @@ class MatchMakerTestCase(TestCase):
         csrftoken = response.cookies['csrftoken'].value
         self.assertEqual(response.status_code, 200)
 
+        # Pass csrf protection
         response = client.post('/api/match/',
                                json.dumps({'title': 'TEST_TITLE',
                                            'categoryId': test_category.id,
@@ -66,7 +67,7 @@ class MatchMakerTestCase(TestCase):
                                            'timeEnd': '2019-11-03T08:07:46+09:00', }),
                                content_type='application/json',
                                HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 201)  # Pass csrf protection
+        self.assertEqual(response.status_code, 201)
 
     def test_http_response_404(self):
         '''Checks if the views module handles bad requests correctly.'''
