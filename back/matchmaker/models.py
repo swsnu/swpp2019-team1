@@ -38,8 +38,8 @@ class Match(models.Model):
     is_full = models.BooleanField(default=False)
 
     location_text = models.CharField(max_length=100, default='')
-    # location_latitude = models.PositiveSmallIntegerField(default=0)
-    # location_longitude = models.PositiveSmallIntegerField(default=0)
+    location_latitude = models.PositiveSmallIntegerField(default=0)
+    location_longitude = models.PositiveSmallIntegerField(default=0)
 
     # 0 means not periodic
     period = models.PositiveSmallIntegerField(default=0)

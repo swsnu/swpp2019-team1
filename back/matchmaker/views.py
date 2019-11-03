@@ -10,7 +10,6 @@ from django.shortcuts import get_object_or_404
 import arrow
 from djangorestframework_camel_case.parser import CamelCaseJSONParser
 
-# from userapp.models import User
 from .models import Category, Match
 from .serializers import MatchSerializer
 
@@ -93,12 +92,6 @@ def match_detail(request, match_id):
             return JsonResponse(match_serializer.data, status=200)
         # 400
         return HttpResponseBadRequest()
-    # if request.method == 'PATCH':
-    #     # not yet implemented
-    #     return HttpResponse(status=200)
-    # if request.method == 'DELETE':
-    #     # not yet implemented
-    #     return HttpResponse(status=200)
     return HttpResponseNotAllowed(['GET', 'PUT', 'PATCH', 'DELETE'])
 
 

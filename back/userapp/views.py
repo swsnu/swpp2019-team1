@@ -1,12 +1,8 @@
 ''' custom user views '''
-# from django.shortcuts import render
 from django.contrib import auth
-# HttpResponseForbidden,  HttpResponseBadRequest,
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseNotFound, JsonResponse
-# from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import ensure_csrf_cookie
 
-# from django.conf import settings  # settings.AUTH_USER_MODEL
 from djangorestframework_camel_case.parser import CamelCaseJSONParser
 
 from userapp.models import User
