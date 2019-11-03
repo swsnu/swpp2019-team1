@@ -33,7 +33,7 @@ matrix:
       install:
         - pip install -r requirements.txt
       script:
-        - coverage run --branch -m pytest
+        - coverage run --branch --source="." -m pytest
         # - coverage run --branch --source='./matchmaker' manage.py test
         - coverage report --fail-under=80 -m
         - sonar-scanner -Dsonar.verbose=true -X
