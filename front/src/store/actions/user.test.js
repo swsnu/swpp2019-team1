@@ -106,4 +106,36 @@ describe('User Actions', () => {
       done();
     });
   });
+
+  it(`'signIn' should request signin correctly`, done => {
+    const spyPost = jest.spyOn(axios, 'post').mockImplementation(() => {
+      return new Promise(resolve => {
+        const result = {
+          status: 200,
+        };
+        resolve(result);
+      });
+    });
+
+    store.dispatch(actionCreators.signIn()).then(() => {
+      expect(spyPost).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
+  it(`'signOut' should request signout correctly`, done => {
+    const spyPost = jest.spyOn(axios, 'post').mockImplementation(() => {
+      return new Promise(resolve => {
+        const result = {
+          status: 200,
+        };
+        resolve(result);
+      });
+    });
+
+    store.dispatch(actionCreators.signOut()).then(() => {
+      expect(spyPost).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
 });

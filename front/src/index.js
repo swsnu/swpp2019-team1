@@ -12,8 +12,8 @@ import { createBrowserHistory } from 'history';
 import * as serviceWorker from './serviceWorker';
 import App from './App';
 
-import userReducer from './store/reducers/user';
-import matchReducer from './store/reducers/match';
+import userReducer from './store/reducers/userReducer';
+import matchReducer from './store/reducers/matchReducer';
 
 const history = createBrowserHistory();
 const rootReducer = combineReducers({
@@ -22,10 +22,10 @@ const rootReducer = combineReducers({
   router: connectRouter(history),
 });
 
-const logger = store => next => action => {
+const logger = storeArg => next => action => {
   console.log('[Middleware] Dispatching', action);
   const result = next(action);
-  console.log('[Middleware] Next State', store.getState());
+  console.log('[Middleware] Next State', storeArg.getState());
   return result;
 };
 

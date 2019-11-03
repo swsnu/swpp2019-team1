@@ -4,13 +4,46 @@ import { message } from 'antd';
 
 import * as actionTypes from './actionTypes';
 
+// not yet implemented
+const signInAction = () => {
+  return {
+    type: actionTypes.SIGN_IN,
+  };
+};
+
+// not yet implemented
+export const signIn = () => {
+  return dispatch => {
+    return axios.post(`/api/user/signin`).then(() => {
+      dispatch(signInAction());
+      dispatch(push(`/home`));
+    });
+  };
+};
+
+// not yet implemented
+const signOutAction = () => {
+  return {
+    type: actionTypes.SIGN_OUT,
+  };
+};
+
+// not yet implemented
+export const signOut = () => {
+  return dispatch => {
+    return axios.post(`/api/user/signout`).then(() => {
+      dispatch(signOutAction());
+      dispatch(push(`/home`));
+    });
+  };
+};
+
 const createUserAction = () => {
   return {
     type: actionTypes.CREATE_USER,
   };
 };
 
-// eslint-disable-next-line import/prefer-default-export
 export const createUser = signUpInfo => {
   return dispatch => {
     return axios
