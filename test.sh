@@ -130,7 +130,7 @@ if ${do_test_front} || ${do_lint_check_front}; then
     echo "-------------"
     echo -e "${BLUE}Test frontend${NONE}"
     echo "-------------"
-    (cd ${front_path} && yarn testf_)
+    (cd "${front_path}" && yarn testf_)
     if [ $? -eq 0 ]; then
       echo -e "\n${BOLD}${CYAN_BACK}${UNDERLINE}FRONTEND TEST PASSED!${NONE}\n"
       cnt_pass=$(expr ${cnt_pass} + 1)
@@ -144,7 +144,7 @@ if ${do_test_front} || ${do_lint_check_front}; then
     echo "--------------------------"
     echo -e "${BLUE}Check frontend lint errors${NONE}"
     echo "--------------------------"
-    (cd ${front_path} && yarn lintf_)
+    (cd "${front_path}" && yarn lintf_)
     if [ $? -eq 0 ]; then
       echo -e "\n${BOLD}${CYAN_BACK}${UNDERLINE}FRONTEND LINT CHECK PASSED!${NONE}\n"
       cnt_pass=$(expr ${cnt_pass} + 1)
@@ -160,11 +160,11 @@ if ${do_test_back} || ${do_lint_check_back}; then
     echo "------------"
     echo -e "${BLUE}Test backend${NONE}"
     echo "------------"
-    temp_COVERAGE_FILE=${COVERAGE_FILE}
+    temp_COVERAGE_FILE="${COVERAGE_FILE}"
     export COVERAGE_FILE="${back_path}/.coverage"
 
     #(coverage run --branch --source="${back_path}" ${back_path}"/"manage.py test ${back_path})
-    (cd ${back_path} && coverage run --branch --source="." -m pytest) # -v for verbose
+    (cd "${back_path}" && coverage run --branch --source="." -m pytest) # -v for verbose
     if [ $? -eq 0 ]; then
       echo -e "\n${BOLD}${CYAN_BACK}${UNDERLINE}BACKEND TEST PASSED!${NONE}\n"
       cnt_pass=$(expr ${cnt_pass} + 1)
@@ -174,7 +174,7 @@ if ${do_test_back} || ${do_lint_check_back}; then
       cnt_fail=$(expr ${cnt_fail} + 1)
     fi
 
-    (cd ${back_path} && coverage report --fail-under=80 -m)
+    (cd "${back_path}" && coverage report --fail-under=80 -m)
     if [ $? -eq 0 ]; then
       echo -e "\n${BOLD}${CYAN_BACK}${UNDERLINE}BACKEND TEST COVERAGE >= 80%${NONE}\n"
       cnt_pass=$(expr ${cnt_pass} + 1)
@@ -183,11 +183,11 @@ if ${do_test_back} || ${do_lint_check_back}; then
       echo -e "\n${BOLD}${RED_BACK}${UNDERLINE}BACKEND TEST COVERAGE < 80%${NONE}\n"
       cnt_fail=$(expr ${cnt_fail} + 1)
     fi
-    export COVERAGE_FILE=${temp_COVERAGE_FILE}
+    export COVERAGE_FILE="${temp_COVERAGE_FILE}"
   fi
   if ${do_lint_check}; then
-    temp_PYLINTRC=${pylintrc}
-    export PYLINTRC=${pylintrc}
+    temp_PYLINTRC="${pylintrc}"
+    export PYLINTRC="${pylintrc}"
     echo "-------------------------"
     echo -e "${BLUE}Check backend lint errors${NONE}"
     echo "-------------------------"
@@ -200,7 +200,7 @@ if ${do_test_back} || ${do_lint_check_back}; then
       echo -e "\n${BOLD}${RED_BACK}${UNDERLINE}BACKEND LINT CHECK FAILED!${NONE}\n"
       cnt_fail=$(expr ${cnt_fail} + 1)
     fi
-    export PYLINTRC=${temp_PYLINTRC}
+    export PYLINTRC="${temp_PYLINTRC}"
   fi
 fi
 if ${is_error}; then

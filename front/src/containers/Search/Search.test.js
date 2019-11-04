@@ -95,7 +95,7 @@ describe('<Search />', () => {
       .spyOn(history, 'push')
       .mockImplementation(() => null);
     const component = mount(search);
-    const wrapper = component.find('#SearchMatchTile');
+    const wrapper = component.find('#SearchMatchPreviewTile');
     wrapper.simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledWith('/match/1');
   });

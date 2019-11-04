@@ -1,13 +1,14 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import SearchMatchTile from './SearchMatchTile';
+import MatchPreviewTile from './MatchPreviewTile';
 
 const mockHandler = () => {};
 
-describe('<SearchMatchTile />', () => {
+describe('<MatchPreviewTile />', () => {
   it('should render without errors', () => {
     const component = shallow(
-      <SearchMatchTile
+      <MatchPreviewTile
+        page="Home"
         title="Title"
         host="Host"
         location={[1, 2]}
@@ -17,7 +18,7 @@ describe('<SearchMatchTile />', () => {
         clickHandler={mockHandler}
       />,
     );
-    const wrapper = component.find('#SearchMatchTile');
+    const wrapper = component.find('#HomeMatchPreviewTile');
     expect(wrapper.length).toBe(1);
   });
 });

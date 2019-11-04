@@ -79,7 +79,7 @@ describe('<HomePage />', () => {
       .spyOn(history, 'push')
       .mockImplementation(() => null);
     const component = mount(homePage);
-    const wrapper = component.find('#HomeMatchTile');
+    const wrapper = component.find('#HomeMatchPreviewTile');
     wrapper.simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledWith('/match/1');
   });

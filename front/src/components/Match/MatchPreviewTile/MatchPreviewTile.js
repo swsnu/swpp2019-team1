@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const MatchPreviewTile = props => {
   const {
-    prefix,
+    page,
     title,
     host,
     location,
@@ -14,11 +14,7 @@ const MatchPreviewTile = props => {
     clickHandler,
   } = props;
   return (
-    <button
-      type="button"
-      id={`${prefix}MatchPreviewTile`}
-      onClick={clickHandler}
-    >
+    <button type="button" id={`${page}MatchPreviewTile`} onClick={clickHandler}>
       MatchPreviewTile
       <div className="title">{`Title: ${title}`}</div>
       <div className="host">{`Host: ${host}`}</div>
@@ -30,7 +26,7 @@ const MatchPreviewTile = props => {
   );
 };
 MatchPreviewTile.propTypes = {
-  prefix: PropTypes.string.isRequired,
+  page: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   host: PropTypes.string.isRequired,
   location: PropTypes.arrayOf(PropTypes.number).isRequired,

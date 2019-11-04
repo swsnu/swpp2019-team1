@@ -4,7 +4,7 @@ import { push } from 'connected-react-router';
 import PropTypes from 'prop-types';
 
 import * as actionCreators from '../../store/actions/index';
-import HomeMatchTile from '../../components/HomeMatchTile/HomeMatchTile';
+import MatchPreviewTile from '../../components/Match/MatchPreviewTile/MatchPreviewTile';
 
 class HomePage extends Component {
   constructor(props) {
@@ -22,8 +22,9 @@ class HomePage extends Component {
   matchToComponent = match => {
     const { onClickMatch } = this.props;
     return (
-      <HomeMatchTile
+      <MatchPreviewTile
         key={match.id}
+        page="Home"
         title={match.title}
         host={match.host}
         location={match.location}
