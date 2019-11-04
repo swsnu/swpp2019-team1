@@ -123,6 +123,23 @@ describe('User Actions', () => {
     });
   });
 
+  it(`'signIn' should handle error`, done => {
+    jest.spyOn(axios, 'post').mockImplementation(() => {
+      return new Promise(() => {
+        throw new Error();
+      });
+    });
+
+    const spyCatch = jest.spyOn(message, 'error').mockImplementation(() => {
+      return null;
+    });
+
+    store.dispatch(actionCreators.signIn()).then(() => {
+      expect(spyCatch).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
   it(`'signOut' should request signout correctly`, done => {
     const spyPost = jest.spyOn(axios, 'post').mockImplementation(() => {
       return new Promise(resolve => {
@@ -137,5 +154,22 @@ describe('User Actions', () => {
       expect(spyPost).toHaveBeenCalledTimes(1);
       done();
     });
+  });
+});
+
+it(`'signOut' should handle error`, done => {
+  jest.spyOn(axios, 'post').mockImplementation(() => {
+    return new Promise(() => {
+      throw new Error();
+    });
+  });
+
+  const spyCatch = jest.spyOn(message, 'error').mockImplementation(() => {
+    return null;
+  });
+
+  store.dispatch(actionCreators.signOut()).then(() => {
+    expect(spyCatch).toHaveBeenCalledTimes(1);
+    done();
   });
 });
