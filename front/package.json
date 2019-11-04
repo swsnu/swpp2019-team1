@@ -42,7 +42,7 @@
     "testa": "../test.sh -a",
     "testfl": "../test.sh -fl",
     "testbl": "../test.sh -bl",
-    "testl": "../test.sh -al",
+    "testal": "../test.sh -al",
     "lintf": "../test.sh -l",
     "lintb": "cd ../back && ../test.sh -l",
     "lint": "cd ../ && ./test.sh -l",

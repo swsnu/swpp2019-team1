@@ -62,7 +62,8 @@ if [ $# -eq 1 ]; then
       read -p "Do you want to save backend requirements?(y/n) " input
       case ${input} in
       [Yy]*)
-        (pip freeze >${back_path}/requirements.txt)
+        echo -e "\npip freeze >\"${back_path}/requirements.txt\"\n"
+        (pip freeze >"${back_path}/requirements.txt")
         echo -e "\n${BOLD}${CYAN}Requirements saved.${NONE}\n"
         exit
         ;;
@@ -98,9 +99,9 @@ if [ $# -eq 1 ]; then
   shift $((OPTIND - 1))
 
   if ! ${do_test_front} && ! ${do_test_back} && ${do_lint_check}; then
-    if [ ${shell_dir_name} = ${front_dir_name} ]; then
+    if [ "${shell_dir_name}" = "${front_dir_name}" ]; then
       do_lint_check_front=true
-    elif [ ${shell_dir_name} = ${back_dir_name} ]; then
+    elif [ "${shell_dir_name}" = "${back_dir_name}" ]; then
       do_lint_check_back=true
     else
       do_lint_check_front=true
@@ -110,9 +111,9 @@ if [ $# -eq 1 ]; then
 
 elif [ $# -eq 0 ]; then
   if ! ${do_test_front} && ! ${do_test_back}; then
-    if [ ${shell_dir_name} = ${front_dir_name} ]; then
+    if [ "${shell_dir_name}" = "${front_dir_name}" ]; then
       do_test_front=true
-    elif [ ${shell_dir_name} = ${back_dir_name} ]; then
+    elif [ "${shell_dir_name}" = "${back_dir_name}" ]; then
       do_test_back=true
     else
       do_test_front=true
@@ -191,7 +192,7 @@ if ${do_test_back} || ${do_lint_check_back}; then
     echo "-------------------------"
     echo -e "${BLUE}Check backend lint errors${NONE}"
     echo "-------------------------"
-    (pylint ${back_path}"/"*"/")
+    (pylint "${back_path}/*/")
     if [ $? -eq 0 ]; then
       echo -e "\n${BOLD}${CYAN_BACK}${UNDERLINE}BACKEND LINT CHECK PASSED!${NONE}\n"
       cnt_pass=$(expr ${cnt_pass} + 1)
