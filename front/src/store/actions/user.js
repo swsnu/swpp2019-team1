@@ -12,12 +12,17 @@ const signInAction = () => {
 };
 
 // not yet implemented
-export const signIn = () => {
+export const signIn = signInInfo => {
   return dispatch => {
-    return axios.post(`/api/user/signin`).then(() => {
-      dispatch(signInAction());
-      dispatch(push(`/home`));
-    });
+    return axios
+      .post('/api/user/signin/', signInInfo)
+      .then(() => {
+        dispatch(signInAction());
+        dispatch(push('/home'));
+      })
+      .catch(() => {
+        message.error('Wrong email or password');
+      });
   };
 };
 
@@ -31,10 +36,16 @@ const signOutAction = () => {
 // not yet implemented
 export const signOut = () => {
   return dispatch => {
-    return axios.post(`/api/user/signout`).then(() => {
-      dispatch(signOutAction());
-      dispatch(push(`/home`));
-    });
+    return axios
+      .post('/api/user/signout/')
+      .then(() => {
+        dispatch(signOutAction());
+        dispatch(push('/signin'));
+      })
+      .catch(() => {
+        message.error('Failed to set up request.');
+        // console.log(error.config);
+      });
   };
 };
 

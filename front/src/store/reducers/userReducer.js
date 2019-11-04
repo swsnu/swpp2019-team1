@@ -2,6 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   userid: null,
+  signedIn: 0,
 };
 
 // const testinitialState = {
@@ -15,10 +16,9 @@ const userReducer = (state, action) => {
       return { ...state };
     // yet not implemented
     case actionTypes.SIGN_IN:
-      return { ...state };
-    // yet not implemented
+      return { ...state, signedIn: 1 };
     case actionTypes.SIGN_OUT:
-      return { ...state };
+      return { ...state, signedIn: 0 };
     default:
       break;
   }
