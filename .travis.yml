@@ -14,10 +14,10 @@ matrix:
       install:
         - yarn install
       script:
-        - "./node_modules/.bin/eslint src"
         - yarn testf_
+        - "./node_modules/.bin/eslint src"
         - sonar-scanner
-      after_script: # Upload coverage reports
+      after_success: # Upload coverage reports
         - yarn coveralls
 
     - language: python
@@ -36,6 +36,7 @@ matrix:
         - coverage run --branch --source="." -m pytest
         - coverage report --fail-under=80 -m
         - coverage xml
+        - pylint ./*/
         - sonar-scanner
       after_success:
         - coveralls
