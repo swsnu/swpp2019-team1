@@ -21,7 +21,7 @@
     "testal": "./test.sh -al",
     "lintf": "cd front && ../test.sh -l",
     "lintb": "cd back && ../test.sh -l",
-    "lint": "./test.sh -l",
+    "linta": "./test.sh -l",
     "back": "python back/manage.py runserver 8000",
     "dev": "cd front && yarn dev",
     "coveralls": "cd front && cat ./coverage/lcov.info | node node_modules/.bin/coveralls"

@@ -45,7 +45,7 @@
     "testal": "../test.sh -al",
     "lintf": "../test.sh -l",
     "lintb": "cd ../back && ../test.sh -l",
-    "lint": "cd ../ && ./test.sh -l",
+    "linta": "cd ../ && ./test.sh -l",
     "back": "python ../back/manage.py runserver 8000",
     "dev": "concurrently --kill-others \"yarn back\" \"yarn start\"",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
