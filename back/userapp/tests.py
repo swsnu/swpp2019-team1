@@ -30,6 +30,8 @@ class UserappTestCase(TestCase):
         self.assertEqual(test_user.get_full_name(),
                          f'{test_user.first_name} {test_user.last_name}')
         self.assertEqual(test_user.get_short_name(), test_user.first_name)
+        self.assertEqual(test_user.has_perm("test_perm"), True)
+        self.assertEqual(test_user.has_module_perms("test_app_label"), True)
 
     def test_create_superuser(self):
         '''test create superuser'''
