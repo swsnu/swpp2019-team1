@@ -5,6 +5,7 @@
   "license": "unlicensed",
   "proxy": "http://localhost:8000",
   "dependencies": {
+    "@svgr/webpack": "^4.3.3",
     "antd": "^3.24.3",
     "axios": "^0.19.0",
     "connected-react-router": "^6.5.2",
@@ -67,6 +68,8 @@
     "@typescript-eslint/eslint-plugin": "2.x",
     "@typescript-eslint/parser": "2.x",
     "babel-eslint": "10.x",
+    "babel-plugin-inline-react-svg": "^1.1.0",
+    "concurrently": "^4.1.2",
     "coveralls": "^3.0.7",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
@@ -81,8 +84,7 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "7.x",
     "eslint-plugin-react-hooks": "1.x",
-    "prettier": "^1.18.2",
-    "concurrently": "^4.1.2"
+    "prettier": "^1.18.2"
   },
   "jest": {
     "collectCoverageFrom": [

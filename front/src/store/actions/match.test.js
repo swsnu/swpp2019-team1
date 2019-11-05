@@ -6,7 +6,7 @@ import store, { history } from '../store';
 const stubMatchRespA = {
   title: '',
   // matchThumbnail
-  categoryId: 0,
+  category: 0,
   capacity: 0,
   isOnline: false,
   locationText: '',
@@ -28,7 +28,7 @@ const stubMatchRespA = {
 const stubMatchRespB = {
   title: '',
   // matchThumbnail
-  categoryId: 0,
+  category: 0,
   capacity: 0,
   isOnline: false,
   locationText: '',
@@ -50,7 +50,7 @@ const stubMatchRespB = {
 const stubMatchA = {
   title: '',
   // matchThumbnail
-  categoryId: 0,
+  category: 0,
   capacity: 0,
   isOnline: false,
   locationText: '',
@@ -78,7 +78,7 @@ const stubMatchPk = 2;
 const stubNewMatch = {
   title: '',
   // matchThumbnail
-  categoryId: 0,
+  category: 0,
   capacity: 0,
   isOnline: false,
   locationText: '',

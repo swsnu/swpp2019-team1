@@ -13,12 +13,12 @@ const stubUser = {};
 const stubMatch = {
   selected: {
     id: 1,
-    hostID: 2,
+    hostId: 2,
     title: 'TEST_TITLE',
     hostName: 'TEST_HOSTNAME',
     additionalInfo: 'TEST_ADITIONALINFO',
     // matchThumbnail
-    categoryId: 0,
+    category: 0,
     capacity: 0,
     isOnline: false,
     locationText: '',

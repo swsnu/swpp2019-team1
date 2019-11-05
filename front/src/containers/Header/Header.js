@@ -2,14 +2,42 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
-import { Button, PageHeader } from 'antd';
+import { Icon, Button, PageHeader } from 'antd';
 import * as actionCreators from '../../store/actions/user';
+import logo from '../../logo';
+
+export function getHeaderName(pathname) {
+  if (pathname === '/home') {
+    return 'Matchmaker';
+  }
+  if (pathname === '/signup') {
+    return 'Sign Up';
+  }
+  if (pathname === '/signin') {
+    return 'Sign In';
+  }
+  if (pathname === '/search') {
+    return 'Search';
+  }
+  if (pathname === '/match/create') {
+    return 'Create new Match';
+  }
+  if (pathname === '/match/detail') {
+    return 'Match Detail';
+  }
+  return '';
+}
 
 class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
+
+  clickSignUpHandler = async () => {
+    const { history } = this.props;
+    history.push('/signup');
+  };
 
   clickSignInHandler = async () => {
     const { history } = this.props;
@@ -21,50 +49,31 @@ class Header extends Component {
     onSignOut();
   };
 
-  clickHomeHandler = async () => {
-    const { history } = this.props;
-    history.push('/home');
-  };
-
   render() {
-    const { signedIn } = this.props;
+    const { isSignedIn, location, history } = this.props;
     const buttons = [
       [
         <Button key="2" onClick={this.clickSignInHandler}>
           Sign In
         </Button>,
-        <Button key="1" onClick={this.clickHomeHandler}>
-          Matchmaker
+        <Button key="1" type="primary" onClick={this.clickSignUpHandler}>
+          Sign Up
         </Button>,
       ],
       [
         <Button key="2" onClick={this.clickSignOutHandler}>
           Sign Out
         </Button>,
-        <Button key="1" onClick={this.clickHomeHandler}>
-          Matchmaker
-        </Button>,
       ],
     ];
-    const { history, location } = this.props;
-    if (location.pathname === '/home') {
-      return (
-        <div className="Header">
-          <PageHeader
-            style={{ border: '1px solid rgb(235, 237, 240)' }}
-            title="Matchmaker"
-            extra={buttons[signedIn]}
-          />
-        </div>
-      );
-    }
     return (
       <div className="Header">
         <PageHeader
           style={{ border: '1px solid rgb(235, 237, 240)' }}
-          onBack={() => history.goBack()}
-          title="Matchmaker"
-          extra={buttons[signedIn]}
+          title={getHeaderName(location.pathname)}
+          extra={buttons[isSignedIn]}
+          onBack={() => history.push('/home')}
+          backIcon={<Icon className="HomeIcon" component={logo} />}
         />
       </div>
     );
@@ -79,13 +88,13 @@ Header.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }).isRequired,
-  signedIn: PropTypes.number.isRequired,
+  isSignedIn: PropTypes.number.isRequired,
   onSignOut: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => {
   return {
-    signedIn: state.user.signedIn,
+    isSignedIn: state.user.isSignedIn,
   };
 };
 

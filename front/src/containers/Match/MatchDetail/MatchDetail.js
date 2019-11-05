@@ -25,7 +25,7 @@ class MatchDetail extends Component {
 
   clickUserHandler = () => {
     const { selected, onUserProfile } = this.props;
-    onUserProfile(selected.hostID);
+    onUserProfile(selected.hostId);
   };
 
   clickJoinHandler = () => {
@@ -115,7 +115,7 @@ MatchDetail.propTypes = {
   // user: PropTypes.object.isRequired,
   selected: PropTypes.shape({
     ...MatchPropTypes,
-    hostID: PropTypes.number.isRequired,
+    hostId: PropTypes.number.isRequired,
   }),
   onGetMatch: PropTypes.func.isRequired,
   onJoinMatch: PropTypes.func.isRequired,
