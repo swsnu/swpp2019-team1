@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import { Button, PageHeader } from 'antd';
-import { history } from '../../store/store';
 import * as actionCreators from '../../store/actions/user';
 
 class Header extends Component {
@@ -13,6 +12,7 @@ class Header extends Component {
   }
 
   clickSignInHandler = async () => {
+    const { history } = this.props;
     history.push('/signin');
   };
 
@@ -22,6 +22,7 @@ class Header extends Component {
   };
 
   clickHomeHandler = async () => {
+    const { history } = this.props;
     history.push('/home');
   };
 
@@ -45,12 +46,23 @@ class Header extends Component {
         </Button>,
       ],
     ];
-
+    const { history, location } = this.props;
+    if (location.pathname === '/home') {
+      return (
+        <div className="Header">
+          <PageHeader
+            style={{ border: '1px solid rgb(235, 237, 240)' }}
+            title="Matchmaker"
+            extra={buttons[signedIn]}
+          />
+        </div>
+      );
+    }
     return (
       <div className="Header">
         <PageHeader
           style={{ border: '1px solid rgb(235, 237, 240)' }}
-          onBack={() => null}
+          onBack={() => history.goBack()}
           title="Matchmaker"
           extra={buttons[signedIn]}
         />
@@ -60,6 +72,13 @@ class Header extends Component {
 }
 
 Header.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+    goBack: PropTypes.func,
+  }).isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string,
+  }).isRequired,
   signedIn: PropTypes.number.isRequired,
   onSignOut: PropTypes.func.isRequired,
 };

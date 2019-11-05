@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
-import { history } from '../../../../store/store';
 import * as actionCreators from '../../../../store/actions/user';
 import SignInForm from '../../../../components/User/Auth/SignIn/SignInForm';
 
@@ -26,6 +25,7 @@ class SignIn extends Component {
   };
 
   clickSignUpHandler = () => {
+    const { history } = this.props;
     history.push('/signup');
   };
 
@@ -59,6 +59,9 @@ class SignIn extends Component {
 }
 
 SignIn.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   onSignIn: PropTypes.func.isRequired,
 };
 

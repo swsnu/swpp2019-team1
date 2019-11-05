@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { push } from 'connected-react-router';
 import { message } from 'antd';
-
 import * as actionTypes from './actionTypes';
+
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 
 const signInAction = () => {
   return {
@@ -59,7 +61,7 @@ export const createUser = signUpInfo => {
       .post(`/api/user/signup/`, signUpInfo)
       .then(() => {
         dispatch(createUserAction());
-        dispatch(push('/home'));
+        dispatch(push('/signin'));
       })
       .catch(error => {
         // TODO: error handling

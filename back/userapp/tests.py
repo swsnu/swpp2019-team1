@@ -151,11 +151,7 @@ class UserappTestCase(TestCase):
                                    'lastName': 'TEST_LAST_NAME',
                                    'phoneNumber': '010-1234-5678',
                                    'gender': True,
-                                   'birthdate': '2000-01-01',
-                                   'message': 'None',
-                                   'isEmailPublic': True,
-                                   'isSchedulePublic': True,
-                                   'isInterestPublic': True}),
+                                   'birthdate': '2000-01-01'}),
                                content_type='application/json',
                                HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 201)

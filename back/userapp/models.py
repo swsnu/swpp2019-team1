@@ -1,6 +1,5 @@
 ''' Custom user model '''
 from django.db import models
-# from django.conf import settings
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import Group
 from django.contrib.auth.models import Permission
@@ -55,15 +54,15 @@ class User(AbstractBaseUser, PermissionsMixin):
     message = models.CharField(max_length=100, blank=True)
     profile_picture = models.ImageField(
         upload_to='profile/', null=True, blank=True)
-    is_email_public = models.BooleanField(blank=False)
+    is_email_public = models.BooleanField(default=True, blank=True)
     is_schedule_public = models.BooleanField(default=False, blank=True)
-    is_interest_public = models.BooleanField(blank=False)
+    is_interest_public = models.BooleanField(default=True, blank=True)
 
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name', 'phone_number',
-                       'gender', 'birthdate', 'is_email_public', 'is_interest_public']
+                       'gender', 'birthdate']
 
     class Meta:
         verbose_name = _('user')
@@ -81,8 +80,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         ''' get short name '''
         return self.first_name
 
-    '''def has_perm(self, perm, obj=None):
+    def has_perm(self, perm, obj=None):
+        ''' check if user has permission '''
         return True
 
     def has_module_perms(self, app_label):
-        return True'''
+        ''' check if user has module permission '''
+        return True
