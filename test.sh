@@ -192,7 +192,7 @@ if ${do_test_back} || ${do_lint_check_back}; then
     echo "-------------------------"
     echo -e "${BLUE}Check backend lint errors${NONE}"
     echo "-------------------------"
-    (pylint "${back_path}/*/")
+    (pylint "${back_path}"/*/)
     if [ $? -eq 0 ]; then
       echo -e "\n${BOLD}${CYAN_BACK}${UNDERLINE}BACKEND LINT CHECK PASSED!${NONE}\n"
       cnt_pass=$(expr ${cnt_pass} + 1)
