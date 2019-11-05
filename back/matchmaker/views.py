@@ -6,12 +6,16 @@ from django.http import HttpResponse, HttpResponseBadRequest, \
     HttpResponseNotAllowed, HttpResponseNotFound, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core import serializers
+from django.db.models import F
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
 import arrow
 from djangorestframework_camel_case.parser import CamelCaseJSONParser
 
 from .models import Category, Match
 from .serializers import MatchSerializer
+
+USER = get_user_model()
 
 
 def match_simple_serializer(match_object):
@@ -19,8 +23,11 @@ def match_simple_serializer(match_object):
     return {
         'id': match_object.id,
         'title': match_object.title,
+        'host': match_object.host_user.id,
         'time': match_object.time_begin,
         'location': match_object.location_text,
+        'capacity': match_object.capacity,
+        'numOfParticipants': match_object.num_participants,
     }
 
 
@@ -57,8 +64,31 @@ def match(request):
 def match_new(request):
     '''Returns new three matches.'''
     if request.method == 'GET':
+        raw_result = Match.objects.filter(
+            num_participants__lt=F('capacity')).order_by('-created_on')[:3]
+        result = list(map(match_simple_serializer, raw_result))
+        return JsonResponse(result, safe=False)
+    return HttpResponseNotAllowed(['GET'])
+
+
+def match_hot(request):
+    '''Returns hot three matches.'''
+    if request.method == 'GET':
+        raw_result = Match.objects.filter(
+            num_participants__lt=F('capacity')).order_by('-view_count')[:3]
+        result = list(map(match_simple_serializer, raw_result))
+        return JsonResponse(result, safe=False)
+    return HttpResponseNotAllowed(['GET'])
+
+
+def match_recommend(request):
+    '''Returns recommend three matches.'''
+    if request.method == 'GET':
         # not yet implemented
-        return HttpResponse(status=200)
+        raw_result = Match.objects.filter(
+            num_participants__lt=F('capacity')).order_by('-view_count')[:3]
+        result = list(map(match_simple_serializer, raw_result))
+        return JsonResponse(result, safe=False)
     return HttpResponseNotAllowed(['GET'])
 
 

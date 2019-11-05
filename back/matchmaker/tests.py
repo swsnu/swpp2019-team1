@@ -23,6 +23,10 @@ def create_dummy_match(test_user, test_category):
 class MatchMakerTestCase(TestCase):
     '''Tests for the app Matchmaker'''
 
+    def setUp(self):
+        # TODO Setup test database here
+        pass
+
     def test_csrf(self):
         '''Tests CSRF'''
         client = Client(enforce_csrf_checks=True)
@@ -115,6 +119,13 @@ class MatchMakerTestCase(TestCase):
         self.assertEqual(response.status_code, 405)
 
         response = client.delete('/api/match/new/', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
+        response = client.delete('/api/match/hot/', HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
+        response = client.delete(
+            '/api/match/recommend/', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
         response = client.delete('/api/match/search',
@@ -247,3 +258,24 @@ class MatchMakerTestCase(TestCase):
         create_dummy_match(test_user, test_category)
         response = client.get('/api/match/search?query=TEST_TITLE')
         self.assertEqual(len(json.loads(response.content.decode())), 1)
+
+    def test_match_new(self):
+        '''Checks if get_new_match performs correctly.'''
+        # TODO Make complex test cases
+        client = Client()
+        response = client.get('/api/match/new/')
+        self.assertEqual(len(json.loads(response.content.decode())), 0)
+
+    def test_match_hot(self):
+        '''Checks if get_hot_match performs correctly.'''
+        # TODO Make complex test cases
+        client = Client()
+        response = client.get('/api/match/hot/')
+        self.assertEqual(len(json.loads(response.content.decode())), 0)
+
+    def test_match_recommend(self):
+        '''Checks if get_recommend_match performs correctly.'''
+        # TODO Make complex test cases
+        client = Client()
+        response = client.get('/api/match/recommend/')
+        self.assertEqual(len(json.loads(response.content.decode())), 0)
