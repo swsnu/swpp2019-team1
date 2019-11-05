@@ -4,6 +4,7 @@
 
 # vscode setting
 .vscode/
+*/migrations
 ### Django ###
 *.log
 *.pot

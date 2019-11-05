@@ -1,0 +1,18 @@
+.SignInForm {
+    max-width: 430px;
+    margin: 20px auto 0;
+    padding: 20px;
+    border: 1px solid lightgrey;
+  }
+  .SignInFormItem {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .button {
+    text-align: center;
+    margin: 20px auto 0;
+  }
+  .ant-form-item {
+    margin-bottom: 5px !important;
+  }
