@@ -1,23 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, FormItem, SubmitButton } from 'formik-antd';
-import { Button } from 'antd';
+import { Icon, Button } from 'antd';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import './SignInForm.css';
 
-const ButtonGroup = Button.Group;
-
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 8 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 14 },
-  },
-};
 const SignInSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email')
@@ -46,34 +34,45 @@ const SignInForm = ({
     >
       {() => (
         // eslint-disable-next-line react/jsx-props-no-spreading
-        <Form {...formItemLayout}>
+        <Form>
           <div className="SignInFormItem">
-            <FormItem name="email" label="Email">
+            <FormItem name="email">
               <Input
                 name="email"
                 id="email"
                 placeholder="Email"
                 onChange={onEmailChange}
+                prefix={
+                  <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                }
               />
             </FormItem>
-            <FormItem name="password" label="Password">
+            <FormItem name="password">
               <Input.Password
                 onChange={onPasswordChange}
                 name="password"
                 id="password"
                 placeholder="Password"
+                prefix={
+                  <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
+                }
               />
             </FormItem>
           </div>
           <div className="button">
-            <ButtonGroup>
-              <SubmitButton className="SignInButton" type="primary">
-                Sign In
-              </SubmitButton>
-              <Button className="SignUpButton" onClick={clickSignUp}>
-                Sign Up
+            <SubmitButton className="SignInButton" type="primary">
+              Sign In
+            </SubmitButton>
+            <div className="SignUpLink">
+              Or
+              <Button
+                className="SignUpButton"
+                type="link"
+                onClick={clickSignUp}
+              >
+                sign up now!
               </Button>
-            </ButtonGroup>
+            </div>
           </div>
         </Form>
       )}

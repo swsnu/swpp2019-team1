@@ -83,7 +83,7 @@ const SignUpForm = ({
         // eslint-disable-next-line react/jsx-props-no-spreading
         <Form {...formItemLayout}>
           <FormItem name="email" label="Email">
-            <Input name="email" id="email" placeholder="Email" />
+            <Input name="email" id="email" placeholder="swpp@snu.ac.kr" />
           </FormItem>
           <FormItem name="password" label="Password">
             <Input.Password
@@ -96,7 +96,7 @@ const SignUpForm = ({
             <Input.Password
               name="passwordConfirm"
               id="passwordConfirm"
-              placeholder="Confirm"
+              placeholder="Confirm your password"
             />
           </FormItem>
           <FormItem name="username" label="Username">

@@ -30,6 +30,8 @@ class UserappTestCase(TestCase):
         self.assertEqual(test_user.get_full_name(),
                          f'{test_user.first_name} {test_user.last_name}')
         self.assertEqual(test_user.get_short_name(), test_user.first_name)
+        self.assertEqual(test_user.has_perm("test_perm"), True)
+        self.assertEqual(test_user.has_module_perms("test_app_label"), True)
 
     def test_create_superuser(self):
         '''test create superuser'''
@@ -151,11 +153,7 @@ class UserappTestCase(TestCase):
                                    'lastName': 'TEST_LAST_NAME',
                                    'phoneNumber': '010-1234-5678',
                                    'gender': True,
-                                   'birthdate': '2000-01-01',
-                                   'message': 'None',
-                                   'isEmailPublic': True,
-                                   'isSchedulePublic': True,
-                                   'isInterestPublic': True}),
+                                   'birthdate': '2000-01-01'}),
                                content_type='application/json',
                                HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 201)

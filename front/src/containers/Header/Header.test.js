@@ -3,16 +3,15 @@ import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch } from 'react-router-dom';
-
-import { Button, PageHeader } from 'antd';
+import { Icon, Button } from 'antd';
 
 import getMockStore from '../../test-utils/getMockStore';
 import { history } from '../../store/store';
 import * as actionCreators from '../../store/actions/user';
-import Header from './Header';
+import Header, { getHeaderName } from './Header';
 
-const authenticatedUser = { signedIn: 1 };
-const anonymousUser = { signedIn: 0 };
+const authenticatedUser = { isSignedIn: 1 };
+const anonymousUser = { isSignedIn: 0 };
 const dummyMatch = {};
 const authenticatedMockStore = getMockStore(authenticatedUser, dummyMatch);
 const anonymousMockStore = getMockStore(anonymousUser, dummyMatch);
@@ -59,7 +58,7 @@ describe('<Header />', () => {
     await new Promise(resolve => setTimeout(resolve, 100));
     expect(spyHistoryPush).toHaveBeenCalledWith('/signin');
   });
-  it(`should redirect to Home when click home button while anonymous`, async () => {
+  it(`should redirect to SignUp when click signup button`, async () => {
     const spyHistoryPush = jest
       .spyOn(history, 'push')
       .mockImplementation(() => {
@@ -70,20 +69,7 @@ describe('<Header />', () => {
     await new Promise(resolve => setTimeout(resolve, 100));
     wrapper.at(1).simulate('click');
     await new Promise(resolve => setTimeout(resolve, 100));
-    expect(spyHistoryPush).toHaveBeenCalledWith('/home');
-  });
-  it(`should redirect to Home when click home button while authenticated`, async () => {
-    const spyHistoryPush = jest
-      .spyOn(history, 'push')
-      .mockImplementation(() => {
-        return null;
-      });
-    const component = mount(authenticatedHeader);
-    const wrapper = component.find(Button);
-    await new Promise(resolve => setTimeout(resolve, 100));
-    wrapper.at(1).simulate('click');
-    await new Promise(resolve => setTimeout(resolve, 100));
-    expect(spyHistoryPush).toHaveBeenCalledWith('/home');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/signup');
   });
 
   it(`should call signOut() when click signout button`, async () => {
@@ -100,9 +86,49 @@ describe('<Header />', () => {
     expect(spySignOut).toHaveBeenCalled();
   });
 
-  it(`should prevent history.back by setting onBack()`, async () => {
+  it(`should push home when click back button`, async () => {
+    const spyHistoryPush = jest
+      .spyOn(history, 'push')
+      .mockImplementation(() => {
+        return null;
+      });
     const component = mount(authenticatedHeader);
-    const wrapper = component.find(PageHeader);
-    expect(wrapper.props('onBack').onBack()).toBe(null);
+    const wrapper = component.find(Icon);
+    wrapper.at(0).simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/home');
   });
+
+  it(`should push home when click back button`, async () => {
+    expect(getHeaderName('/home')).toBe('Matchmaker');
+    expect(getHeaderName('/signup')).toBe('Sign Up');
+    expect(getHeaderName('/signin')).toBe('Sign In');
+    expect(getHeaderName('/search')).toBe('Search');
+    expect(getHeaderName('/match/create')).toBe('Create new Match');
+    expect(getHeaderName('/match/detail')).toBe('Match Detail');
+  });
+  /*
+  xit(`should change title appropriately`, async done => {
+    const spyGetName = jest
+      .spyOn(Headers, 'getHeaderName')
+      .mockImplementation(() => null);
+    const pushPromise = new Promise(resolve => {
+      history.push('/home');
+      authenticatedHeader = (
+        <Provider store={authenticatedMockStore}>
+          <ConnectedRouter history={history}>
+            <Header />
+          </ConnectedRouter>
+        </Provider>
+      );
+      resolve();
+    });
+    pushPromise.then(async () => {
+      const component = render(authenticatedHeader);
+      history.push('/signin');
+      component.findByText('Matchmaker');
+      await new Promise(resolve => setTimeout(resolve, 100));
+      expect(spyGetName).toHaveBeenCalledWith('/home');
+      done();
+    });
+  }); */
 });
