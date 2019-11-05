@@ -4,6 +4,9 @@ matchmaker models
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+#from django.contrib.auth import get_user_model
+
+#USER = get_user_model()
 
 
 class Category(models.Model):
@@ -57,3 +60,21 @@ class Match(models.Model):
     view_count = models.PositiveIntegerField(default=0)
     created_on = models.DateTimeField(
         auto_now_add=True)
+
+
+class Participation(models.Model):
+    '''
+    Participation info
+    '''
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='participation_user',
+        blank=False
+    )
+    match = models.ForeignKey(
+        Match,
+        on_delete=models.CASCADE,
+        related_name='participation_match'
+    )
+    rating = models.PositiveSmallIntegerField(default=None, blank=True)
