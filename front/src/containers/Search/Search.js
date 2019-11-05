@@ -4,7 +4,7 @@ import { push } from 'connected-react-router';
 import PropTypes from 'prop-types';
 
 import * as actionCreators from '../../store/actions/index';
-import SearchMatchTile from '../../components/SearchMatchTile/SearchMatchTile';
+import MatchPreviewTile from '../../components/Match/MatchPreviewTile/MatchPreviewTile';
 
 class Search extends Component {
   constructor(props) {
@@ -21,8 +21,9 @@ class Search extends Component {
   matchToComponent = match => {
     const { onClickMatch } = this.props;
     return (
-      <SearchMatchTile
+      <MatchPreviewTile
         key={match.id}
+        page="Search"
         title={match.title}
         host={match.host}
         location={match.location}

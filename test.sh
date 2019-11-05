@@ -62,7 +62,8 @@ if [ $# -eq 1 ]; then
       read -p "Do you want to save backend requirements?(y/n) " input
       case ${input} in
       [Yy]*)
-        (pip freeze >${back_path}/requirements.txt)
+        echo -e "\npip freeze >\"${back_path}/requirements.txt\"\n"
+        (pip freeze >"${back_path}/requirements.txt")
         echo -e "\n${BOLD}${CYAN}Requirements saved.${NONE}\n"
         exit
         ;;
@@ -98,9 +99,9 @@ if [ $# -eq 1 ]; then
   shift $((OPTIND - 1))
 
   if ! ${do_test_front} && ! ${do_test_back} && ${do_lint_check}; then
-    if [ ${shell_dir_name} = ${front_dir_name} ]; then
+    if [ "${shell_dir_name}" = "${front_dir_name}" ]; then
       do_lint_check_front=true
-    elif [ ${shell_dir_name} = ${back_dir_name} ]; then
+    elif [ "${shell_dir_name}" = "${back_dir_name}" ]; then
       do_lint_check_back=true
     else
       do_lint_check_front=true
@@ -110,9 +111,9 @@ if [ $# -eq 1 ]; then
 
 elif [ $# -eq 0 ]; then
   if ! ${do_test_front} && ! ${do_test_back}; then
-    if [ ${shell_dir_name} = ${front_dir_name} ]; then
+    if [ "${shell_dir_name}" = "${front_dir_name}" ]; then
       do_test_front=true
-    elif [ ${shell_dir_name} = ${back_dir_name} ]; then
+    elif [ "${shell_dir_name}" = "${back_dir_name}" ]; then
       do_test_back=true
     else
       do_test_front=true
@@ -130,7 +131,7 @@ if ${do_test_front} || ${do_lint_check_front}; then
     echo "-------------"
     echo -e "${BLUE}Test frontend${NONE}"
     echo "-------------"
-    (cd ${front_path} && yarn testf_)
+    (cd "${front_path}" && yarn testf_)
     if [ $? -eq 0 ]; then
       echo -e "\n${BOLD}${CYAN_BACK}${UNDERLINE}FRONTEND TEST PASSED!${NONE}\n"
       cnt_pass=$(expr ${cnt_pass} + 1)
@@ -144,7 +145,7 @@ if ${do_test_front} || ${do_lint_check_front}; then
     echo "--------------------------"
     echo -e "${BLUE}Check frontend lint errors${NONE}"
     echo "--------------------------"
-    (cd ${front_path} && yarn lintf_)
+    (cd "${front_path}" && yarn lintf_)
     if [ $? -eq 0 ]; then
       echo -e "\n${BOLD}${CYAN_BACK}${UNDERLINE}FRONTEND LINT CHECK PASSED!${NONE}\n"
       cnt_pass=$(expr ${cnt_pass} + 1)
@@ -160,11 +161,11 @@ if ${do_test_back} || ${do_lint_check_back}; then
     echo "------------"
     echo -e "${BLUE}Test backend${NONE}"
     echo "------------"
-    temp_COVERAGE_FILE=${COVERAGE_FILE}
+    temp_COVERAGE_FILE="${COVERAGE_FILE}"
     export COVERAGE_FILE="${back_path}/.coverage"
 
     #(coverage run --branch --source="${back_path}" ${back_path}"/"manage.py test ${back_path})
-    (cd ${back_path} && coverage run --branch --source="." -m pytest) # -v for verbose
+    (cd "${back_path}" && coverage run --branch --source="." -m pytest) # -v for verbose
     if [ $? -eq 0 ]; then
       echo -e "\n${BOLD}${CYAN_BACK}${UNDERLINE}BACKEND TEST PASSED!${NONE}\n"
       cnt_pass=$(expr ${cnt_pass} + 1)
@@ -174,7 +175,7 @@ if ${do_test_back} || ${do_lint_check_back}; then
       cnt_fail=$(expr ${cnt_fail} + 1)
     fi
 
-    (cd ${back_path} && coverage report --fail-under=80 -m)
+    (cd "${back_path}" && coverage report --fail-under=80 -m)
     if [ $? -eq 0 ]; then
       echo -e "\n${BOLD}${CYAN_BACK}${UNDERLINE}BACKEND TEST COVERAGE >= 80%${NONE}\n"
       cnt_pass=$(expr ${cnt_pass} + 1)
@@ -183,15 +184,15 @@ if ${do_test_back} || ${do_lint_check_back}; then
       echo -e "\n${BOLD}${RED_BACK}${UNDERLINE}BACKEND TEST COVERAGE < 80%${NONE}\n"
       cnt_fail=$(expr ${cnt_fail} + 1)
     fi
-    export COVERAGE_FILE=${temp_COVERAGE_FILE}
+    export COVERAGE_FILE="${temp_COVERAGE_FILE}"
   fi
   if ${do_lint_check}; then
-    temp_PYLINTRC=${pylintrc}
-    export PYLINTRC=${pylintrc}
+    temp_PYLINTRC="${pylintrc}"
+    export PYLINTRC="${pylintrc}"
     echo "-------------------------"
     echo -e "${BLUE}Check backend lint errors${NONE}"
     echo "-------------------------"
-    (pylint ${back_path}"/"*"/")
+    (pylint "${back_path}"/*/)
     if [ $? -eq 0 ]; then
       echo -e "\n${BOLD}${CYAN_BACK}${UNDERLINE}BACKEND LINT CHECK PASSED!${NONE}\n"
       cnt_pass=$(expr ${cnt_pass} + 1)
@@ -200,7 +201,7 @@ if ${do_test_back} || ${do_lint_check_back}; then
       echo -e "\n${BOLD}${RED_BACK}${UNDERLINE}BACKEND LINT CHECK FAILED!${NONE}\n"
       cnt_fail=$(expr ${cnt_fail} + 1)
     fi
-    export PYLINTRC=${temp_PYLINTRC}
+    export PYLINTRC="${temp_PYLINTRC}"
   fi
 fi
 if ${is_error}; then

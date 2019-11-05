@@ -1,11 +1,10 @@
-// Single match tile in search page (square shape tile)
-// If this tile is identical with HomeMatchTile, delete this file.
-
+// Single match tile in home page (square shape tile)
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const SearchMatchTile = props => {
+const MatchPreviewTile = props => {
   const {
+    page,
     title,
     host,
     location,
@@ -15,8 +14,8 @@ const SearchMatchTile = props => {
     clickHandler,
   } = props;
   return (
-    <button type="button" id="SearchMatchTile" onClick={clickHandler}>
-      HomeMatchTile
+    <button type="button" id={`${page}MatchPreviewTile`} onClick={clickHandler}>
+      MatchPreviewTile
       <div className="title">{`Title: ${title}`}</div>
       <div className="host">{`Host: ${host}`}</div>
       <div className="location">{`Location: ${location}`}</div>
@@ -26,7 +25,8 @@ const SearchMatchTile = props => {
     </button>
   );
 };
-SearchMatchTile.propTypes = {
+MatchPreviewTile.propTypes = {
+  page: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   host: PropTypes.string.isRequired,
   location: PropTypes.arrayOf(PropTypes.number).isRequired,
@@ -35,4 +35,4 @@ SearchMatchTile.propTypes = {
   capacity: PropTypes.number.isRequired,
   clickHandler: PropTypes.func.isRequired,
 };
-export default SearchMatchTile;
+export default MatchPreviewTile;

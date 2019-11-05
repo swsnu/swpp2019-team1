@@ -6,7 +6,9 @@ import App from './App';
 import getMockStore from './test-utils/getMockStore';
 import { history } from './store/store';
 
-const stubInitUser = {};
+const stubInitUser = {
+  signedIn: 0,
+};
 const stubInitMatch = {
   hot: [],
   new: [],
