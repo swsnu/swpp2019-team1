@@ -2,15 +2,17 @@
 matchmaker views
 Handle requests.
 '''
-# from django.http import HttpResponse
+import json
 from django.http import HttpResponseBadRequest, \
-    HttpResponseNotAllowed, HttpResponseNotFound, JsonResponse
+    HttpResponseNotAllowed, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.core import serializers
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from django.forms.models import model_to_dict
 import arrow
 from djangorestframework_camel_case.parser import CamelCaseJSONParser
+from djangorestframework_camel_case.render import CamelCaseJSONRenderer
+
 
 from .models import Category, Match  # , Participation
 from .serializers import MatchSerializer
@@ -36,7 +38,7 @@ def match(request):
     if request.method == 'POST':
         try:
             data = CamelCaseJSONParser().parse(request)
-            category_id = data['category_id']
+            category_id = data['category']
             time_begin = arrow.get(data['time_begin']).datetime
             time_end = arrow.get(data['time_end']).datetime
             data['time_begin'] = time_begin
@@ -44,16 +46,17 @@ def match(request):
         except (KeyError, arrow.parser.ParserError):
             # 400
             return HttpResponseBadRequest()
-        try:
-            Category.objects.get(id=category_id)
-        except Category.DoesNotExist:
-            # 404
-            return HttpResponseNotFound()
+        category = get_object_or_404(Category, pk=category_id)
+        data['category'] = category
         data['host_user_id'] = request.user.id
         match_serializer = MatchSerializer(data=data)
         if match_serializer.is_valid():
-            match_serializer.create(data)
-            return JsonResponse(match_serializer.data, status=201)
+            new_match_obj = match_serializer.create(data)
+            new_match_data = match_serializer.validated_data
+            new_match_data.update({"pk": new_match_obj.pk})
+            response = json.loads(
+                CamelCaseJSONRenderer().render(new_match_data))
+            return JsonResponse(response, status=201)
         # 400
         return HttpResponseBadRequest()
     # 405
@@ -92,7 +95,10 @@ def match_detail(request, match_id):
     '''Handles requests about a match'''
     if request.method == 'GET':
         match_obj = get_object_or_404(Match, pk=match_id)
-        match_json = serializers.serialize('json', [match_obj])
+        match_json = model_to_dict(match_obj)
+        del match_json['match_thumbnail']
+        match_json = json.loads(
+            CamelCaseJSONRenderer().render(match_json))
         return JsonResponse(match_json, safe=False, status=200)
     if request.method == 'PUT':
         match_obj = get_object_or_404(Match, pk=match_id)
@@ -100,7 +106,7 @@ def match_detail(request, match_id):
         # and putting author in the match model
         try:
             data = CamelCaseJSONParser().parse(request)
-            category_id = data['category_id']
+            category_id = data['category']
             time_begin = arrow.get(data['time_begin']).datetime
             time_end = arrow.get(data['time_end']).datetime
             data['time_begin'] = time_begin
@@ -113,8 +119,12 @@ def match_detail(request, match_id):
         match_serializer = MatchSerializer(
             match_obj, data=data, partial=True)
         if match_serializer.is_valid():
-            match_serializer.save()
-            return JsonResponse(match_serializer.data, status=200)
+            match_obj = match_serializer.save()
+            match_data = match_serializer.validated_data
+            match_data.update({"pk": match_obj.pk})
+            response = json.loads(
+                CamelCaseJSONRenderer().render(match_data))
+            return JsonResponse(response, status=200)
         # 400
         return HttpResponseBadRequest()
     return HttpResponseNotAllowed(['GET', 'PUT', 'PATCH', 'DELETE'])

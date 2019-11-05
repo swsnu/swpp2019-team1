@@ -35,7 +35,7 @@ class MatchMakerTestCase(TestCase):
         test_category = create_dummy_category()
         response = client.post('/api/match/',
                                json.dumps({'title': 'TEST_TITLE',
-                                           'categoryId': test_category.id,
+                                           'category': test_category.id,
                                            'capacity': 4,
                                            'locationText': 'TEST_LOCATION_TEXT',
                                            'period': 3,
@@ -57,7 +57,7 @@ class MatchMakerTestCase(TestCase):
         # Pass csrf protection
         response = client.post('/api/match/',
                                json.dumps({'title': 'TEST_TITLE',
-                                           'categoryId': test_category.id,
+                                           'category': test_category.id,
                                            'capacity': 4,
                                            'locationText': 'TEST_LOCATION_TEXT',
                                            'period': 3,
@@ -81,7 +81,7 @@ class MatchMakerTestCase(TestCase):
         # starts here
         response = client.post('/api/match/',
                                json.dumps({'title': 'TEST_TITLE',
-                                           'categoryId': 99999,
+                                           'category': 99999,
                                            'capacity': 4,
                                            'locationText': 'TEST_LOCATION_TEXT',
                                            'period': 3,
@@ -157,7 +157,7 @@ class MatchMakerTestCase(TestCase):
         self.assertEqual(response.status_code, 400)
         response = client.post('/api/match/',
                                json.dumps({'title': 'TEST_TITLE',
-                                           'categoryId': test_category.id,
+                                           'category': test_category.id,
                                            'capacity': 'TEST_ERR_STR',
                                            'locationText': 'TEST_LOCATION_TEXT',
                                            'period': 'TEST_ERR_STR',
@@ -174,7 +174,7 @@ class MatchMakerTestCase(TestCase):
 
         response = client.put(f'/api/match/{test_match.id}/',
                               json.dumps({'title': 'TEST_TITLE',
-                                          'categoryId': test_category.id,
+                                          'category': test_category.id,
                                           'capacity': 'TEST_ERR_STR',
                                           'locationText': 'TEST_LOCATION_TEXT',
                                           'period': 'TEST_ERR_STR',
@@ -210,7 +210,7 @@ class MatchMakerTestCase(TestCase):
 
         response = client.post('/api/match/',
                                json.dumps({'title': 'TEST_TITLE',
-                                           'categoryId': test_category.id,
+                                           'category': test_category.id,
                                            'capacity': 4,
                                            'locationText': 'TEST_LOCATION_TEXT',
                                            'period': 3,
@@ -227,14 +227,14 @@ class MatchMakerTestCase(TestCase):
         self.assertEqual(response.status_code, 201)
 
         response = client.get('/api/match/1/', HTTP_X_CSRFTOKEN=csrftoken)
-        match = json.loads(response.json())[0]['fields']
+        match = response.json()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(match['title'], 'TEST_TITLE')
         self.assertEqual(match['category'], 1)
 
         response = client.put('/api/match/1/',
                               json.dumps({'title': 'TEST_PUT_TITLE',
-                                          'categoryID': 1,
+                                          'category': 1,
                                           'capacity': 4,
                                           'locationText': 'TEST_PUT_LOCATION_TEXT',
                                           'period': 3,

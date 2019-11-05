@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const MatchForm = ({
   title,
   // matchThumbnail,
-  categoryId,
+  category,
   capacity,
   isOnline,
   locationText,
@@ -24,7 +24,7 @@ const MatchForm = ({
   // restrictMale,
   // restrictFemale,
   titleChange,
-  categoryIdChange,
+  categoryChange,
   capacityChange,
   isOnlineChange,
   locationTextChange,
@@ -57,8 +57,8 @@ const MatchForm = ({
       <input
         id="match-category-id-input"
         type="text"
-        value={categoryId}
-        onChange={categoryIdChange}
+        value={category}
+        onChange={categoryChange}
       />
       Up to
       <input
@@ -202,7 +202,7 @@ const MatchForm = ({
 export const MatchPropTypes = {
   title: PropTypes.string.isRequired,
   // matchThumbnail,
-  categoryId: PropTypes.number.isRequired,
+  category: PropTypes.number.isRequired,
   capacity: PropTypes.number.isRequired,
   isOnline: PropTypes.bool.isRequired,
   locationText: PropTypes.string.isRequired,
@@ -226,7 +226,7 @@ export const MatchPropTypes = {
 MatchForm.propTypes = {
   ...MatchPropTypes,
   titleChange: PropTypes.func.isRequired,
-  categoryIdChange: PropTypes.func.isRequired,
+  categoryChange: PropTypes.func.isRequired,
   capacityChange: PropTypes.func.isRequired,
   isOnlineChange: PropTypes.func.isRequired,
   locationTextChange: PropTypes.func.isRequired,

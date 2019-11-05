@@ -17,7 +17,7 @@ class MatchEdit extends Component {
       id,
       title: '',
       // matchThumbnail
-      categoryId: 0,
+      category: 1,
       capacity: 0,
       isOnline: false,
       locationText: '',
@@ -54,20 +54,8 @@ class MatchEdit extends Component {
     const { id, timeBegin, timeEnd, restrictMale } = this.state;
     const matchInfo = {
       ...this.state,
-      timeBegin: [
-        timeBegin.getFullYear(),
-        timeBegin.getMonth() + 1,
-        timeBegin.getDate(),
-        timeBegin.getHours(),
-        timeBegin.getMinutes(),
-      ],
-      timeEnd: [
-        timeEnd.getFullYear(),
-        timeEnd.getMonth() + 1,
-        timeEnd.getDate(),
-        timeEnd.getHours(),
-        timeEnd.getMinutes(),
-      ],
+      timeBegin: timeBegin.toISOString(),
+      timeEnd: timeEnd.toISOString(),
       restrictedGender: restrictMale,
     };
     delete matchInfo.restrictMale;
