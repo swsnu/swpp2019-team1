@@ -4,14 +4,12 @@ import { message } from 'antd';
 
 import * as actionTypes from './actionTypes';
 
-// not yet implemented
 const signInAction = () => {
   return {
     type: actionTypes.SIGN_IN,
   };
 };
 
-// not yet implemented
 export const signIn = signInInfo => {
   return dispatch => {
     return axios

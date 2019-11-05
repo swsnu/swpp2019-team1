@@ -3,7 +3,7 @@ import { message } from 'antd';
 import * as actionCreators from './match';
 import store, { history } from '../store';
 
-const stubMatchRespFieldsA = {
+const stubMatchRespA = {
   title: '',
   // matchThumbnail
   categoryId: 0,
@@ -24,9 +24,8 @@ const stubMatchRespFieldsA = {
   isGenderRestricted: false,
   restrictedGender: false,
 };
-const stubMatchRespA = { fields: stubMatchRespFieldsA };
 
-const stubMatchRespFieldsB = {
+const stubMatchRespB = {
   title: '',
   // matchThumbnail
   categoryId: 0,
@@ -47,7 +46,6 @@ const stubMatchRespFieldsB = {
   isGenderRestricted: true,
   restrictedGender: false,
 };
-const stubMatchRespB = { fields: stubMatchRespFieldsB };
 
 const stubMatchA = {
   title: '',
@@ -59,8 +57,8 @@ const stubMatchA = {
   // latitude and longitude will be implemented or removed after applying Google Map API
   // locationLatitude: '',
   // locationLongitude: '',
-  timeBegin: new Date(stubMatchRespFieldsA.timeBegin),
-  timeEnd: new Date(stubMatchRespFieldsA.timeEnd),
+  timeBegin: new Date(stubMatchRespA.timeBegin),
+  timeEnd: new Date(stubMatchRespA.timeEnd),
   additionalInfo: '',
   isPeriodic: false,
   period: 0,
@@ -110,7 +108,7 @@ describe('ActionMatch', () => {
       return new Promise(resolve => {
         const result = {
           status: 200,
-          data: JSON.stringify([stubMatchRespA]),
+          data: stubMatchRespA,
         };
         resolve(result);
       });
@@ -129,7 +127,7 @@ describe('ActionMatch', () => {
       return new Promise(resolve => {
         const result = {
           status: 200,
-          data: JSON.stringify([stubMatchRespB]),
+          data: stubMatchRespB,
         };
         resolve(result);
       });

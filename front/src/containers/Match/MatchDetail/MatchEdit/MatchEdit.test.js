@@ -18,7 +18,7 @@ const stubMatch = {
     hostName: 'TEST_HOSTNAME',
     additionalInfo: 'TEST_ADITIONALINFO',
     // matchThumbnail
-    categoryId: 0,
+    category: 0,
     capacity: 0,
     isOnline: false,
     locationText: '',
@@ -70,12 +70,12 @@ describe('<MatchEdit />', () => {
       .find(MatchEdit.WrappedComponent)
       .instance();
     expect(createInstance.state.title).toEqual(title);
-    // categoryId change
-    const categoryId = 3;
+    // category change
+    const category = 3;
     wrapper = component.find('#match-category-id-input');
     expect(wrapper.length).toBe(1);
-    wrapper.simulate('change', { target: { value: categoryId } });
-    expect(createInstance.state.categoryId).toEqual(categoryId);
+    wrapper.simulate('change', { target: { value: category } });
+    expect(createInstance.state.category).toEqual(category);
     // capacity change
     const capacity = 3;
     wrapper = component.find('#match-capacity-input');

@@ -17,20 +17,16 @@ export const getMatch = id => {
         .get(`/api/match/${id}/`)
         .then(res => {
           const { data } = res;
-          const match = JSON.parse(data)[0];
-          const { restrictedGender } = match.fields;
-          delete match.fields.created_on;
-          delete match.fields.restrictedGender;
+          const { restrictedGender } = data;
+          delete data.restrictedGender;
           dispatch(
             getMatchAction({
-              ...match.fields,
-              timeBegin: new Date(match.fields.timeBegin),
-              timeEnd: new Date(match.fields.timeEnd),
-              restrictToMale:
-                match.fields.isGenderRestricted && !restrictedGender,
-              restrictToFemale:
-                match.fields.isGenderRestricted && restrictedGender,
-              isPeriodic: match.fields.period !== 0,
+              ...data,
+              timeBegin: new Date(data.timeBegin),
+              timeEnd: new Date(data.timeEnd),
+              restrictToMale: data.isGenderRestricted && !restrictedGender,
+              restrictToFemale: data.isGenderRestricted && restrictedGender,
+              isPeriodic: data.period !== 0,
             }),
           );
         })
@@ -174,8 +170,7 @@ export const createMatch = match => {
   return dispatch => {
     return axios.post(`/api/match/`, match).then(res => {
       dispatch(createMatchAction());
-      const { data } = res;
-      const { pk } = JSON.parse(data)[0];
+      const { pk } = res.data;
       dispatch(push(`/match/${pk}`));
     });
   };
@@ -191,8 +186,7 @@ export const editMatch = (id, match) => {
   return dispatch => {
     return axios.put(`/api/match/${id}/`, match).then(res => {
       dispatch(editMatchAction());
-      const { data } = res;
-      const { pk } = JSON.parse(data)[0];
+      const { pk } = res.data;
       dispatch(push(`/match/${pk}`));
     });
   };
