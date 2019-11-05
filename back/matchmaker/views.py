@@ -2,7 +2,8 @@
 matchmaker views
 Handle requests.
 '''
-from django.http import HttpResponse, HttpResponseBadRequest, \
+#from django.http import HttpResponse
+from django.http import HttpResponseBadRequest, \
     HttpResponseNotAllowed, HttpResponseNotFound, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core import serializers
