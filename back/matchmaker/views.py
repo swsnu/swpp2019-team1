@@ -2,18 +2,17 @@
 matchmaker views
 Handle requests.
 '''
-#from django.http import HttpResponse
+# from django.http import HttpResponse
 from django.http import HttpResponseBadRequest, \
     HttpResponseNotAllowed, HttpResponseNotFound, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core import serializers
-from django.db.models import F
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 import arrow
 from djangorestframework_camel_case.parser import CamelCaseJSONParser
 
-from .models import Category, Match
+from .models import Category, Match  # , Participation
 from .serializers import MatchSerializer
 
 USER = get_user_model()
@@ -65,9 +64,8 @@ def match(request):
 def match_new(request):
     '''Returns new three matches.'''
     if request.method == 'GET':
-        raw_result = Match.objects.filter(
-            num_participants__lt=F('capacity')).order_by('-created_on')[:3]
-        result = list(map(match_simple_serializer, raw_result))
+        raw_result = Match.objects.all().order_by('-created_on').values()[:3]
+        result = list(map(match_simple_serializer, list(raw_result)))
         return JsonResponse(result, safe=False)
     return HttpResponseNotAllowed(['GET'])
 
@@ -75,9 +73,8 @@ def match_new(request):
 def match_hot(request):
     '''Returns hot three matches.'''
     if request.method == 'GET':
-        raw_result = Match.objects.filter(
-            num_participants__lt=F('capacity')).order_by('-view_count')[:3]
-        result = list(map(match_simple_serializer, raw_result))
+        raw_result = Match.objects.all().order_by('-view_count').values()[:3]
+        result = list(map(match_simple_serializer, list(raw_result)))
         return JsonResponse(result, safe=False)
     return HttpResponseNotAllowed(['GET'])
 
@@ -85,10 +82,8 @@ def match_hot(request):
 def match_recommend(request):
     '''Returns recommend three matches.'''
     if request.method == 'GET':
-        # not yet implemented
-        raw_result = Match.objects.filter(
-            num_participants__lt=F('capacity')).order_by('-view_count')[:3]
-        result = list(map(match_simple_serializer, raw_result))
+        raw_result = Match.objects.all().order_by('-view_count').values()[:3]
+        result = list(map(match_simple_serializer, list(raw_result)))
         return JsonResponse(result, safe=False)
     return HttpResponseNotAllowed(['GET'])
 
@@ -115,7 +110,8 @@ def match_detail(request, match_id):
             return HttpResponseBadRequest()
         category = get_object_or_404(Category, pk=category_id)
         data[category_id] = category.id
-        match_serializer = MatchSerializer(match_obj, data=data, partial=True)
+        match_serializer = MatchSerializer(
+            match_obj, data=data, partial=True)
         if match_serializer.is_valid():
             match_serializer.save()
             return JsonResponse(match_serializer.data, status=200)
