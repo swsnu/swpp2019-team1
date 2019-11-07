@@ -1,0 +1,71 @@
+.MatchDetail {
+  max-width: 800px;
+  margin: 20px auto 0;
+  padding: 20px;
+  border: 1px solid lightgrey;
+  font-size: 35px;
+}
+#join-match-button {
+  margin: 10px;
+  width: 95%;
+  font-size: 30px;
+  height: 50px;
+  margin-top: 50px;
+}
+#enter-chatroom-button {
+  margin: 10px;
+  width: 65%;
+  font-size: 30px;
+  height: 50px;
+  margin-top: 50px;
+}
+#edit-match-button {
+  margin: 10px;
+  width: 25%;
+  font-size: 30px;
+  height: 50px;
+  margin-top: 50px;
+}
+#quit-match-button {
+  margin: 10px;
+  width: 25%;
+  font-size: 30px;
+  height: 50px;
+}
+.MatchDetail i {
+  margin-top: 30px;
+}
+.Detail-PlaceDate {
+  margin-top: 50px;
+}
+.material-icons {
+  margin: 10px;
+}
+#detail-title {
+  font-size: 70px;
+}
+#materials-icon-person {
+  margin-left: 60px;
+  font-size: 60px;
+  color: #114ef7;
+  text-shadow: 4px 4px 8px #114ef7;
+  margin-top: 10px;
+}
+.Detail-Additional-Info {
+  margin-top: 50px;
+  text-align: center;
+}
+.Detail-Restrictions {
+  font-weight: bold;
+  color: #f71111;
+}
+
+#detail-capacity {
+  font-size: 40px;
+  margin-top: 10px;
+  margin-right: 10px;
+  float: right;
+}
+.bold {
+  font-weight: bold;
+}

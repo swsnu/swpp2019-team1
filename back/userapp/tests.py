@@ -190,7 +190,7 @@ class UserappTestCase(TestCase):
                                }),
                                content_type='application/json',
                                HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 200)
 
     def test_signout(self):
         '''test sign out'''
@@ -218,6 +218,31 @@ class UserappTestCase(TestCase):
                                content_type='application/json',
                                HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 204)
+
+    def test_get_user(self):
+        '''test get user'''
+
+        client = Client(enforce_csrf_checks=True)
+        create_dummy_user()
+        response = client.get('/api/token/')
+        csrftoken = response.cookies['csrftoken'].value
+
+        # not allowed
+        response = client.delete('/api/user/',
+                                 HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
+        # unauthenticated
+        response = client.get('/api/user/',
+                              HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.content), {'id': 0})
+
+        client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
+        response = client.get('/api/user/',
+                              HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.content), {'id': 1})
 
     def test_user_detail(self):
         '''test user detail'''

@@ -14,7 +14,7 @@ from djangorestframework_camel_case.parser import CamelCaseJSONParser
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 
 
-from .models import Category, Match  # , Participation
+from .models import Category, Match, Participation
 from .serializers import MatchSerializer
 
 USER = get_user_model()
@@ -29,7 +29,7 @@ def match_simple_serializer(match_object):
         'time': match_object.time_begin,
         'location': match_object.location_text,
         'capacity': match_object.capacity,
-        'numOfParticipants': match_object.num_participants,
+        'numParticipants': match_object.participation_match.all().count(),
     }
 
 
@@ -52,8 +52,12 @@ def match(request):
         match_serializer = MatchSerializer(data=data)
         if match_serializer.is_valid():
             new_match_obj = match_serializer.create(data)
+            participation = Participation(user=USER.objects.get(
+                pk=request.user.id), match=new_match_obj, rating=0)
+            participation.save()
             new_match_data = match_serializer.validated_data
-            new_match_data.update({"pk": new_match_obj.pk})
+            new_match_data.update(
+                {"pk": new_match_obj.pk, 'num_participants': 1})
             response = json.loads(
                 CamelCaseJSONRenderer().render(new_match_data))
             return JsonResponse(response, status=201)
@@ -96,6 +100,8 @@ def match_detail(request, match_id):
     if request.method == 'GET':
         match_obj = get_object_or_404(Match, pk=match_id)
         match_json = model_to_dict(match_obj)
+        match_json.update(
+            {'num_participants': match_obj.participation_match.all().count()})
         del match_json['match_thumbnail']
         match_json = json.loads(
             CamelCaseJSONRenderer().render(match_json))

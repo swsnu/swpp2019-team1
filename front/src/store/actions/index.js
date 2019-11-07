@@ -5,7 +5,7 @@ export {
 } from './user';
 */
 
-export { createUser } from './user';
+export { createUser, getUser } from './user';
 
 export {
   getMatch,

@@ -199,7 +199,7 @@ class MatchCreate extends Component {
       title: '',
       // matchThumbnail
       category: 1,
-      capacity: 0,
+      capacity: 2,
       isOnline: false,
       locationText: '',
       // latitude and longitude will be implemented or removed after applying Google Map API

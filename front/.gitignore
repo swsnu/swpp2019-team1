@@ -78,7 +78,6 @@ typings/
 /build
 
 # misc
-_db.json
 .vscode
 .idea
 .DS_Store
