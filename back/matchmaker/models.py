@@ -76,4 +76,5 @@ class Participation(models.Model):
         on_delete=models.CASCADE,
         related_name='participation_match'
     )
-    rating = models.PositiveSmallIntegerField(default=None, blank=True)
+    rating = models.PositiveSmallIntegerField(
+        default=None, blank=True, null=True)

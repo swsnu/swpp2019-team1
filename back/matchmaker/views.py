@@ -25,7 +25,7 @@ def match_simple_serializer(match_object):
     return {
         'id': match_object.id,
         'title': match_object.title,
-        'host': match_object.host_user.id,
+        'host': match_object.host_user.username,
         'time': match_object.time_begin,
         'location': match_object.location_text,
         'capacity': match_object.capacity,
@@ -53,7 +53,7 @@ def match(request):
         if match_serializer.is_valid():
             new_match_obj = match_serializer.create(data)
             participation = Participation(user=USER.objects.get(
-                pk=request.user.id), match=new_match_obj, rating=0)
+                pk=request.user.id), match=new_match_obj)
             participation.save()
             new_match_data = match_serializer.validated_data
             new_match_data.update(
@@ -71,7 +71,7 @@ def match(request):
 def match_new(request):
     '''Returns new three matches.'''
     if request.method == 'GET':
-        raw_result = Match.objects.all().order_by('-created_on').values()[:3]
+        raw_result = Match.objects.all().order_by('-created_on')[:3]
         result = list(map(match_simple_serializer, list(raw_result)))
         return JsonResponse(result, safe=False)
     return HttpResponseNotAllowed(['GET'])
@@ -80,7 +80,7 @@ def match_new(request):
 def match_hot(request):
     '''Returns hot three matches.'''
     if request.method == 'GET':
-        raw_result = Match.objects.all().order_by('-view_count').values()[:3]
+        raw_result = Match.objects.all().order_by('-view_count')[:3]
         result = list(map(match_simple_serializer, list(raw_result)))
         return JsonResponse(result, safe=False)
     return HttpResponseNotAllowed(['GET'])
@@ -89,7 +89,7 @@ def match_hot(request):
 def match_recommend(request):
     '''Returns recommend three matches.'''
     if request.method == 'GET':
-        raw_result = Match.objects.all().order_by('-view_count').values()[:3]
+        raw_result = Match.objects.all().order_by('-view_count')[:3]
         result = list(map(match_simple_serializer, list(raw_result)))
         return JsonResponse(result, safe=False)
     return HttpResponseNotAllowed(['GET'])
@@ -101,7 +101,8 @@ def match_detail(request, match_id):
         match_obj = get_object_or_404(Match, pk=match_id)
         match_json = model_to_dict(match_obj)
         match_json.update(
-            {'num_participants': match_obj.participation_match.all().count()})
+            {'num_participants': match_obj.participation_match.all().count(),
+             'host_name': match_obj.host_user.username})
         del match_json['match_thumbnail']
         match_json = json.loads(
             CamelCaseJSONRenderer().render(match_json))

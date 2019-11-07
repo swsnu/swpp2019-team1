@@ -29,7 +29,7 @@ class HomePage extends Component {
         host={match.host}
         location={match.location}
         time={match.time}
-        numOfParticipants={match.numOfParticipants}
+        numParticipants={match.numParticipants}
         capacity={match.capacity}
         clickHandler={() => onClickMatch(match.id)}
       />
@@ -88,9 +88,9 @@ HomePage.propTypes = {
       id: PropTypes.number,
       title: PropTypes.string,
       host: PropTypes.string,
-      location: PropTypes.arrayOf(PropTypes.number),
-      time: PropTypes.arrayOf(PropTypes.number),
-      numOfParticipants: PropTypes.number,
+      location: PropTypes.string,
+      time: PropTypes.string,
+      numParticipants: PropTypes.number,
       capacity: PropTypes.number,
     }),
   ).isRequired,
@@ -99,8 +99,9 @@ HomePage.propTypes = {
       id: PropTypes.number,
       title: PropTypes.string,
       host: PropTypes.string,
-      location: PropTypes.arrayOf(PropTypes.number),
-      time: PropTypes.arrayOf(PropTypes.number),
+      location: PropTypes.string,
+      time: PropTypes.string,
+      numParticipants: PropTypes.number,
       capacity: PropTypes.number,
     }),
   ).isRequired,
@@ -109,8 +110,9 @@ HomePage.propTypes = {
       id: PropTypes.number,
       title: PropTypes.string,
       host: PropTypes.string,
-      location: PropTypes.arrayOf(PropTypes.number),
-      time: PropTypes.arrayOf(PropTypes.number),
+      location: PropTypes.string,
+      time: PropTypes.string,
+      numParticipants: PropTypes.number,
       capacity: PropTypes.number,
     }),
   ).isRequired,

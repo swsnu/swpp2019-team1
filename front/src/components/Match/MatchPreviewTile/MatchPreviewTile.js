@@ -9,7 +9,7 @@ const MatchPreviewTile = props => {
     host,
     location,
     time,
-    numOfParticipants,
+    numParticipants,
     capacity,
     clickHandler,
   } = props;
@@ -20,7 +20,7 @@ const MatchPreviewTile = props => {
       <div className="host">{`Host: ${host}`}</div>
       <div className="location">{`Location: ${location}`}</div>
       <div className="time">{`Time: ${time}`}</div>
-      <div className="numParticipants">{`Participants: ${numOfParticipants}`}</div>
+      <div className="numParticipants">{`Participants: ${numParticipants}`}</div>
       <div className="capacity">{`Capacity: ${capacity}`}</div>
     </button>
   );
@@ -29,9 +29,9 @@ MatchPreviewTile.propTypes = {
   page: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   host: PropTypes.string.isRequired,
-  location: PropTypes.arrayOf(PropTypes.number).isRequired,
-  time: PropTypes.arrayOf(PropTypes.number).isRequired,
-  numOfParticipants: PropTypes.number.isRequired,
+  location: PropTypes.string.isRequired,
+  time: PropTypes.string,
+  numParticipants: PropTypes.number.isRequired,
   capacity: PropTypes.number.isRequired,
   clickHandler: PropTypes.func.isRequired,
 };

@@ -26,10 +26,10 @@ class MatchDetail extends Component {
     onEditMatch(match.params.id);
   };
 
-  // clickUserHandler = () => {
-  //   const { selected, onUserProfile } = this.props;
-  //   onUserProfile(selected.hostId);
-  // };
+  clickUserHandler = () => {
+    const { selected, onUserProfile } = this.props;
+    onUserProfile(selected.hostUser);
+  };
 
   clickJoinHandler = () => {
     const { match, onJoinMatch } = this.props;
@@ -145,7 +145,7 @@ class MatchDetail extends Component {
                 {selected.locationText}
               </div>
             </div>
-            {/* <div className="Detail-Host">
+            <div className="Detail-Host">
               <button
                 type="button"
                 id="host-profile-button"
@@ -153,7 +153,7 @@ class MatchDetail extends Component {
               >
                 {selected.hostName}
               </button>
-            </div> */}
+            </div>
           </div>
         </div>
         <div className="Detail-Restrictions">
@@ -205,7 +205,7 @@ const mapDispatchToProps = dispatch => {
     onEditMatch: mid => dispatch(push(`/match/${mid}/edit`)),
     onJoinMatch: mid => dispatch(actionCreators.joinMatch(mid)),
     onQuitMatch: mid => dispatch(actionCreators.quitMatch(mid)),
-    // onUserProfile: uid => dispatch(push(`/profile/${uid}`)),
+    onUserProfile: uid => dispatch(push(`/profile/${uid}`)),
   };
 };
 
@@ -221,7 +221,7 @@ MatchDetail.propTypes = {
   onJoinMatch: PropTypes.func.isRequired,
   onQuitMatch: PropTypes.func.isRequired,
   onEditMatch: PropTypes.func.isRequired,
-  // onUserProfile: PropTypes.func.isRequired,
+  onUserProfile: PropTypes.func.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
 };
 MatchDetail.defaultProps = { selected: undefined };

@@ -236,15 +236,15 @@ describe('<MatchDetail />', () => {
     expect(spyHistoryPush).toHaveBeenCalledWith('/match/1/edit');
   });
 
-  // it('should redirected to user profile page when host clicked', () => {
-  //   const spyHistoryPush = jest
-  //     .spyOn(history, 'push')
-  //     .mockImplementation(() => {});
-  //   const component = mount(matchDetail);
-  //   const wrapper = component.find('#host-profile-button');
-  //   wrapper.simulate('click');
-  //   expect(spyHistoryPush).toHaveBeenCalledWith('/profile/2');
-  // });
+  it('should redirected to user profile page when host clicked', () => {
+    const spyHistoryPush = jest
+      .spyOn(history, 'push')
+      .mockImplementation(() => {});
+    const component = mount(matchDetail);
+    const wrapper = component.find('#host-profile-button');
+    wrapper.simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/profile/1');
+  });
 
   it('should call joinMatch when join button clicked', () => {
     const component = mount(matchDetailNotHost);
