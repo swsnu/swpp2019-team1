@@ -30,7 +30,7 @@ MatchPreviewTile.propTypes = {
   title: PropTypes.string.isRequired,
   host: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,
-  time: PropTypes.string,
+  time: PropTypes.string.isRequired,
   numParticipants: PropTypes.number.isRequired,
   capacity: PropTypes.number.isRequired,
   clickHandler: PropTypes.func.isRequired,

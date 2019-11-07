@@ -28,7 +28,7 @@ class Search extends Component {
         host={match.host}
         location={match.location}
         time={match.time}
-        numOfParticipants={match.numOfParticipants}
+        numParticipants={match.numParticipants}
         capacity={match.capacity}
         clickHandler={() => onClickMatch(match.id)}
       />
@@ -81,7 +81,7 @@ Search.propTypes = {
       host: PropTypes.string,
       location: PropTypes.string,
       time: PropTypes.string,
-      numOfParticipants: PropTypes.number,
+      numParticipants: PropTypes.number,
       capacity: PropTypes.number,
     }),
   ).isRequired,
