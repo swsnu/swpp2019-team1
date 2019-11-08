@@ -5,10 +5,6 @@ const initialState = {
   isSignedIn: 0,
 };
 
-// const testinitialState = {
-//   userid: 1,
-// };
-
 const userReducer = (state, action) => {
   if (typeof state === 'undefined') return initialState;
   switch (action.type) {
@@ -16,7 +12,7 @@ const userReducer = (state, action) => {
       return { ...state };
     // yet not implemented
     case actionTypes.SIGN_IN:
-      return { ...state, isSignedIn: 1 };
+      return { ...state, isSignedIn: 1, userid: action.id };
     case actionTypes.SIGN_OUT:
       return { ...state, isSignedIn: 0 };
     default:

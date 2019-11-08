@@ -35,7 +35,6 @@ class Match(models.Model):
         upload_to='thumbnail/', blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     capacity = models.PositiveSmallIntegerField(default=2)
-    num_participants = models.PositiveSmallIntegerField(default=1)
     is_online = models.BooleanField(default=False)
     is_full = models.BooleanField(default=False)
 
@@ -77,4 +76,5 @@ class Participation(models.Model):
         on_delete=models.CASCADE,
         related_name='participation_match'
     )
-    rating = models.PositiveSmallIntegerField(default=None, blank=True)
+    rating = models.PositiveSmallIntegerField(
+        default=None, blank=True, null=True)

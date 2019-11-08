@@ -16,6 +16,11 @@ const stubSignUpInfo = {
   birthdate: null,
 };
 
+const stubSignInInfo = {
+  email: '',
+  password: '',
+};
+
 describe('User Actions', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -108,17 +113,22 @@ describe('User Actions', () => {
   });
 
   it(`'signIn' should request signin correctly`, done => {
+    const spyPush = jest
+      .spyOn(history, 'push')
+      .mockImplementation(path => path);
     const spyPost = jest.spyOn(axios, 'post').mockImplementation(() => {
       return new Promise(resolve => {
         const result = {
           status: 200,
+          data: { id: 1 },
         };
         resolve(result);
       });
     });
 
-    store.dispatch(actionCreators.signIn()).then(() => {
+    store.dispatch(actionCreators.signIn(stubSignInInfo)).then(() => {
       expect(spyPost).toHaveBeenCalledTimes(1);
+      expect(spyPush).toHaveBeenCalledWith('/home');
       done();
     });
   });
@@ -129,7 +139,6 @@ describe('User Actions', () => {
         throw new Error();
       });
     });
-
     const spyCatch = jest.spyOn(message, 'error').mockImplementation(() => {
       return null;
     });
@@ -170,6 +179,23 @@ it(`'signOut' should handle error`, done => {
 
   store.dispatch(actionCreators.signOut()).then(() => {
     expect(spyCatch).toHaveBeenCalledTimes(1);
+    done();
+  });
+});
+
+it(`'getUser' should request getting user correctly`, done => {
+  const spyGet = jest.spyOn(axios, 'get').mockImplementation(() => {
+    return new Promise(resolve => {
+      const result = {
+        status: 200,
+        data: { id: 1 },
+      };
+      resolve(result);
+    });
+  });
+
+  store.dispatch(actionCreators.getUser()).then(() => {
+    expect(spyGet).toHaveBeenCalledTimes(1);
     done();
   });
 });

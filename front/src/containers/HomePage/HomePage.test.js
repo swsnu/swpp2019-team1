@@ -16,9 +16,9 @@ const testmatch = {
   id: 1,
   title: 'TestTitle',
   host: 'HostName',
-  location: [38, 126],
-  time: [2019, 9, 1, 10, 24],
-  numOfParticipants: 2,
+  location: 'Test Location',
+  time: 'Test Time',
+  numParticipants: 2,
   capacity: 4,
 };
 const stubMatch = {

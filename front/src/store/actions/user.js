@@ -6,9 +6,26 @@ import * as actionTypes from './actionTypes';
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 
-const signInAction = () => {
+const getUserAction = id => {
   return {
     type: actionTypes.SIGN_IN,
+    id,
+  };
+};
+
+export const getUser = () => {
+  return dispatch => {
+    return axios.get('/api/user/').then(res => {
+      const { data } = res;
+      dispatch(getUserAction(data.id));
+    });
+  };
+};
+
+const signInAction = id => {
+  return {
+    type: actionTypes.SIGN_IN,
+    id,
   };
 };
 
@@ -16,8 +33,9 @@ export const signIn = signInInfo => {
   return dispatch => {
     return axios
       .post('/api/user/signin/', signInInfo)
-      .then(() => {
-        dispatch(signInAction());
+      .then(res => {
+        const { data } = res;
+        dispatch(signInAction(data.id));
         dispatch(push('/home'));
       })
       .catch(() => {

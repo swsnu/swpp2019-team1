@@ -19,6 +19,15 @@ def token(request):
     return HttpResponseNotAllowed(['GET'])
 
 
+def get_user(request):
+    ''' returns user public key '''
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            return JsonResponse({'id': request.user.id}, status=200)
+        return JsonResponse({'id': 0}, status=200)
+    return HttpResponseNotAllowed(['GET'])
+
+
 def sign_up(request):
     ''' sign up '''
     if request.method == 'POST':
@@ -43,7 +52,7 @@ def sign_in(request):
             email=data['email'], password=data['password'])
         if user is not None:
             auth.login(request, user)
-            return HttpResponse(status=204)
+            return JsonResponse({'id': user.pk}, status=200)
         return HttpResponse(status=400)
     # 405
     return HttpResponseNotAllowed(['POST'])
