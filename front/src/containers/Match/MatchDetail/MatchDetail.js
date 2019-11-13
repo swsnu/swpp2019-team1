@@ -16,9 +16,8 @@ class MatchDetail extends Component {
   }
 
   componentDidMount() {
-    const { match, onGetMatch, onGetUser } = this.props;
+    const { match, onGetMatch } = this.props;
     onGetMatch(match.params.id);
-    onGetUser();
   }
 
   clickEditHandler = () => {
@@ -28,7 +27,7 @@ class MatchDetail extends Component {
 
   clickUserHandler = () => {
     const { selected, onUserProfile } = this.props;
-    onUserProfile(selected.hostUser);
+    onUserProfile(selected.hostUser.id);
   };
 
   clickJoinHandler = () => {
@@ -44,20 +43,6 @@ class MatchDetail extends Component {
   renderCapacity = (numParticipants, capacity) => {
     let result = `${numParticipants}/${capacity}`;
     if (numParticipants === capacity) result += ' (Full)';
-    return result;
-  };
-
-  formatTime = date => {
-    let result = '';
-    const hours = date.getHours();
-    if (hours >= 12) result += `0${hours - 12}:`.slice(-3);
-    else result += `0${hours}:`.slice(-3);
-    result += `0${date.getMinutes()}`.slice(-2);
-    if (hours < 12) result += 'AM, ';
-    else result += 'PM, ';
-    result += `${date.getDate()}th `;
-    result += `${date.getMonth() + 1} `;
-    result += date.getFullYear();
     return result;
   };
 
@@ -81,7 +66,7 @@ class MatchDetail extends Component {
   };
 
   renderButtons = (selected, userid) => {
-    if (selected.hostUser === userid)
+    if (selected.hostUser.id === userid)
       return (
         <div className="HostButtons">
           <Button type="primary" id="enter-chatroom-button" onClick={() => {}}>
@@ -116,7 +101,7 @@ class MatchDetail extends Component {
   };
 
   render() {
-    const { selected, userid } = this.props;
+    const { selected, currentUser } = this.props;
     if (selected === undefined)
       return <div className="MatchDetail">Loading...</div>;
     return (
@@ -127,7 +112,10 @@ class MatchDetail extends Component {
         />
         <div className="Detail-Header">
           <div className="Detail-MainInfo">
-            <img src="TODO-source-directory" alt="thumb" />
+            <img
+              src="https://starzplay-img-prod-ssl.akamaized.net/474w/WarnerBrothers/THEBIGBANGTHEORYY2007S01E001/THEBIGBANGTHEORYY2007S01E001-474x677-PST.jpg"
+              alt="thumb"
+            />
             <b id="detail-title">{selected.title}</b>
             <b id="detail-capacity">
               <i className="material-icons" id="materials-icon-person">
@@ -138,7 +126,7 @@ class MatchDetail extends Component {
             <br />
             <div className="Detail-PlaceDate">
               <i className="material-icons">calendar_today</i>
-              {this.formatTime(selected.timeBegin)}
+              {selected.timeBegin.format('YYYY/MM/DD, h:mm a')}
               {this.renderPeriod(selected.period)}
               <div className="Detail-Location">
                 <i className="material-icons">storefront</i>
@@ -151,7 +139,7 @@ class MatchDetail extends Component {
                 id="host-profile-button"
                 onClick={() => this.clickUserHandler()}
               >
-                {selected.hostName}
+                {selected.hostUser.username}
               </button>
             </div>
           </div>
@@ -185,7 +173,7 @@ class MatchDetail extends Component {
           </svg>
           {selected.additionalInfo}
         </div>
-        {this.renderButtons(selected, userid)}
+        {this.renderButtons(selected, currentUser ? currentUser.id : 0)}
       </div>
     );
   }
@@ -194,14 +182,13 @@ class MatchDetail extends Component {
 const mapStateToProps = state => {
   return {
     selected: state.match.selected,
-    userid: state.user.userid,
+    currentUser: state.user.currentUser,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onGetMatch: mid => dispatch(actionCreators.getMatch(mid)),
-    onGetUser: () => dispatch(actionCreators.getUser()),
     onEditMatch: mid => dispatch(push(`/match/${mid}/edit`)),
     onJoinMatch: mid => dispatch(actionCreators.joinMatch(mid)),
     onQuitMatch: mid => dispatch(actionCreators.quitMatch(mid)),
@@ -213,10 +200,14 @@ MatchDetail.propTypes = {
   // user: PropTypes.object.isRequired,
   selected: PropTypes.shape({
     ...MatchPropTypes,
-    hostUser: PropTypes.number.isRequired,
-    hostName: PropTypes.string.isRequired,
+    hostUser: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      username: PropTypes.string.isRequired,
+    }).isRequired,
   }),
-  userid: PropTypes.number.isRequired,
+  currentUser: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }),
   onGetMatch: PropTypes.func.isRequired,
   onJoinMatch: PropTypes.func.isRequired,
   onQuitMatch: PropTypes.func.isRequired,
@@ -224,7 +215,7 @@ MatchDetail.propTypes = {
   onUserProfile: PropTypes.func.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
 };
-MatchDetail.defaultProps = { selected: undefined };
+MatchDetail.defaultProps = { selected: undefined, currentUser: null };
 
 export default connect(
   mapStateToProps,

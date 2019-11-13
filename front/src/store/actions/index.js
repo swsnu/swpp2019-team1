@@ -1,11 +1,11 @@
-/*
 export {
+  signIn,
+  signOut,
+  createUser,
+  getUser,
   getUserList,
-  getUserInfo,
+  restoreUser,
 } from './user';
-*/
-
-export { createUser, getUser } from './user';
 
 export {
   getMatch,

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import PropTypes from 'prop-types';
+import { Card, Row, Button, Icon } from 'antd';
 
 import * as actionCreators from '../../store/actions/index';
 import MatchPreviewTile from '../../components/Match/MatchPreviewTile/MatchPreviewTile';
@@ -45,35 +46,41 @@ class HomePage extends Component {
       <div className="HomePage">
         <div className="Home-search">
           <div className="Home-search-message">Find a match you want</div>
-          <button
+          <Button
             id="Home-search-button"
-            type="button"
             onClick={() => history.push('/search')}
+            block
           >
+            <Icon type="search" />
             Search
-          </button>
+          </Button>
         </div>
         <div className="Home-create">
           <div className="Home-create-message">Make your own matching now!</div>
-          <button
+          <Button
             id="Home-create-button"
-            type="button"
+            type="primary"
             onClick={() => history.push('/match/create')}
+            block
           >
-            + Create Now
-          </button>
+            <Icon type="plus-circle" />
+            Create Now
+          </Button>
         </div>
         <div className="HomeCategory Hot-match">
-          Hot Matches
-          {componentHot}
+          <Card title="Hot Matches">
+            <Row gutter={(16, 16)}>{componentHot}</Row>
+          </Card>
         </div>
         <div className="HomeCategory New-match">
-          New Matches
-          {componentNew}
+          <Card title="New Matches">
+            <Row gutter={(16, 16)}>{componentNew}</Row>
+          </Card>
         </div>
         <div className="HomeCategory Recommend-match">
-          Recommend Matches
-          {componentRecommend}
+          <Card title="Recommend Matches">
+            <Row gutter={(16, 16)}>{componentRecommend}</Row>
+          </Card>
         </div>
       </div>
     );

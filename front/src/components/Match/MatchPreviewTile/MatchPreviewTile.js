@@ -1,6 +1,7 @@
 // Single match tile in home page (square shape tile)
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 const MatchPreviewTile = props => {
   const {
@@ -13,13 +14,16 @@ const MatchPreviewTile = props => {
     capacity,
     clickHandler,
   } = props;
+
   return (
     <button type="button" id={`${page}MatchPreviewTile`} onClick={clickHandler}>
       MatchPreviewTile
       <div className="title">{`Title: ${title}`}</div>
       <div className="host">{`Host: ${host}`}</div>
       <div className="location">{`Location: ${location}`}</div>
-      <div className="time">{`Time: ${time}`}</div>
+      <div className="time">{`Time: ${moment(time).format(
+        'YYYY/MM/DD, h:mm a',
+      )}`}</div>
       <div className="numParticipants">{`Participants: ${numParticipants}`}</div>
       <div className="capacity">{`Capacity: ${capacity}`}</div>
     </button>

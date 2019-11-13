@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import './index.css';
 
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
@@ -28,10 +28,11 @@ const logger = storeArg => next => action => {
   console.log('[Middleware] Next State', storeArg.getState());
   return result;
 };
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
   rootReducer,
-  applyMiddleware(logger, thunk, routerMiddleware(history)),
+  composeEnhancers(applyMiddleware(logger, thunk, routerMiddleware(history))),
 );
 
 ReactDOM.render(

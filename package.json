@@ -25,5 +25,6 @@
     "back": "python back/manage.py runserver 8000",
     "dev": "cd front && yarn dev",
     "coveralls": "cd front && cat ./coverage/lcov.info | node node_modules/.bin/coveralls"
-  }
+  },
+  "dependencies": {}
 }

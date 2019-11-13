@@ -7,7 +7,8 @@ import getMockStore from './test-utils/getMockStore';
 import { history } from './store/store';
 
 const stubInitUser = {
-  isSignedIn: 0,
+  currentUser: null,
+  selectedUser: null,
 };
 const stubInitMatch = {
   hot: [],

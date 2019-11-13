@@ -4,6 +4,7 @@ matchmaker models
 from django.db import models
 from django.utils import timezone
 from django.conf import settings
+from django_mysql.models import ListCharField
 #from django.contrib.auth import get_user_model
 
 #USER = get_user_model()
@@ -14,6 +15,15 @@ class Category(models.Model):
     Category model
     '''
     name = models.CharField(max_length=45)
+    indexes = ListCharField(
+        max_length=10*10,   # 10 * 9 character nominals, plus commas
+        base_field=models.PositiveSmallIntegerField(),
+        size=10,  # Maximum of 10 ids in list
+        unique=True,
+    )
+
+    def __str__(self):
+        return self.name
 
 
 class Match(models.Model):
@@ -32,7 +42,7 @@ class Match(models.Model):
         blank=False
     )
     match_thumbnail = models.ImageField(
-        upload_to='thumbnail/', blank=True, null=True)
+        upload_to='thumbnail/', blank=True, null=True, default='thumbnail/default-user.png')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     capacity = models.PositiveSmallIntegerField(default=2)
     is_online = models.BooleanField(default=False)

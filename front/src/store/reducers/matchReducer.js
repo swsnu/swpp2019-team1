@@ -1,5 +1,52 @@
 import * as actionTypes from '../actions/actionTypes';
 
+export const categories = [
+  {
+    value: 0,
+    label: 'Movie',
+    children: [
+      {
+        value: 0,
+        label: 'SF',
+      },
+      {
+        value: 1,
+        label: 'Action',
+      },
+      {
+        value: 2,
+        label: 'Comedy',
+      },
+      {
+        value: 3,
+        label: 'Romance',
+      },
+    ],
+  },
+  {
+    value: 1,
+    label: 'Study',
+    children: [
+      {
+        value: 0,
+        label: 'Physics',
+      },
+      {
+        value: 1,
+        label: 'Biology',
+      },
+      {
+        value: 2,
+        label: 'Computer Science',
+      },
+      {
+        value: 3,
+        label: 'Mechanical Engineering',
+      },
+    ],
+  },
+];
+
 const initialState = {
   hot: [],
   new: [],
@@ -8,6 +55,7 @@ const initialState = {
   selected: undefined,
   // the following may not be needed
   myMatch: [],
+  categories,
 };
 
 // const testInitialState = {
@@ -31,8 +79,9 @@ const initialState = {
 const matchReducer = (state, action) => {
   if (typeof state === 'undefined') return initialState;
   switch (action.type) {
-    case actionTypes.GET_MATCH:
+    case actionTypes.GET_MATCH: {
       return { ...state, selected: action.match };
+    }
     case actionTypes.GET_HOT_MATCH:
       return { ...state, hot: action.hot };
     case actionTypes.GET_NEW_MATCH:

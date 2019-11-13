@@ -1,7 +1,5 @@
-/*
-export const GET_USER_INFO = 'GET_USER_INFO';
+export const GET_USER = 'GET_USER';
 export const GET_USER_LIST = 'GET_USER_LIST';
-*/
 export const CREATE_USER = 'CREATE_USER';
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_OUT = 'SIGN_OUT';

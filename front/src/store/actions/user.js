@@ -1,31 +1,16 @@
 import axios from 'axios';
 import { push } from 'connected-react-router';
 import { message } from 'antd';
+
 import * as actionTypes from './actionTypes';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 
-const getUserAction = id => {
+const signInAction = user => {
   return {
     type: actionTypes.SIGN_IN,
-    id,
-  };
-};
-
-export const getUser = () => {
-  return dispatch => {
-    return axios.get('/api/user/').then(res => {
-      const { data } = res;
-      dispatch(getUserAction(data.id));
-    });
-  };
-};
-
-const signInAction = id => {
-  return {
-    type: actionTypes.SIGN_IN,
-    id,
+    user,
   };
 };
 
@@ -33,9 +18,15 @@ export const signIn = signInInfo => {
   return dispatch => {
     return axios
       .post('/api/user/signin/', signInInfo)
-      .then(res => {
+      .then(async res => {
         const { data } = res;
-        dispatch(signInAction(data.id));
+        await localStorage.setItem(
+          'currentUser',
+          JSON.stringify({
+            ...data.user,
+          }),
+        );
+        dispatch(signInAction(data.user));
         dispatch(push('/home'));
       })
       .catch(() => {
@@ -57,6 +48,7 @@ export const signOut = () => {
     return axios
       .post('/api/user/signout/')
       .then(() => {
+        localStorage.removeItem('currentUser');
         dispatch(signOutAction());
         dispatch(push('/signin'));
       })
@@ -106,19 +98,33 @@ export const createUser = signUpInfo => {
   };
 };
 
-/*
-const getUserInfo_ = user => {
+const getUserAction = user => {
   return {
-    type: actionTypes.GET_USER_INFO,
+    type: actionTypes.GET_USER,
     user,
   };
 };
 
-export const getUserInfo = id => {
+export const getUser = id => {
   return dispatch => {
     return axios
       .get(`/api/user/${id}`)
-      .then(res => dispatch(getUserInfo_(res.data)))
+      .then(res => dispatch(getUserAction(res.data)));
   };
 };
-*/
+
+export const getUserList = () => null;
+
+const restoreUserAction = user => {
+  return {
+    type: actionTypes.SIGN_IN,
+    user,
+  };
+};
+
+export const restoreUser = () => {
+  return dispatch => {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    dispatch(restoreUserAction(currentUser));
+  };
+};

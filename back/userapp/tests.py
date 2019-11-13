@@ -9,9 +9,9 @@ from django.contrib.auth import get_user_model
 USER = get_user_model()
 
 
-def create_dummy_user():
+def create_dummy_user(email):
     '''create dummy user'''
-    return USER.objects.create_user(email='TEST_EMAIL@test.com', password='TEST_PASSWORD',
+    return USER.objects.create_user(email=email, password='TEST_PASSWORD',
                                     username='TEST_USERNAME', first_name='TEST_FIRST_NAME',
                                     last_name='TEST_LAST_NAME', phone_number='010-1234-5678',
                                     gender=settings.MALE, birthdate='2000-01-01',
@@ -25,7 +25,7 @@ class UserappTestCase(TestCase):
         '''test user model'''
         with self.assertRaises(ValueError):
             USER.objects.create_user(email='')
-        test_user = create_dummy_user()
+        test_user = create_dummy_user('TEST_EMAIL@test.com')
         self.assertEqual(test_user.__str__(), test_user.username)
         self.assertEqual(test_user.get_full_name(),
                          f'{test_user.first_name} {test_user.last_name}')
@@ -163,7 +163,7 @@ class UserappTestCase(TestCase):
         client = Client(enforce_csrf_checks=True)
         response = client.get('/api/token/')
         csrftoken = response.cookies['csrftoken'].value
-        create_dummy_user()
+        create_dummy_user('TEST_EMAIL@test.com')
         # not allowed
         response = client.put('/api/user/signin/',
                               json.dumps({
@@ -197,7 +197,7 @@ class UserappTestCase(TestCase):
         client = Client(enforce_csrf_checks=True)
         response = client.get('/api/token/')
         csrftoken = response.cookies['csrftoken'].value
-        create_dummy_user()
+        create_dummy_user('TEST_EMAIL@test.com')
         # unauthenticated
         response = client.post('/api/user/signout/',
                                content_type='application/json',
@@ -219,35 +219,10 @@ class UserappTestCase(TestCase):
                                HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 204)
 
-    def test_get_user(self):
-        '''test get user'''
-
-        client = Client(enforce_csrf_checks=True)
-        create_dummy_user()
-        response = client.get('/api/token/')
-        csrftoken = response.cookies['csrftoken'].value
-
-        # not allowed
-        response = client.delete('/api/user/',
-                                 HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 405)
-
-        # unauthenticated
-        response = client.get('/api/user/',
-                              HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.content), {'id': 0})
-
-        client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
-        response = client.get('/api/user/',
-                              HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.content), {'id': 1})
-
     def test_user_detail(self):
         '''test user detail'''
         client = Client(enforce_csrf_checks=True)
-        test_user = create_dummy_user()
+        test_user = create_dummy_user('TEST_EMAIL@test.com')
         response = client.get('/api/token/')
         csrftoken = response.cookies['csrftoken'].value
         last_password = test_user.password
