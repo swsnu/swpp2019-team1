@@ -109,8 +109,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # use mysql (not sqlite)
         'NAME': 'swpp_db',
-        'USER': 'team1',
-        'PASSWORD': 'swpp',
+        'USER': 'root',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTIONS': {
