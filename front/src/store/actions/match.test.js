@@ -1,20 +1,21 @@
 import axios from 'axios';
 import { message } from 'antd';
+import moment from 'moment';
 import * as actionCreators from './match';
 import store, { history } from '../store';
 
 const stubMatchRespA = {
   title: '',
   // matchThumbnail
-  category: 0,
+  category: [0, 0],
   capacity: 0,
   isOnline: false,
   locationText: '',
   // latitude and longitude will be implemented or removed after applying Google Map API
   // locationLatitude: '',
   // locationLongitude: '',
-  timeBegin: new Date().toISOString(),
-  timeEnd: new Date().toISOString(),
+  timeBegin: moment().format(),
+  timeEnd: moment().format(),
   additionalInfo: '',
   isPeriodic: false,
   period: 0,
@@ -28,15 +29,15 @@ const stubMatchRespA = {
 const stubMatchRespB = {
   title: '',
   // matchThumbnail
-  category: 0,
+  category: [0, 0],
   capacity: 0,
   isOnline: false,
   locationText: '',
   // latitude and longitude will be implemented or removed after applying Google Map API
   // locationLatitude: '',
   // locationLongitude: '',
-  timeBegin: new Date().toISOString(),
-  timeEnd: new Date().toISOString(),
+  timeBegin: moment().format(),
+  timeEnd: moment().format(),
   additionalInfo: '',
   isPeriodic: false,
   period: 0,
@@ -50,15 +51,15 @@ const stubMatchRespB = {
 const stubMatchA = {
   title: '',
   // matchThumbnail
-  category: 0,
+  category: [0, 0],
   capacity: 0,
   isOnline: false,
   locationText: '',
   // latitude and longitude will be implemented or removed after applying Google Map API
   // locationLatitude: '',
   // locationLongitude: '',
-  timeBegin: new Date(stubMatchRespA.timeBegin),
-  timeEnd: new Date(stubMatchRespA.timeEnd),
+  timeBegin: moment(stubMatchRespA.timeBegin),
+  timeEnd: moment(stubMatchRespA.timeEnd),
   additionalInfo: '',
   isPeriodic: false,
   period: 0,
@@ -78,15 +79,15 @@ const stubMatchPk = 2;
 const stubNewMatch = {
   title: '',
   // matchThumbnail
-  category: 0,
+  category: [0, 0],
   capacity: 0,
   isOnline: false,
   locationText: '',
   // latitude and longitude will be implemented or removed after applying Google Map API
   // locationLatitude: '',
   // locationLongitude: '',
-  timeStart: new Date(),
-  timeEnd: new Date(),
+  timeStart: moment(),
+  timeEnd: moment(),
   additionalInfo: '',
   isPeriodic: false,
   period: 0,
@@ -99,11 +100,11 @@ const stubNewMatch = {
 };
 
 describe('ActionMatch', () => {
-  afterEach(() => {
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it(`'getMatch' should fetch match correctly`, done => {
+  it(`'getMatch' should fetch match correctly`, async done => {
     const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
       return new Promise(resolve => {
         const result = {
@@ -113,13 +114,16 @@ describe('ActionMatch', () => {
         resolve(result);
       });
     });
-
-    store.dispatch(actionCreators.getMatch(0)).then(() => {
+    JSON.parse = jest.fn().mockImplementationOnce(() => {
+      return [0, 0];
+    });
+    store.dispatch(actionCreators.getMatch(0)).then(async () => {
       const newState = store.getState();
       expect(newState.match.selected).toStrictEqual(stubMatchA);
       expect(spy).toHaveBeenCalledTimes(1);
-      done();
     });
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    done();
   });
 
   it(`'getMatch' should set restrictToMale, restrictToFemale correctly`, done => {

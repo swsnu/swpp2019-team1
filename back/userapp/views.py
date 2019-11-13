@@ -1,10 +1,13 @@
 ''' custom user views '''
+import json
+
 from django.contrib.auth import get_user_model
 from django.contrib import auth
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseNotFound, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from djangorestframework_camel_case.parser import CamelCaseJSONParser
+from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 
 from userapp.serializers import UserSerializer
 
@@ -16,15 +19,6 @@ def token(request):
     ''' get csrf token '''
     if request.method == 'GET':
         return HttpResponse(status=204)
-    return HttpResponseNotAllowed(['GET'])
-
-
-def get_user(request):
-    ''' returns user public key '''
-    if request.method == 'GET':
-        if request.user.is_authenticated:
-            return JsonResponse({'id': request.user.id}, status=200)
-        return JsonResponse({'id': 0}, status=200)
     return HttpResponseNotAllowed(['GET'])
 
 
@@ -52,7 +46,8 @@ def sign_in(request):
             email=data['email'], password=data['password'])
         if user is not None:
             auth.login(request, user)
-            return JsonResponse({'id': user.pk}, status=200)
+            serializer = UserSerializer(user)
+            return JsonResponse({'user': serializer.data}, status=200)
         return HttpResponse(status=400)
     # 405
     return HttpResponseNotAllowed(['POST'])
@@ -79,14 +74,21 @@ def user_detail(request, user_id):
 
     if request.method == 'GET':
         serializer = UserSerializer(user)
-        return JsonResponse(serializer.data)
+        data = serializer.data
+        del data['password']
+        data['fullName'] = user.get_full_name()
+        response = json.loads(
+            CamelCaseJSONRenderer().render(data))
+        return JsonResponse(response)
 
     if request.method == 'PATCH':
         data = CamelCaseJSONParser().parse(request)
         serializer = UserSerializer(user, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data)
+            response = json.loads(
+                CamelCaseJSONRenderer().render(serializer.data))
+            return JsonResponse(response)
         return JsonResponse(serializer.errors, status=400)
 
     # 405

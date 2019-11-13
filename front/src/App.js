@@ -30,7 +30,7 @@ function App(props) {
           <Route path="/match/:id" exact component={MatchDetail} />
           <Route path="/signin" exact component={SignIn} />
           <Route path="/signup" exact component={SignUp} />
-          <Route path="/profile" exact component={UserProfile} />
+          <Route path="/profile/:id" exact component={UserProfile} />
           <Redirect from="/" to="/home" />
         </Switch>
         <Footer />

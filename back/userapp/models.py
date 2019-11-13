@@ -6,6 +6,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 
 
 class UserManager(BaseUserManager):
@@ -44,14 +45,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(_('superuser'), default=False)
 
     email = models.EmailField(max_length=45, unique=True)
-    username = models.CharField(max_length=32)
-    first_name = models.CharField(max_length=32)
-    last_name = models.CharField(max_length=32)
+    username = models.CharField(max_length=32, default='ADMIN')
+    first_name = models.CharField(max_length=32, default='FN')
+    last_name = models.CharField(max_length=32, default='LN')
 
-    phone_number = models.CharField(max_length=13)
-    gender = models.BooleanField(blank=False)
-    birthdate = models.DateField()
-    message = models.CharField(max_length=100, blank=True)
+    phone_number = models.CharField(max_length=13, default='000-0000-0000')
+    gender = models.BooleanField(default=True)
+    birthdate = models.DateField(default=timezone.now)
+    message = models.CharField(max_length=200, blank=True)
     profile_picture = models.ImageField(
         upload_to='profile/', null=True, blank=True)
     is_email_public = models.BooleanField(default=True, blank=True)

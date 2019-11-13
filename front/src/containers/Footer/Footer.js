@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Layout } from 'antd';
 
 class Footer extends Component {
   constructor(props) {
@@ -7,7 +8,13 @@ class Footer extends Component {
   }
 
   render() {
-    return <div className="Footer">Footer</div>;
+    return (
+      <div className="Footer">
+        <Layout.Footer style={{ textAlign: 'center' }}>
+          Matchmaker ©2019 Suffered from SWPP
+        </Layout.Footer>
+      </div>
+    );
   }
 }
 Footer.propTypes = {};

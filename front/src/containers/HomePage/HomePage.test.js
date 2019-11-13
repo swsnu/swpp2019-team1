@@ -17,7 +17,7 @@ const testmatch = {
   title: 'TestTitle',
   host: 'HostName',
   location: 'Test Location',
-  time: 'Test Time',
+  time: '2019-11-12T06:29:50.304Z',
   numParticipants: 2,
   capacity: 4,
 };
@@ -89,7 +89,7 @@ describe('<HomePage />', () => {
       .spyOn(history, 'push')
       .mockImplementation(() => null);
     const component = mount(homePage);
-    const wrapper = component.find('#Home-create-button');
+    const wrapper = component.find('#Home-create-button').at(0);
     wrapper.simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledWith('/match/create');
   });
@@ -99,7 +99,7 @@ describe('<HomePage />', () => {
       .spyOn(history, 'push')
       .mockImplementation(() => null);
     const component = mount(homePage);
-    const wrapper = component.find('#Home-search-button');
+    const wrapper = component.find('#Home-search-button').at(0);
     wrapper.simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledWith('/search');
   });

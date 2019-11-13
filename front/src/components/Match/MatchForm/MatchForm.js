@@ -1,12 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import momentPropTypes from 'react-moment-proptypes';
+import { Form, Input, FormItem, InputNumber } from 'formik-antd';
+import { Cascader, Button, DatePicker } from 'antd';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
+import './MatchForm.css';
+import { categories } from '../../../store/reducers/matchReducer';
+
+// const { RangePicker } = DatePicker;
+
+const MatchSchema = Yup.object().shape({
+  title: Yup.string().required('Required'),
+  category: Yup.array(Yup.number().required('Required'))
+    .nullable()
+    .required('Required'),
+  capacity: Yup.number()
+    .nullable()
+    .required('Required'),
+  locationText: Yup.string(),
+  additionalInfo: Yup.string(),
+  // timeBegin: Yup.string().required('Required!'),
+});
+export const disableDate = (beginValue, endValue) => {
+  if (!beginValue || !endValue) {
+    return false;
+  }
+  return beginValue.valueOf() > endValue.valueOf();
+};
 const MatchForm = ({
   title,
   // matchThumbnail,
   category,
   capacity,
-  isOnline,
   locationText,
   // latitude and longitude will be implemented or removed after applying Google Map API
   // locationLatitude,
@@ -14,210 +41,123 @@ const MatchForm = ({
   timeBegin,
   timeEnd,
   additionalInfo,
-  isPeriodic,
-  period,
-  isAgeRestricted,
-  restrictAgeFrom,
-  restrictAgeTo,
-  isGenderRestricted,
-  // restrictMale and restrictFemale will be implemented later with CSS
-  // restrictMale,
-  // restrictFemale,
-  titleChange,
-  categoryChange,
-  capacityChange,
-  isOnlineChange,
-  locationTextChange,
-  // LocationLatitudeChange,
-  // LocationLongitudeChange,
-  timeBeginChange,
-  timeEndChange,
-  additionalInfoChange,
-  isPeriodicChange,
-  periodChange,
-  isAgeRestrictedChange,
-  restrictAgeFromChange,
-  restrictAgeToChange,
-  isGenderRestrictedTogg,
-  restrictMaleClicked,
-  restrictFemaleClicked,
+  clickSubmit,
+  submitButton,
+  clickCancel,
 }) => {
   return (
     <div className="MatchForm">
-      Title
-      <input
-        id="match-title-input"
-        type="text"
-        value={title}
-        onChange={titleChange}
-      />
-      <button type="button">Upload Thumbnail</button>
-      <br />
-      Category
-      <input
-        id="match-category-id-input"
-        type="text"
-        value={category}
-        onChange={categoryChange}
-      />
-      Up to
-      <input
-        id="match-capacity-input"
-        type="number"
-        value={capacity}
-        onChange={capacityChange}
-      />
-      people
-      <br />
-      Location
-      <input
-        id="match-location-text-input"
-        type="text"
-        value={locationText}
-        onChange={locationTextChange}
-      />
-      Online
-      <input
-        id="match-is-online-input"
-        type="checkbox"
-        checked={isOnline}
-        onChange={isOnlineChange}
-      />
-      <br />
-      Event Start
-      <br />
-      Date
-      <input
-        id="match-start-date-input"
-        type="date"
-        value={`${timeBegin.getFullYear()}-${`0${timeBegin.getMonth() +
-          1}`.slice(-2)}-${`0${timeBegin.getDate()}`.slice(-2)}`}
-        onChange={timeBeginChange}
-      />
-      Time
-      <input
-        id="match-start-time-input"
-        type="time"
-        value={`${`0${timeBegin.getHours()}`.slice(
-          -2,
-        )}:${`0${timeBegin.getMinutes()}`.slice(-2)}`}
-        onChange={timeBeginChange}
-      />
-      Periodic
-      <input
-        id="match-is-periodic-input"
-        type="checkbox"
-        checked={isPeriodic}
-        onChange={isPeriodicChange}
-      />
-      <br />
-      Event Finish
-      <br />
-      Date
-      <input
-        id="match-end-date-input"
-        type="date"
-        value={`${timeEnd.getFullYear()}-${`0${timeEnd.getMonth() + 1}`.slice(
-          -2,
-        )}-${`0${timeEnd.getDate()}`.slice(-2)}`}
-        onChange={timeEndChange}
-      />
-      Time
-      <input
-        id="match-end-time-input"
-        type="time"
-        value={`${`0${timeEnd.getHours()}`.slice(
-          -2,
-        )}:${`0${timeEnd.getMinutes()}`.slice(-2)}`}
-        onChange={timeEndChange}
-      />
-      Every
-      <input
-        id="match-period-input"
-        type="number"
-        value={period}
-        onChange={periodChange}
-        disabled={!isPeriodic}
-      />
-      days
-      <br />
-      Additional Information
-      <input
-        id="match-additional-info-input"
-        type="text"
-        value={additionalInfo}
-        onChange={additionalInfoChange}
-      />
-      <br />
-      Restriction This matching will not be exposed to members who do not meet
-      the specified conditions.
-      <br />
-      Age
-      <input
-        id="match-is-age-restricted-input"
-        type="checkbox"
-        checked={isAgeRestricted}
-        onChange={isAgeRestrictedChange}
-      />
-      From
-      <input
-        id="match-restrict-age-from-input"
-        type="number"
-        value={restrictAgeFrom}
-        onChange={restrictAgeFromChange}
-        disabled={!isAgeRestricted}
-      />
-      To
-      <input
-        id="match-restrict-age-to-input"
-        type="number"
-        value={restrictAgeTo}
-        onChange={restrictAgeToChange}
-        disabled={!isAgeRestricted}
-      />
-      Gender
-      <input
-        id="match-is-gender-restricted-input"
-        type="checkbox"
-        checked={isGenderRestricted}
-        onChange={isGenderRestrictedTogg}
-      />
-      <input
-        id="match-restrict-male-input"
-        type="button"
-        value="M"
-        disabled={!isGenderRestricted}
-        onClick={restrictMaleClicked}
-      />
-      <input
-        id="match-restrict-female-input"
-        type="button"
-        value="F"
-        disabled={!isGenderRestricted}
-        onClick={restrictFemaleClicked}
-      />
+      <Formik
+        initialValues={{
+          title,
+          category,
+          capacity,
+          locationText,
+          timeBegin,
+          timeEnd,
+          // timeRange: [moment(timeBegin), moment(timeEnd)],
+          additionalInfo,
+        }}
+        onSubmit={(values, actions) => {
+          actions.setSubmitting(false);
+          clickSubmit(values);
+        }}
+        validationSchema={MatchSchema}
+      >
+        {({ setFieldValue, values }) => (
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          <Form>
+            <div className="MatchFormItem">
+              <FormItem name="title" label="Title">
+                <Input name="title" id="title" placeholder="Match Title" />
+              </FormItem>
+              <Form.Item name="category" label="Category" hasFeedback>
+                <Cascader
+                  name="category"
+                  options={categories}
+                  expandTrigger="hover"
+                  defaultValue={category}
+                  onChange={value => {
+                    setFieldValue('category', value);
+                  }}
+                />
+              </Form.Item>
+              <FormItem name="capacity" label="Capacity">
+                Up to
+                <InputNumber name="capacity" min={2} />
+                people
+              </FormItem>
+              <FormItem name="additionalInfo" label="Additional Info">
+                <Input.TextArea name="additionalInfo" rows={4} />
+              </FormItem>
+              <FormItem name="locationText" label="Location">
+                <Input
+                  name="locationText"
+                  id="location"
+                  placeholder="Location"
+                />
+              </FormItem>
+              <div className="timeRange">
+                <Form.Item name="timeBegin" hasFeedback>
+                  <DatePicker
+                    name="timeBegin"
+                    disabledDate={value => disableDate(value, values.timeEnd)}
+                    showTime={{ format: 'HH:mm' }}
+                    format="YYYY-MM-DD HH:mm"
+                    defaultValue={timeBegin}
+                    placeholder="Start Time"
+                    onChange={date => {
+                      setFieldValue('timeBegin', date);
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item name="timeEnd" hasFeedback>
+                  <DatePicker
+                    name="timeEnd"
+                    disabledDate={value => disableDate(values.timeBegin, value)}
+                    showTime={{ format: 'HH:mm' }}
+                    format="YYYY-MM-DD HH:mm"
+                    defaultValue={timeEnd}
+                    placeholder="End Time"
+                    onChange={date => {
+                      setFieldValue('timeEnd', date);
+                    }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+            <div className="Buttons">
+              {submitButton}
+              <Button id="cancel-button" onClick={clickCancel}>
+                Cancel
+              </Button>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };
+
 export const MatchPropTypes = {
   title: PropTypes.string.isRequired,
   // matchThumbnail,
-  category: PropTypes.number.isRequired,
+  category: PropTypes.arrayOf(PropTypes.number),
   capacity: PropTypes.number.isRequired,
-  isOnline: PropTypes.bool.isRequired,
+  isOnline: PropTypes.bool,
   locationText: PropTypes.string.isRequired,
   // latitude and longitude will be implemented or removed after applying Google Map API
   // locationLatitude: PropTypes.number.isRequired,
   // locationLongitude: PropTypes.number.isRequired,
-  timeBegin: PropTypes.instanceOf(Date).isRequired,
-  timeEnd: PropTypes.instanceOf(Date).isRequired,
-  additionalInfo: PropTypes.string.isRequired,
-  isPeriodic: PropTypes.bool.isRequired,
-  period: PropTypes.number.isRequired,
-  isAgeRestricted: PropTypes.bool.isRequired,
-  restrictAgeFrom: PropTypes.number.isRequired,
-  restrictAgeTo: PropTypes.number.isRequired,
-  isGenderRestricted: PropTypes.bool.isRequired,
+  timeBegin: momentPropTypes.momentObj,
+  timeEnd: momentPropTypes.momentObj,
+  additionalInfo: PropTypes.string,
+  isPeriodic: PropTypes.bool,
+  period: PropTypes.number,
+  isAgeRestricted: PropTypes.bool,
+  restrictAgeFrom: PropTypes.number,
+  restrictAgeTo: PropTypes.number,
+  isGenderRestricted: PropTypes.bool,
   // restrictMale and restrictFemale will be implemented later with CSS
   // restrictMale: PropTypes.bool.isRequired,
   // restrictFemale: PropTypes.bool.isRequired,
@@ -225,23 +165,11 @@ export const MatchPropTypes = {
 
 MatchForm.propTypes = {
   ...MatchPropTypes,
-  titleChange: PropTypes.func.isRequired,
-  categoryChange: PropTypes.func.isRequired,
-  capacityChange: PropTypes.func.isRequired,
-  isOnlineChange: PropTypes.func.isRequired,
-  locationTextChange: PropTypes.func.isRequired,
-  // LocationLatitudeChange: PropTypes.func.isRequired,
-  // LocationLongitudeChange: PropTypes.func.isRequired,
-  timeBeginChange: PropTypes.func.isRequired,
-  timeEndChange: PropTypes.func.isRequired,
-  additionalInfoChange: PropTypes.func.isRequired,
-  isPeriodicChange: PropTypes.func.isRequired,
-  periodChange: PropTypes.func.isRequired,
-  isAgeRestrictedChange: PropTypes.func.isRequired,
-  restrictAgeFromChange: PropTypes.func.isRequired,
-  restrictAgeToChange: PropTypes.func.isRequired,
-  isGenderRestrictedTogg: PropTypes.func.isRequired,
-  restrictMaleClicked: PropTypes.func.isRequired,
-  restrictFemaleClicked: PropTypes.func.isRequired,
 };
+
+MatchForm.defaultProps = {
+  timeBegin: null,
+  timeEnd: null,
+};
+
 export default MatchForm;

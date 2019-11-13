@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { push } from 'connected-react-router';
 import { message } from 'antd';
+import moment from 'moment';
 import * as actionTypes from './actionTypes';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -19,16 +20,16 @@ export const getMatch = id => {
           const { data } = res;
           const { restrictedGender } = data;
           delete data.restrictedGender;
-          dispatch(
-            getMatchAction({
-              ...data,
-              timeBegin: new Date(data.timeBegin),
-              timeEnd: new Date(data.timeEnd),
-              restrictToMale: data.isGenderRestricted && !restrictedGender,
-              restrictToFemale: data.isGenderRestricted && restrictedGender,
-              isPeriodic: data.period !== 0,
-            }),
-          );
+          const matchInfo = {
+            ...data,
+            timeBegin: moment(data.timeBegin),
+            timeEnd: moment(data.timeEnd),
+            restrictToMale: data.isGenderRestricted && !restrictedGender,
+            restrictToFemale: data.isGenderRestricted && restrictedGender,
+            isPeriodic: data.period !== 0,
+            category: JSON.parse(data.category.indexes),
+          };
+          dispatch(getMatchAction(matchInfo));
         })
         // eslint-disable-next-line no-unused-vars
         .catch(error => {
@@ -170,8 +171,7 @@ export const createMatch = match => {
   return dispatch => {
     return axios.post(`/api/match/`, match).then(res => {
       dispatch(createMatchAction());
-      const { pk } = res.data;
-      dispatch(push(`/match/${pk}`));
+      dispatch(push(`/match/${res.data.id}`));
     });
   };
 };
@@ -184,10 +184,9 @@ const editMatchAction = () => {
 
 export const editMatch = (id, match) => {
   return dispatch => {
-    return axios.put(`/api/match/${id}/`, match).then(res => {
+    return axios.put(`/api/match/${id}/`, match).then(() => {
       dispatch(editMatchAction());
-      const { pk } = res.data;
-      dispatch(push(`/match/${pk}`));
+      dispatch(push(`/match/${id}`));
     });
   };
 };

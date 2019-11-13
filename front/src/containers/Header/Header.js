@@ -1,37 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Icon, Button, PageHeader } from 'antd';
+import { Icon, Button, Layout, Menu, Dropdown, Avatar } from 'antd';
 import * as actionCreators from '../../store/actions/user';
 import logo from '../../logo';
-
-export function getHeaderName(pathname) {
-  if (pathname === '/home') {
-    return 'Matchmaker';
-  }
-  if (pathname === '/signup') {
-    return 'Sign Up';
-  }
-  if (pathname === '/signin') {
-    return 'Sign In';
-  }
-  if (pathname === '/search') {
-    return 'Search';
-  }
-  if (pathname === '/match/create') {
-    return 'Create new Match';
-  }
-  if (pathname === '/match/detail') {
-    return 'Match Detail';
-  }
-  return '';
-}
+import './Header.css';
 
 class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  componentDidMount() {
+    const { onRestoreUser } = this.props;
+    onRestoreUser();
   }
 
   clickSignUpHandler = async () => {
@@ -49,32 +34,78 @@ class Header extends Component {
     onSignOut();
   };
 
+  clickProfileHandler = async () => {
+    const { history, currentUser } = this.props;
+    history.push(`/profile/${currentUser.id}`); // TODO
+  };
+
   render() {
-    const { isSignedIn, location, history } = this.props;
+    const { currentUser } = this.props;
+    const menu = (
+      <Menu onClick={() => null}>
+        <Menu.Item key="1" onClick={this.clickProfileHandler}>
+          <Icon type="user" />
+          My Page
+        </Menu.Item>
+        <Menu.Item key="2" onClick={this.clickSignOutHandler}>
+          <Icon type="logout" />
+          Sign Out
+        </Menu.Item>
+      </Menu>
+    );
     const buttons = [
       [
-        <Button key="2" onClick={this.clickSignInHandler}>
+        <Button key="1" onClick={this.clickSignInHandler}>
           Sign In
         </Button>,
-        <Button key="1" type="primary" onClick={this.clickSignUpHandler}>
+        <Button
+          key="2"
+          type="primary"
+          style={{
+            marginLeft: 3,
+          }}
+          onClick={this.clickSignUpHandler}
+        >
           Sign Up
         </Button>,
       ],
       [
-        <Button key="2" onClick={this.clickSignOutHandler}>
-          Sign Out
-        </Button>,
+        <Dropdown key="1" overlay={menu} trigger={['click']}>
+          <Button type="link" ghost>
+            <Avatar
+              shape="square"
+              size="large"
+              src="https://i.imgur.com/fYdbabs.png"
+            />
+            <Icon type="down" />
+          </Button>
+        </Dropdown>,
       ],
     ];
+
     return (
       <div className="Header">
-        <PageHeader
-          style={{ border: '1px solid rgb(235, 237, 240)' }}
-          title={getHeaderName(location.pathname)}
-          extra={buttons[isSignedIn]}
-          onBack={() => history.push('/home')}
-          backIcon={<Icon className="HomeIcon" component={logo} />}
-        />
+        <Layout className="Layout">
+          <Layout.Header>
+            <div className="logo">
+              <Link to="/home" className="LogoLink">
+                {logo()}
+              </Link>
+            </div>
+            <Link
+              to="/home"
+              style={{
+                marginLeft: 5,
+                color: 'white',
+                fontSize: 30,
+              }}
+              className="TitleLink"
+            >
+              MatchMaker
+            </Link>
+            <div className="Buttons">{buttons[currentUser ? 1 : 0]}</div>
+          </Layout.Header>
+        </Layout>
       </div>
     );
   }
@@ -88,19 +119,25 @@ Header.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string,
   }).isRequired,
-  isSignedIn: PropTypes.number.isRequired,
+  currentUser: PropTypes.shape({
+    id: PropTypes.number,
+  }),
   onSignOut: PropTypes.func.isRequired,
+  onRestoreUser: PropTypes.func.isRequired,
 };
-
+Header.defaultProps = {
+  currentUser: null,
+};
 const mapStateToProps = state => {
   return {
-    isSignedIn: state.user.isSignedIn,
+    currentUser: state.user.currentUser,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onSignOut: () => dispatch(actionCreators.signOut()),
+    onRestoreUser: () => dispatch(actionCreators.restoreUser()),
   };
 };
 

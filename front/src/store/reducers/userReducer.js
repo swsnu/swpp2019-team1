@@ -1,8 +1,8 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-  userid: null,
-  isSignedIn: 0,
+  currentUser: null,
+  selectedUser: null,
 };
 
 const userReducer = (state, action) => {
@@ -12,9 +12,14 @@ const userReducer = (state, action) => {
       return { ...state };
     // yet not implemented
     case actionTypes.SIGN_IN:
-      return { ...state, isSignedIn: 1, userid: action.id };
+      return {
+        ...state,
+        currentUser: action.user,
+      };
     case actionTypes.SIGN_OUT:
-      return { ...state, isSignedIn: 0 };
+      return { ...state, currentUser: null };
+    case actionTypes.GET_USER:
+      return { ...state, selectedUser: action.user };
     default:
       break;
   }

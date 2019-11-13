@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch } from 'react-router-dom';
+import moment from 'moment';
 
 import MatchDetail from './MatchDetail';
 import getMockStore from '../../../test-utils/getMockStore';
@@ -10,29 +11,40 @@ import { history } from '../../../store/store';
 import * as matchActionCreators from '../../../store/actions/match';
 
 const stubUser = {
-  userid: 1,
+  currentUser: {
+    id: 1,
+  },
+};
+
+const stubNoUser = {
+  currentUser: null,
 };
 
 const stubUserNotHost = {
-  userid: 2,
+  currentUser: {
+    id: 2,
+  },
 };
 const stubMatch = {
   selected: {
     id: 1,
-    hostUser: 1,
+    hostUser: {
+      id: 1,
+      username: 'TEST_HOST_USER',
+    },
     title: 'TEST_TITLE',
     hostName: 'TEST_HOSTNAME',
     additionalInfo: 'TEST_ADITIONALINFO',
     // matchThumbnail
-    category: 0,
+    category: [0, 0],
     capacity: 2,
     isOnline: false,
     locationText: '',
     // latitude and longitude will be implemented or removed after applying Google Map API
     // locationLatitude: '',
     // locationLongitude: '',
-    timeBegin: new Date('2019-11-07T00:35:38.334Z'),
-    timeEnd: new Date(),
+    timeBegin: moment('2019-11-07T00:35:38.334Z'),
+    timeEnd: moment(),
     isPeriodic: false,
     period: 0,
     isAgeRestricted: false,
@@ -48,20 +60,23 @@ const stubMatch = {
 const stubMatchRestrictMale = {
   selected: {
     id: 1,
-    hostUser: 1,
+    hostUser: {
+      id: 1,
+      username: 'TEST_HOST_USER',
+    },
     title: 'TEST_TITLE',
     hostName: 'TEST_HOSTNAME',
     additionalInfo: 'TEST_ADITIONALINFO',
     // matchThumbnail
-    category: 0,
+    category: [0, 0],
     capacity: 2,
     isOnline: false,
     locationText: 'abc',
     // latitude and longitude will be implemented or removed after applying Google Map API
     // locationLatitude: '',
     // locationLongitude: '',
-    timeBegin: new Date('2019-11-07T12:35:38.334Z'),
-    timeEnd: new Date(),
+    timeBegin: moment('2019-11-07T12:35:38.334Z'),
+    timeEnd: moment(),
     isPeriodic: true,
     period: 7,
     isAgeRestricted: true,
@@ -77,20 +92,23 @@ const stubMatchRestrictMale = {
 const stubMatchRestrictFemale = {
   selected: {
     id: 1,
-    hostUser: 1,
+    hostUser: {
+      id: 1,
+      username: 'TEST_HOST_USER',
+    },
     title: 'TEST_TITLE',
     hostName: 'TEST_HOSTNAME',
     additionalInfo: 'TEST_ADITIONALINFO',
     // matchThumbnail
-    category: 0,
+    category: [0, 0],
     capacity: 2,
     isOnline: false,
     locationText: 'def',
     // latitude and longitude will be implemented or removed after applying Google Map API
     // locationLatitude: '',
     // locationLongitude: '',
-    timeBegin: new Date(),
-    timeEnd: new Date(),
+    timeBegin: moment(),
+    timeEnd: moment(),
     isPeriodic: false,
     period: 0,
     isAgeRestricted: false,
@@ -108,6 +126,7 @@ const stubMatchUndef = {
 const mockStore = getMockStore(stubUser, stubMatch);
 const mockStoreUndef = getMockStore(stubUser, stubMatchUndef);
 const mockStoreNotHost = getMockStore(stubUserNotHost, stubMatch);
+const mockStoreNoUser = getMockStore(stubNoUser, stubMatch);
 const mockStoreRestrictMale = getMockStore(stubUser, stubMatchRestrictMale);
 const mockStoreRestrictFemale = getMockStore(stubUser, stubMatchRestrictFemale);
 
@@ -115,6 +134,7 @@ describe('<MatchDetail />', () => {
   let matchDetail;
   let matchDetailUndef;
   let matchDetailNotHost;
+  let matchDetailNoUser;
   let matchDetailRestrictMale;
   let matchDetailRestrictFemale;
   let spyGetMatch;
@@ -154,6 +174,20 @@ describe('<MatchDetail />', () => {
     );
     matchDetailNotHost = (
       <Provider store={mockStoreNotHost}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route
+              path="/"
+              exact
+              render={() => <MatchDetail match={matchParams} />}
+            />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+
+    matchDetailNoUser = (
+      <Provider store={mockStoreNoUser}>
         <ConnectedRouter history={history}>
           <Switch>
             <Route
@@ -224,6 +258,12 @@ describe('<MatchDetail />', () => {
     const wrapper = component.find('.MatchDetail');
     expect(wrapper.length).toBe(1);
     expect(wrapper.text()).toBe('Loading...');
+  });
+
+  it('should render join button when no user', () => {
+    const component = mount(matchDetailNoUser);
+    const wrapper = component.find('#join-match-button');
+    expect(wrapper.length).toBe(2);
   });
 
   it('should redirected to match edit page when edit button clicked', () => {
