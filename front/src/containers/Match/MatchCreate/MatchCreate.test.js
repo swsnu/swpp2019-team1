@@ -13,6 +13,7 @@ import MatchCreate from './MatchCreate';
 import getMockStore from '../../../test-utils/getMockStore';
 import { history } from '../../../store/store';
 import * as actionCreators from '../../../store/actions/match';
+import ImageUpload from '../../../components/ImageUpload/ImageUpload';
 
 const stubUser = {};
 const stubMatch = {
@@ -127,6 +128,10 @@ describe('<MatchCreate />', () => {
       wrapper.prop('disabledDate')(timeEnd);
       // bad testing
       expect(disableDate(2, 1)).toBe(true);
+
+      // Thumbnail
+      wrapper = component.find(ImageUpload);
+      wrapper.prop('setFieldValue')(1);
 
       wrapper = component.find(Form);
       await new Promise(resolve => setTimeout(resolve, 100));

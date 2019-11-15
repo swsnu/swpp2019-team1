@@ -1,69 +1,73 @@
 import React, { Component } from 'react';
-//import 'antd/dist/antd.css';
-import { Upload, Icon, message } from 'antd';
+import { Icon } from 'antd';
+import PropTypes from 'prop-types';
+import './ImageUpload.css';
 
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
-
-function beforeUpload(file) {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
-  }
-  return isJpgOrPng;
-}
+const uploadButton = (
+  <div className="Upload-Button">
+    <Icon type="plus" />
+    Upload
+  </div>
+);
 
 class ImageUpload extends Component {
-  state = {
-    loading: false,
+  constructor(props) {
+    super(props);
+    this.state = {
+      content: uploadButton,
+    };
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick = () => {
+    // eslint-disable-next-line react/no-string-refs
+    this.refs.imageUploader.click();
   };
 
-  handleChange = info => {
+  handleChange = event => {
     const { setFieldValue } = this.props;
-    if (info.file.status === 'uploading') {
-      this.setState({ loading: true });
-      return;
+    if (event.target.files[0]) {
+      this.setState({
+        content: (
+          <img
+            src={URL.createObjectURL(event.target.files[0])}
+            alt="preview"
+            style={{ width: '100%' }}
+          />
+        ),
+      });
+    } else {
+      this.setState({
+        content: uploadButton,
+      });
     }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl =>
-        this.setState({
-          imageUrl,
-          loading: false,
-        }),
-      );
-    }
-    setFieldValue('matchThumbnail', info.file.originFileObj);
+    setFieldValue(event.target.files[0]);
   };
 
   render() {
-    const uploadButton = (
-      <div>
-        <Icon type={this.state.loading ? 'loading' : 'plus'} />
-        <div className="ant-upload-text">Upload</div>
-      </div>
-    );
-    const { imageUrl } = this.state;
+    const { content } = this.state;
     return (
-      <Upload
-        name="thumbnail"
-        listType="picture-card"
-        className="thumbnail-uploader"
-        showUploadList={false}
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        beforeUpload={beforeUpload}
-        onChange={this.handleChange}
+      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+      <div
+        className="ImageUpload"
+        id="ImageUpload"
+        onClick={this.handleClick}
+        onKeyDown={this.handleClick}
       >
-        {imageUrl ? (
-          <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
-        ) : (
-          uploadButton
-        )}
-      </Upload>
+        {content}
+        <input
+          id="imageUpload"
+          type="file"
+          // eslint-disable-next-line react/no-string-refs
+          ref="imageUploader"
+          style={{ height: '0px', display: 'none' }}
+          onChange={this.handleChange}
+        />
+      </div>
     );
   }
 }
+ImageUpload.propTypes = {
+  setFieldValue: PropTypes.func.isRequired,
+};
 export default ImageUpload;

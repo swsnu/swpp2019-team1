@@ -31,7 +31,7 @@ export const disableDate = (beginValue, endValue) => {
 };
 const MatchForm = ({
   title,
-  matchThumbnail,
+  // matchThumbnail,
   category,
   capacity,
   locationText,
@@ -72,7 +72,10 @@ const MatchForm = ({
                 <Input name="title" id="title" placeholder="Match Title" />
               </FormItem>
               <Form.Item name="matchThumbnail" label="Thumbnail" hasFeedback>
-                <ImageUpload setFieldValue={setFieldValue} />
+                <ImageUpload
+                  fieldName="matchThumbnail"
+                  setFieldValue={file => setFieldValue('matchThumbnail', file)}
+                />
               </Form.Item>
               <Form.Item name="category" label="Category" hasFeedback>
                 <Cascader

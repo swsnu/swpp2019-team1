@@ -174,11 +174,14 @@ const config = {
 };
 
 export const createMatch = match => {
-  match['timeBegin'] = match['timeBegin'].format();
-  match['timeEnd'] = match['timeEnd'].format();
   const formData = new FormData();
-  for (var key in match) {
-    formData.append(key, match[key]);
+  // eslint-disable-next-line no-restricted-syntax
+  for (const key in match) {
+    if (key === 'timeBegin' || key === 'timeEnd') {
+      formData.append(key, match[key].format());
+    } else {
+      formData.append(key, match[key]);
+    }
   }
   return dispatch => {
     return axios.post(`/api/match/`, formData, config).then(res => {
