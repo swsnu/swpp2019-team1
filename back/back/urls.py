@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.conf import settings
+from django.conf.urls.static import static
 from userapp import views as userapp_views
 
 urlpatterns = [
@@ -23,3 +25,5 @@ urlpatterns = [
     path('api/match/', include('matchmaker.urls')),
     path('api/user/', include('userapp.urls')),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -167,9 +167,21 @@ const createMatchAction = () => {
   };
 };
 
+const config = {
+  headers: {
+    'content-type': 'multipart/form-data',
+  },
+};
+
 export const createMatch = match => {
+  match['timeBegin'] = match['timeBegin'].format();
+  match['timeEnd'] = match['timeEnd'].format();
+  const formData = new FormData();
+  for (var key in match) {
+    formData.append(key, match[key]);
+  }
   return dispatch => {
-    return axios.post(`/api/match/`, match).then(res => {
+    return axios.post(`/api/match/`, formData, config).then(res => {
       dispatch(createMatchAction());
       dispatch(push(`/match/${res.data.id}`));
     });
