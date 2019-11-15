@@ -36,7 +36,7 @@ def match(request):
     '''Makes and returns a new match.'''
     if request.method == 'POST':
         try:
-            data = underscoreize(request.POST)
+            data = underscoreize(request.POST).dict()
             data['match_thumbnail'] = request.FILES['matchThumbnail']
             category_idx = data['category']
             time_begin = arrow.get(data['time_begin']).datetime

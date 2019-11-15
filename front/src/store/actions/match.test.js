@@ -78,7 +78,7 @@ const stubMatchPk = 2;
 
 const stubNewMatch = {
   title: '',
-  // matchThumbnail
+  matchThumbnail: null,
   category: [0, 0],
   capacity: 0,
   isOnline: false,
@@ -86,7 +86,7 @@ const stubNewMatch = {
   // latitude and longitude will be implemented or removed after applying Google Map API
   // locationLatitude: '',
   // locationLongitude: '',
-  timeStart: moment(),
+  timeBegin: moment(),
   timeEnd: moment(),
   additionalInfo: '',
   isPeriodic: false,
