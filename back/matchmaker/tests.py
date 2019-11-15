@@ -2,7 +2,9 @@
 matchmaker tests
 '''
 import json
+import tempfile
 from django.test import TestCase, Client
+from django.test.client import encode_multipart
 from django.conf import settings
 from django.forms.models import model_to_dict
 import arrow
@@ -10,6 +12,9 @@ import arrow
 from userapp.tests import create_dummy_user
 from matchmaker.models import Match, Category
 from matchmaker.serializers import MatchSerializer
+
+BOUNDARY = 'BoUnDaRyStRiNg'
+MULTIPART_CONTENT = 'multipart/form-data; boundary=%s' % BOUNDARY
 
 
 def create_dummy_category():
@@ -40,45 +45,55 @@ class MatchMakerTestCase(TestCase):
         client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
         test_category = create_dummy_category()
         test_match = create_dummy_match(test_user, test_category)
-        response = client.post('/api/match/',
-                               json.dumps({'title': 'TEST_TITLE',
-                                           'category': test_category.indexes,
-                                           'capacity': 4,
-                                           'locationText': 'TEST_LOCATION_TEXT',
-                                           'period': 3,
-                                           'additionalInfo': 'TEST_ADDITIONAL_INFO',
-                                           'isAgeRestricted': True,
-                                           'restrictAgeFrom': 4,
-                                           'restrictAgeTo': 7,
-                                           'isGenderRestricted': True,
-                                           'restrictedGender': settings.MALE,
-                                           'timeBegin': '2019-11-03T08:07:46+09:00',
-                                           'timeEnd': '2019-11-03T08:07:46+09:00', }),
-                               content_type='application/json',
-                               HTTP_X_CSRFTOKEN=csrftoken)
-        serializer = MatchSerializer(response.json(), data=response.json())
-        self.assertEqual(serializer.is_valid(), True)
-        self.assertEqual(serializer.data['num_participants'], 1)
 
-        test_match_dict = model_to_dict(test_match)
-        test_match_dict['category'] = test_category
-        test_match_dict['host_user_id'] = test_user.id
-        del test_match_dict['host_user']
-        del test_match_dict['match_thumbnail']
-        print("FIRST", test_match_dict)
-        test_match_dict = {'id': 7, 'title': 'TEST_TITLE', 'category': test_category,
-                           'capacity': 4, 'location_text': 'TEST_LOCATION_TEXT',
-                           'period': 3, 'additional_info': 'TEST_ADDITIONAL_INFO',
-                           'is_age_restricted': True, 'restrict_age_from': 4,
-                           'restrict_age_to': 7, 'is_gender_restricted': True,
-                           'restricted_gender': True,
-                           'time_begin': arrow.get('2019-11-03T08:07:46+09:00').datetime,
-                           'time_end': arrow.get('2019-11-03T08:07:46+09:00').datetime,
-                           'host_user_id': test_user.id}
-        serializer = MatchSerializer(test_match_dict, data=test_match_dict)
-        print("SECOND", test_match_dict)
-        self.assertEqual(serializer.is_valid(), True)
-        self.assertEqual(serializer.data['num_participants'], 0)
+        test_json = json.dumps({'title': 'TEST_TITLE',
+                                'category': test_category.indexes,
+                                'capacity': 4,
+                                'locationText': 'TEST_LOCATION_TEXT',
+                                'period': 3,
+                                'additionalInfo': 'TEST_ADDITIONAL_INFO',
+                                'isAgeRestricted': True,
+                                'restrictAgeFrom': 4,
+                                'restrictAgeTo': 7,
+                                'isGenderRestricted': True,
+                                'restrictedGender': settings.MALE,
+                                'timeBegin': '2019-11-03T08:07:46+09:00',
+                                'timeEnd': '2019-11-03T08:07:46+09:00', })
+
+        with tempfile.NamedTemporaryFile() as temp_file:
+            form = encode_multipart(BOUNDARY, {
+                'file': temp_file,
+                'json': test_json,
+            })
+            response = client.post('/api/match/',
+                                   data=form,
+                                   content_type=MULTIPART_CONTENT,
+                                   HTTP_X_CSRFTOKEN=csrftoken)
+            # TODO need to fix test code
+            print(response)
+            serializer = MatchSerializer(response.json(), data=response.json())
+            self.assertEqual(serializer.is_valid(), True)
+            self.assertEqual(serializer.data['num_participants'], 1)
+
+            test_match_dict = model_to_dict(test_match)
+            test_match_dict['category'] = test_category
+            test_match_dict['host_user_id'] = test_user.id
+            del test_match_dict['host_user']
+            del test_match_dict['match_thumbnail']
+            print("FIRST", test_match_dict)
+            test_match_dict = {'id': 7, 'title': 'TEST_TITLE', 'category': test_category,
+                               'capacity': 4, 'location_text': 'TEST_LOCATION_TEXT',
+                               'period': 3, 'additional_info': 'TEST_ADDITIONAL_INFO',
+                               'is_age_restricted': True, 'restrict_age_from': 4,
+                               'restrict_age_to': 7, 'is_gender_restricted': True,
+                               'restricted_gender': True,
+                               'time_begin': arrow.get('2019-11-03T08:07:46+09:00').datetime,
+                               'time_end': arrow.get('2019-11-03T08:07:46+09:00').datetime,
+                               'host_user_id': test_user.id}
+            serializer = MatchSerializer(test_match_dict, data=test_match_dict)
+            print("SECOND", test_match_dict)
+            self.assertEqual(serializer.is_valid(), True)
+            self.assertEqual(serializer.data['num_participants'], 0)
 
     def test_category(self):
         '''test category'''
