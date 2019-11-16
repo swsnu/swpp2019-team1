@@ -121,7 +121,7 @@ class UserProfile extends Component {
     return (
       <div className="UserProfile">
         <PageHeader
-          title="MrSpock"
+          title={selectedUser.username}
           style={{
             border: '1px solid rgb(235, 237, 240)',
           }}

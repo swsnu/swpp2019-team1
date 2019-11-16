@@ -12,7 +12,6 @@ from djangorestframework_camel_case.parser import CamelCaseJSONParser
 from djangorestframework_camel_case.util import underscoreize
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 
-
 from .models import Category, Match, Participation
 from .serializers import MatchSerializer, ParticipationSerializer
 
@@ -113,7 +112,6 @@ def match_detail(request, match_id):
         match_json.update(
             {'num_participants': match_obj.participation_match.all().count(),
              'host_name': match_obj.host_user.username})
-        del match_json['match_thumbnail']
         match_json = json.loads(
             CamelCaseJSONRenderer().render(match_json))
         return JsonResponse(match_json, safe=False, status=200)

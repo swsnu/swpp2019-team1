@@ -41,8 +41,8 @@ const stubMatch = {
     isOnline: false,
     locationText: '',
     // latitude and longitude will be implemented or removed after applying Google Map API
-    // locationLatitude: '',
-    // locationLongitude: '',
+    locationLatitude: 0,
+    locationLongitude: 0,
     timeBegin: moment('2019-11-07T00:35:38.334Z'),
     timeEnd: moment(),
     isPeriodic: false,
@@ -73,8 +73,8 @@ const stubMatchRestrictMale = {
     isOnline: false,
     locationText: 'abc',
     // latitude and longitude will be implemented or removed after applying Google Map API
-    // locationLatitude: '',
-    // locationLongitude: '',
+    locationLatitude: 0,
+    locationLongitude: 0,
     timeBegin: moment('2019-11-07T12:35:38.334Z'),
     timeEnd: moment(),
     isPeriodic: true,
@@ -105,8 +105,8 @@ const stubMatchRestrictFemale = {
     isOnline: false,
     locationText: 'def',
     // latitude and longitude will be implemented or removed after applying Google Map API
-    // locationLatitude: '',
-    // locationLongitude: '',
+    locationLatitude: 0,
+    locationLongitude: 0,
     timeBegin: moment(),
     timeEnd: moment(),
     isPeriodic: false,

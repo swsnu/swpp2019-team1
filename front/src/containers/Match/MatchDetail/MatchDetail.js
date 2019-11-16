@@ -5,6 +5,7 @@ import { push } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { Button } from 'antd';
+import GoogleMap from '../../../components/Map/Map';
 import * as actionCreators from '../../../store/actions/index';
 import { MatchPropTypes } from '../../../components/Match/MatchForm/MatchForm';
 import './MatchDetail.css';
@@ -101,8 +102,8 @@ class MatchDetail extends Component {
   };
 
   render() {
-    const { selected, currentUser } = this.props;
-    if (selected === undefined)
+    const { selected, currentUser, match } = this.props;
+    if (selected === undefined || Number(match.params.id) !== selected.id)
       return <div className="MatchDetail">Loading...</div>;
     return (
       <div className="MatchDetail">
@@ -112,10 +113,7 @@ class MatchDetail extends Component {
         />
         <div className="Detail-Header">
           <div className="Detail-MainInfo">
-            <img
-              src="https://starzplay-img-prod-ssl.akamaized.net/474w/WarnerBrothers/THEBIGBANGTHEORYY2007S01E001/THEBIGBANGTHEORYY2007S01E001-474x677-PST.jpg"
-              alt="thumb"
-            />
+            <img src={selected.matchThumbnail} alt="thumb" />
             <b id="detail-title">{selected.title}</b>
             <b id="detail-capacity">
               <i className="material-icons" id="materials-icon-person">
@@ -148,7 +146,16 @@ class MatchDetail extends Component {
           <i className="material-icons">error</i>
           {this.renderRestrictions(selected)}
         </div>
-        {/* <div className="Detail-Google-Map">GoogleMapAPI</div> */}
+        <GoogleMap
+          center={{
+            lat: selected.locationLatitude,
+            lng: selected.locationLongitude,
+          }}
+          height="400px"
+          width="400px"
+          zoom={15}
+          locationText={selected.locationText}
+        />
         <div className="Detail-Additional-Info">
           <svg height="15" width="280">
             <line

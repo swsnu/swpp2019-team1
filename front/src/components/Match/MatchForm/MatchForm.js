@@ -7,6 +7,8 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import './MatchForm.css';
+import GoogleMap from '../../Map/Map';
+
 import { categories } from '../../../store/reducers/matchReducer';
 import ImageUpload from '../../ImageUpload/ImageUpload';
 // const { RangePicker } = DatePicker;
@@ -36,8 +38,8 @@ const MatchForm = ({
   capacity,
   locationText,
   // latitude and longitude will be implemented or removed after applying Google Map API
-  // locationLatitude,
-  // locationLongitude,
+  locationLatitude,
+  locationLongitude,
   timeBegin,
   timeEnd,
   additionalInfo,
@@ -96,15 +98,19 @@ const MatchForm = ({
               <FormItem name="additionalInfo" label="Additional Info">
                 <Input.TextArea name="additionalInfo" rows={4} />
               </FormItem>
-              <FormItem name="locationText" label="Location">
-                <Input
-                  name="locationText"
-                  id="location"
-                  placeholder="Location"
+              <Form.Item name="locationText" label="Location" hasFeedback>
+                <GoogleMap
+                  center={{ lat: locationLatitude, lng: locationLongitude }}
+                  height="400px"
+                  width="400px"
+                  zoom={15}
+                  setFieldValue={setFieldValue}
+                  locationText={locationText}
+                  isForm
                 />
-              </FormItem>
+              </Form.Item>
               <div className="timeRange">
-                <Form.Item name="timeBegin" hasFeedback>
+                <Form.Item name="timeBegin" label="Time" hasFeedback>
                   <DatePicker
                     name="timeBegin"
                     disabledDate={value => disableDate(value, values.timeEnd)}
