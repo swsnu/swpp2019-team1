@@ -52,7 +52,7 @@ def match(request):
             except (KeyError, arrow.parser.ParserError):
                 return HttpResponseBadRequest()
 
-            print(type(category_idx))
+            print(category_idx)
             category = get_object_or_404(Category, indexes=category_idx)
             data['category'] = category
             data['host_user_id'] = request.user.id
