@@ -47,7 +47,7 @@ class MatchMakerTestCase(TestCase):
         test_match = create_dummy_match(test_user, test_category)
 
         test_json = json.dumps({'title': 'TEST_TITLE',
-                                'category': [0,0],
+                                'category': '0, 0',
                                 'capacity': 4,
                                 'locationText': 'TEST_LOCATION_TEXT',
                                 'period': 3,
@@ -64,7 +64,7 @@ class MatchMakerTestCase(TestCase):
             form = encode_multipart(BOUNDARY, {
                 'matchThumbna': temp_file,
                 'title': 'TEST_TITLE',
-                'category': [0,0],
+                'category': '0, 0',
                 'capacity': 4,
                 'locationText': 'TEST_LOCATION_TEXT',
                 'period': 3,
@@ -221,7 +221,7 @@ class MatchMakerTestCase(TestCase):
         self.assertEqual(response.status_code, 400)
         response = client.post('/api/match/',
                                json.dumps({'title': 'TEST_TITLE',
-                                           'category': [0,0],
+                                           'category': '0, 0',
                                            'capacity': 'TEST_ERR_STR',
                                            'locationText': 'TEST_LOCATION_TEXT',
                                            'period': 'TEST_ERR_STR',
@@ -238,7 +238,7 @@ class MatchMakerTestCase(TestCase):
 
         response = client.put(f'/api/match/{test_match.id}/',
                               json.dumps({'title': 'TEST_TITLE',
-                                          'category': [0,0],
+                                          'category': '0, 0',
                                           'capacity': 'TEST_ERR_STR',
                                           'locationText': 'TEST_LOCATION_TEXT',
                                           'period': 'TEST_ERR_STR',
@@ -276,7 +276,7 @@ class MatchMakerTestCase(TestCase):
             form = encode_multipart(BOUNDARY, {
                 'matchThumbna': f,
                 'title': 'TEST_TITLE',
-                'category': [0,0],
+                'category': '0, 0',
                 'capacity': 4,
                 'locationText': 'TEST_LOCATION_TEXT',
                 'period': 3,
@@ -310,7 +310,7 @@ class MatchMakerTestCase(TestCase):
 
             response = client.put(f'/api/match/{match_id}/',
                                   json.dumps({'title': 'TEST_PUT_TITLE',
-                                              'category': [0,0],
+                                              'category': '0, 0',
                                               'capacity': 4,
                                               'locationText': 'TEST_PUT_LOCATION_TEXT',
                                               'period': 3,

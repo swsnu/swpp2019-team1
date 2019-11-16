@@ -42,8 +42,9 @@ def match(request):
                 if 'matchThumbnail' in request.FILES:
                     data['match_thumbnail'] = request.FILES['matchThumbnail']
                 category_idx = data['category']
-                if category_idx == "0":  # TODO
-                    category_idx = [0, 0]
+                print(data)
+                print(dict(data))
+                print(data.dict())
                 time_begin = arrow.get(data['time_begin']).datetime
                 time_end = arrow.get(data['time_end']).datetime
                 data['time_begin'] = time_begin
@@ -56,8 +57,8 @@ def match(request):
             data['category'] = category
             data['host_user_id'] = request.user.id
             data = data.dict()
-            print(data)
             match_serializer = MatchSerializer(data=data)
+
             if match_serializer.is_valid():
                 new_match_obj = match_serializer.create(data)
                 participation = Participation(user=USER.objects.get(
