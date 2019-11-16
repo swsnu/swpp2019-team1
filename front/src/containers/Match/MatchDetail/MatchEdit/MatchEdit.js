@@ -25,9 +25,8 @@ class MatchEdit extends Component {
       category: null,
       capacity: 2,
       locationText: '',
-      // latitude and longitude will be implemented or removed after applying Google Map API
-      // locationLatitude: '',
-      // locationLongitude: '',
+      locationLatitude: 37.4494771,
+      locationLongitude: 126.9519515,
       timeBegin: null,
       timeEnd: null,
       // timeRange: ['',''],
@@ -84,9 +83,8 @@ class MatchEdit extends Component {
       category,
       capacity,
       locationText,
-      // latitude and longitude will be implemented or removed after applying Google Map API
-      // locationLatitude,
-      // locationLongitude,
+      locationLatitude,
+      locationLongitude,
       timeBegin,
       timeEnd,
       additionalInfo,
@@ -101,8 +99,8 @@ class MatchEdit extends Component {
           category={category}
           capacity={capacity}
           locationText={locationText}
-          // locationLatitude={locationLatitude}
-          // locationLongitude={locationLongitude}
+          locationLatitude={locationLatitude}
+          locationLongitude={locationLongitude}
           timeBegin={timeBegin}
           timeEnd={timeEnd}
           additionalInfo={additionalInfo}
