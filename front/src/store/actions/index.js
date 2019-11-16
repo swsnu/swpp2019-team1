@@ -17,4 +17,5 @@ export {
   joinMatch,
   quitMatch,
   searchMatch,
+  sendNlpText,
 } from './match';

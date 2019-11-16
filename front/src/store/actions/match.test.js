@@ -289,6 +289,30 @@ describe('ActionMatch', () => {
     });
   });
 
+  it(`'sendNlpText' should request nlp analysis correctly`, done => {
+    const spyPost = jest.spyOn(axios, 'post').mockImplementation(() => {
+      return new Promise(resolve => {
+        const result = {
+          status: 200,
+          data: {
+            categories: [{ name: 'category' }],
+            locations: [{ name: 'location' }],
+            events: [{ name: 'event' }],
+          },
+        };
+        resolve(result);
+      });
+    });
+    store.dispatch(actionCreators.sendNlpText('analyze this')).then(() => {
+      const newState = store.getState();
+      expect(newState.match.category).toBe('category');
+      expect(newState.match.location).toBe('location');
+      expect(newState.match.title).toBe('event');
+      expect(spyPost).toHaveBeenCalledTimes(1);
+      done();
+    });
+  });
+
   it(`'editMatch' should request match create correctly and push on success`, done => {
     const spyPut = jest.spyOn(axios, 'put').mockImplementation(() => {
       return new Promise(resolve => {

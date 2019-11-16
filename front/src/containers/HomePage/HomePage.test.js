@@ -33,6 +33,7 @@ describe('<HomePage />', () => {
   let spyGetHotMatch;
   let spyGetNewMatch;
   let spyGetRecommendMatch;
+  let spySendNlpText;
 
   beforeEach(() => {
     homePage = (
@@ -56,6 +57,11 @@ describe('<HomePage />', () => {
       });
     spyGetRecommendMatch = jest
       .spyOn(actionCreators, 'getRecommendMatch')
+      .mockImplementation(() => {
+        return () => null;
+      });
+    spySendNlpText = jest
+      .spyOn(actionCreators, 'sendNlpText')
       .mockImplementation(() => {
         return () => null;
       });
@@ -102,5 +108,24 @@ describe('<HomePage />', () => {
     const wrapper = component.find('#Home-search-button').at(0);
     wrapper.simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledWith('/search');
+  });
+
+  it('should handle input changes', async () => {
+    const component = mount(homePage);
+    // nlpText change
+    const nlpText = 'TEST_NLP_TEXT';
+    const wrapper = component.find(`#nlp-query-input-field`);
+    expect(wrapper.length).toBe(1);
+    wrapper.simulate('change', { target: { value: nlpText } });
+    const createInstance = component.find(HomePage.WrappedComponent).instance();
+    expect(createInstance.state.nlpText).toEqual(nlpText);
+  });
+
+  it('should handle button clicks', async () => {
+    const component = mount(homePage);
+    const wrapper = component.find('#nlp-query-button');
+    expect(wrapper.length).toBe(1);
+    wrapper.simulate('click');
+    expect(spySendNlpText).toBeCalledTimes(1);
   });
 });

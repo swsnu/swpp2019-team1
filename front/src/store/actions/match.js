@@ -191,6 +191,29 @@ export const createMatch = match => {
   };
 };
 
+const sendNlpTextAction = (category, location, title) => {
+  return {
+    type: actionTypes.SEND_NLP_TEXT,
+    category,
+    location,
+    title,
+  };
+};
+
+export const sendNlpText = nlpText => {
+  return dispatch => {
+    return axios.post(`/api/match/nlp/`, { nlpText }).then(res => {
+      dispatch(
+        sendNlpTextAction(
+          res.data.categories[0].name,
+          res.data.locations[0].name,
+          res.data.events[0].name,
+        ),
+      );
+    });
+  };
+};
+
 const editMatchAction = () => {
   return {
     type: actionTypes.EDIT_MATCH,
