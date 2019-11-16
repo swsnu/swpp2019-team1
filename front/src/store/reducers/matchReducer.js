@@ -55,7 +55,9 @@ const initialState = {
   selected: undefined,
   // the following may not be needed
   myMatch: [],
-  categories,
+  category: '',
+  location: '',
+  title: '',
 };
 
 // const testInitialState = {
@@ -99,6 +101,13 @@ const matchReducer = (state, action) => {
       return {
         ...state,
         searchResult: action.searchResult,
+      };
+    case actionTypes.SEND_NLP_TEXT:
+      return {
+        ...state,
+        category: action.category,
+        location: action.location,
+        title: action.title,
       };
     default:
       break;

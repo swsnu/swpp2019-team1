@@ -10,7 +10,7 @@ import MatchPreviewTile from '../../components/Match/MatchPreviewTile/MatchPrevi
 class HomePage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { nlpText: '' };
   }
 
   componentDidMount() {
@@ -38,7 +38,17 @@ class HomePage extends Component {
   };
 
   render() {
-    const { history, matchHot, matchNew, matchRecommend } = this.props;
+    const {
+      history,
+      matchHot,
+      matchNew,
+      matchRecommend,
+      onClickNlpText,
+      category,
+      location,
+      title,
+    } = this.props;
+    const { nlpText } = this.state;
     const componentHot = matchHot.map(this.matchToComponent);
     const componentNew = matchNew.map(this.matchToComponent);
     const componentRecommend = matchRecommend.map(this.matchToComponent);
@@ -82,6 +92,27 @@ class HomePage extends Component {
             <Row gutter={(16, 16)}>{componentRecommend}</Row>
           </Card>
         </div>
+        <div className="HomeCategory Nlp-Create-match">
+          <input
+            id="nlp-query-input-field"
+            value={nlpText}
+            onChange={event => this.setState({ nlpText: event.target.value })}
+          />
+          <button
+            type="button"
+            id="nlp-query-button"
+            onClick={() => onClickNlpText(nlpText)}
+          >
+            Search
+          </button>
+          <p>
+            category : {category}
+            <br />
+            location : {location}
+            <br />
+            title : {title}
+          </p>
+        </div>
       </div>
     );
   }
@@ -123,10 +154,14 @@ HomePage.propTypes = {
       capacity: PropTypes.number,
     }),
   ).isRequired,
+  category: PropTypes.string.isRequired,
+  location: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   onGetHotMatch: PropTypes.func.isRequired,
   onGetNewMatch: PropTypes.func.isRequired,
   onGetRecommendMatch: PropTypes.func.isRequired,
   onClickMatch: PropTypes.func.isRequired,
+  onClickNlpText: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => {
@@ -134,6 +169,9 @@ const mapStateToProps = state => {
     matchHot: state.match.hot,
     matchNew: state.match.new,
     matchRecommend: state.match.recommend,
+    category: state.match.category,
+    location: state.match.location,
+    title: state.match.title,
   };
 };
 
@@ -143,6 +181,7 @@ const mapDispatchToProps = dispatch => {
     onGetNewMatch: () => dispatch(actionCreators.getNewMatch()),
     onGetRecommendMatch: () => dispatch(actionCreators.getRecommendMatch()),
     onClickMatch: mid => dispatch(push(`/match/${mid}`)),
+    onClickNlpText: query => dispatch(actionCreators.sendNlpText(query)),
   };
 };
 

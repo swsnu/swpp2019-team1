@@ -13,3 +13,4 @@ export const EDIT_MATCH = 'EDIT_MATCH';
 export const JOIN_MATCH = 'JOIN_MATCH';
 export const QUIT_MATCH = 'QUIT_MATCH';
 export const SEARCH_MATCH = 'SEARCH_MATCH';
+export const SEND_NLP_TEXT = 'SEND_NLP_TEXT';
