@@ -2,14 +2,19 @@
 matchmaker tests
 '''
 import json
+from unittest import mock
+from unittest.mock import patch
 from django.test import TestCase, Client
 from django.conf import settings
 from django.forms.models import model_to_dict
+
 import arrow
+from google.cloud.language_v1.proto import language_service_pb2
 
 from userapp.tests import create_dummy_user
 from matchmaker.models import Match, Category
 from matchmaker.serializers import MatchSerializer
+from matchmaker import nlp
 
 
 def create_dummy_category():
@@ -22,7 +27,49 @@ def create_dummy_match(test_user, test_category):
     return Match.objects.create(
         title='TEST_TITLE', category=test_category, host_user=test_user,
         capacity=4, location_text='TEST_LOCATION')
+# pylint: disable=too-few-public-methods, no-self-use, unused-argument, invalid-name
+class GoogleCloudLanguageMock:
+    '''GoogleCloudLanguageMock'''
+    class LanguageServiceClient:
+        '''LanguageServiceClient'''
+        # google_category_response = client.classify_text(document=document)
+        def classify_text(self, document=None):
+            '''classify_text'''
+            category = language_service_pb2.ClassificationCategory(
+                name='/Internet & Telecom/Mobile & Wireless',
+                confidence=0.6100000143051147)
+            response = language_service_pb2.ClassifyTextResponse(categories=[category])
+            return response
+        # google_analysis_response = client.analyze_entities(document=document)
+        def analyze_entities(self, document=None):
+            '''analyze_entities'''
+            entity_location = language_service_pb2.Entity(name="Amphitheatre Pkwy", type=2)
+            entity_event = language_service_pb2.Entity(name="Consumer Electronic Show", type=4)
+            entity_adrdess = language_service_pb2.Entity(
+                name="Mountain View (1600 Amphitheatre Pkwy", type=10)
+            response = language_service_pb2.AnalyzeEntitiesResponse(
+                entities=[entity_location, entity_event, entity_adrdess])
+            return response
 
+    '''
+    document = types.Document(
+        content=text,
+        type=enums.Document.Type.PLAIN_TEXT)
+    '''
+    class types:
+        '''types'''
+        class Document:
+            '''Document'''
+
+    # enums.Document.Type.PLAIN_TEXT
+    class enums:
+        '''enums'''
+        class Document:
+            '''Document'''
+            class Type:
+                '''Type'''
+                PLAIN_TEXT = ''
+# pylint: enable=too-few-public-methods, no-self-use, unused-argument, invalid-name
 
 class MatchMakerTestCase(TestCase):
     '''Tests for the app Matchmaker'''
@@ -157,6 +204,10 @@ class MatchMakerTestCase(TestCase):
                                  HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
+        response = client.delete(f'/api/match/nlp/',
+                                 HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+
     def test_http_response_401(self):
         '''Checks if the views module handles malformed requests correctly.'''
         client = Client(enforce_csrf_checks=True)
@@ -226,6 +277,11 @@ class MatchMakerTestCase(TestCase):
                               content_type='application/json',
                               HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
+        response = client.post('/api/match/nlp/',
+                               json.dumps({'x': 'hello'}),
+                               content_type='application/json',
+                               HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 400)
 
     def test_match(self):
         '''Checks if the views module handles various match-related requests correctly.'''
@@ -287,6 +343,27 @@ class MatchMakerTestCase(TestCase):
                                           'timeEnd': '2019-11-03T08:07:46+09:00', }),
                               content_type='application/json',
                               HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 200)
+
+    @patch.object(nlp, 'enums', mock.Mock(side_effect=GoogleCloudLanguageMock.enums))
+    @patch.object(nlp, 'types', mock.Mock(side_effect=GoogleCloudLanguageMock.types))
+    @patch.object(nlp, 'LanguageServiceClient',
+                  mock.Mock(side_effect=GoogleCloudLanguageMock.LanguageServiceClient))
+    def test_nlp(self):#, Language_service_client_mock, types_mock, enums_mock):
+        '''Checks if the views module handles search query correctly.'''
+        client = Client(enforce_csrf_checks=True)
+        response = client.get('/api/token/')
+        csrftoken = response.cookies['csrftoken'].value
+        create_dummy_user('TEST_EMAIL@test.com')
+        client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
+
+        response = client.post('/api/match/nlp/', json.dumps({
+            'nlp_text': 'Google, headquartered in Mountain View (1600 Amphitheatre '
+                        'Pkwy, Mountain View, CA 940430), unveiled the new Android phone for $799'
+                        ' at the Consumer Electronic Show. Sundar Pichai said in his keynote that'
+                        ' users love their new Android phones.'}),
+                               content_type='application/json',
+                               HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
 
     def test_search(self):
