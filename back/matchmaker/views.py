@@ -35,44 +35,37 @@ def match_simple_serializer(match_object):
 def match(request):
     '''Makes and returns a new match.'''
     if request.method == 'POST':
-        if request.user.is_authenticated:
-            try:
-                data = underscoreize(request.POST)
-                print(request.FILES)
-                if 'matchThumbnail' in request.FILES:
-                    data['match_thumbnail'] = request.FILES['matchThumbnail']
-                category_idx = data['category']
-                print(data)
-                print(dict(data))
-                print(data.dict())
-                time_begin = arrow.get(data['time_begin']).datetime
-                time_end = arrow.get(data['time_end']).datetime
-                data['time_begin'] = time_begin
-                data['time_end'] = time_end
-            except (KeyError, arrow.parser.ParserError):
-                return HttpResponseBadRequest()
-
-            print(category_idx)
-            category = get_object_or_404(Category, indexes=category_idx)
-            data['category'] = category
-            data['host_user_id'] = request.user.id
-            data = data.dict()
-            match_serializer = MatchSerializer(data=data)
-
-            if match_serializer.is_valid():
-                new_match_obj = match_serializer.create(data)
-                participation = Participation(user=USER.objects.get(
-                    pk=request.user.id), match=new_match_obj)
-                participation.save()
-                new_match_data = match_serializer.validated_data
-                new_match_data.update(
-                    {"id": new_match_obj.pk, 'num_participants': 1})
-                response = json.loads(
-                    CamelCaseJSONRenderer().render(new_match_data))
-                return JsonResponse(response, status=201)
-            # 400
+        try:
+            data = underscoreize(request.POST)
+            data['match_thumbnail'] = request.FILES['matchThumbnail']
+            category_idx = data['category']
+            time_begin = arrow.get(data['time_begin']).datetime
+            time_end = arrow.get(data['time_end']).datetime
+            data['time_begin'] = time_begin
+            data['time_end'] = time_end
+        except (KeyError, arrow.parser.ParserError):
             return HttpResponseBadRequest()
-        return HttpResponse(status=401)  # not authenticated
+
+        category = get_object_or_404(Category, indexes=category_idx)
+        data['category'] = category
+        data['host_user_id'] = request.user.id
+        data = data.dict()
+        match_serializer = MatchSerializer(data=data)
+
+        if match_serializer.is_valid():
+            new_match_obj = match_serializer.create(data)
+            participation = Participation(user=USER.objects.get(
+                pk=request.user.id), match=new_match_obj)
+            participation.save()
+            new_match_data = match_serializer.validated_data
+            new_match_data.update(
+                {"id": new_match_obj.pk, 'num_participants': 1})
+            response = json.loads(
+                CamelCaseJSONRenderer().render(new_match_data))
+            return JsonResponse(response, status=201)
+        # 400
+        # print(match_serializer.errors) need to return error info
+        return HttpResponseBadRequest()
     # 405
     return HttpResponseNotAllowed(['POST'])
 

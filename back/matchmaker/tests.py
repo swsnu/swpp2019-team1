@@ -8,7 +8,7 @@ from django.test.client import encode_multipart
 from django.conf import settings
 from django.forms.models import model_to_dict
 import arrow
-
+from PIL import Image
 from userapp.tests import create_dummy_user
 from matchmaker.models import Match, Category
 from matchmaker.serializers import MatchSerializer
@@ -33,7 +33,7 @@ class MatchMakerTestCase(TestCase):
     '''Tests for the app Matchmaker'''
 
     def setUp(self):
-        # TODO Setup test database here
+        # Setup test database here TODO
         pass
 
     def test_matchserializer(self):
@@ -46,26 +46,15 @@ class MatchMakerTestCase(TestCase):
         test_category = create_dummy_category()
         test_match = create_dummy_match(test_user, test_category)
 
-        test_json = json.dumps({'title': 'TEST_TITLE',
-                                'category': '0,0',
-                                'capacity': 4,
-                                'locationText': 'TEST_LOCATION_TEXT',
-                                'period': 3,
-                                'additionalInfo': 'TEST_ADDITIONAL_INFO',
-                                'isAgeRestricted': True,
-                                'restrictAgeFrom': 4,
-                                'restrictAgeTo': 7,
-                                'isGenderRestricted': True,
-                                'restrictedGender': settings.MALE,
-                                'timeBegin': '2019-11-03T08:07:46+09:00',
-                                'timeEnd': '2019-11-03T08:07:46+09:00', })
-
-        with tempfile.NamedTemporaryFile() as temp_file:
+        with tempfile.NamedTemporaryFile(suffix='.jpg') as temp_file:
+            test_image = Image.new('RGB', (100, 100))
+            test_image.save(temp_file)
+            temp_file.seek(0)
             form = encode_multipart(BOUNDARY, {
-                'matchThumbna': temp_file,
+                'matchThumbnail': temp_file,
                 'title': 'TEST_TITLE',
                 'category': '0,0',
-                'capacity': 4,
+                'capacity': 5,
                 'locationText': 'TEST_LOCATION_TEXT',
                 'period': 3,
                 'additionalInfo': 'TEST_ADDITIONAL_INFO',
@@ -81,8 +70,8 @@ class MatchMakerTestCase(TestCase):
                                    data=form,
                                    content_type=MULTIPART_CONTENT,
                                    HTTP_X_CSRFTOKEN=csrftoken)
-            # TODO need to fix test code
-            print(response)
+            self.assertEqual(response.status_code, 201)
+
             serializer = MatchSerializer(response.json(), data=response.json())
             self.assertEqual(serializer.is_valid(), True)
             self.assertEqual(serializer.data['num_participants'], 1)
@@ -92,7 +81,7 @@ class MatchMakerTestCase(TestCase):
             test_match_dict['host_user_id'] = test_user.id
             del test_match_dict['host_user']
             del test_match_dict['match_thumbnail']
-            print("FIRST", test_match_dict)
+
             test_match_dict = {'id': 7, 'title': 'TEST_TITLE', 'category': test_category,
                                'capacity': 4, 'location_text': 'TEST_LOCATION_TEXT',
                                'period': 3, 'additional_info': 'TEST_ADDITIONAL_INFO',
@@ -103,7 +92,7 @@ class MatchMakerTestCase(TestCase):
                                'time_end': arrow.get('2019-11-03T08:07:46+09:00').datetime,
                                'host_user_id': test_user.id}
             serializer = MatchSerializer(test_match_dict, data=test_match_dict)
-            print("SECOND", test_match_dict)
+
             self.assertEqual(serializer.is_valid(), True)
             self.assertEqual(serializer.data['num_participants'], 0)
 
@@ -114,7 +103,7 @@ class MatchMakerTestCase(TestCase):
 
     def test_http_response_404(self):
         '''Checks if the views module handles bad requests correctly.'''
-        with tempfile.NamedTemporaryFile() as f:
+        with tempfile.NamedTemporaryFile() as temp_file:
             client = Client(enforce_csrf_checks=True)
             response = client.get('/api/token/')
             csrftoken = response.cookies['csrftoken'].value
@@ -122,7 +111,7 @@ class MatchMakerTestCase(TestCase):
             client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
             # starts here
             form = encode_multipart(BOUNDARY, {
-                "matchThumbna": f,
+                "matchThumbnail": temp_file,
                 'title': 'TEST_TITLE',
                 'category': 9999,
                 'capacity': 4,
@@ -235,6 +224,29 @@ class MatchMakerTestCase(TestCase):
                                            'timeEnd': '2019-11-03T08:07:46+09:00', }),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
+###############
+        with tempfile.NamedTemporaryFile() as temp_file:
+            form = encode_multipart(BOUNDARY, {
+                'matchThumbnail': temp_file,
+                'title': 'TEST_TITLE',
+                'category': '0,0',
+                'capacity': 5,
+                'locationText': 'TEST_LOCATION_TEXT',
+                'period': 3,
+                'additionalInfo': 'TEST_ADDITIONAL_INFO',
+                'isAgeRestricted': True,
+                'restrictAgeFrom': 4,
+                'restrictAgeTo': 7,
+                'isGenderRestricted': True,
+                'restrictedGender': settings.MALE,
+                'timeBegin': '2019-11-03T08:07:46+09:00',
+                'timeEnd': '2019-11-03T08:07:46+09:00',
+            })
+            response = client.post('/api/match/',
+                                   data=form,
+                                   content_type=MULTIPART_CONTENT,
+                                   HTTP_X_CSRFTOKEN=csrftoken)
+            self.assertEqual(response.status_code, 400)
 
         response = client.put(f'/api/match/{test_match.id}/',
                               json.dumps({'title': 'TEST_TITLE',
@@ -261,7 +273,11 @@ class MatchMakerTestCase(TestCase):
 
     def test_match(self):
         '''Checks if the views module handles various match-related requests correctly.'''
-        with tempfile.NamedTemporaryFile() as f:
+        with tempfile.NamedTemporaryFile(suffix='.jpg') as temp_file:
+            test_image = Image.new('RGB', (100, 100))
+            test_image.save(temp_file)
+            temp_file.seek(0)
+
             client = Client(enforce_csrf_checks=True)
             response = client.get('/api/token/')
             csrftoken = response.cookies['csrftoken'].value
@@ -274,7 +290,7 @@ class MatchMakerTestCase(TestCase):
             self.assertEqual(test_match.__str__(), 'TEST_TITLE')
 
             form = encode_multipart(BOUNDARY, {
-                'matchThumbna': f,
+                'matchThumbnail': temp_file,
                 'title': 'TEST_TITLE',
                 'category': '0,0',
                 'capacity': 4,
@@ -337,21 +353,21 @@ class MatchMakerTestCase(TestCase):
 
     def test_match_new(self):
         '''Checks if get_new_match performs correctly.'''
-        # TODO Make complex test cases
+        # Make complex test cases TODO
         client = Client()
         response = client.get('/api/match/new/')
         self.assertEqual(len(json.loads(response.content.decode())), 0)
 
     def test_match_hot(self):
         '''Checks if get_hot_match performs correctly.'''
-        # TODO Make complex test cases
+        # Make complex test cases TODO
         client = Client()
         response = client.get('/api/match/hot/')
         self.assertEqual(len(json.loads(response.content.decode())), 0)
 
     def test_match_recommend(self):
         '''Checks if get_recommend_match performs correctly.'''
-        # TODO Make complex test cases
+        # Make complex test cases TODO
         client = Client()
         response = client.get('/api/match/recommend/')
         self.assertEqual(len(json.loads(response.content.decode())), 0)
