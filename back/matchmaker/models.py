@@ -48,13 +48,14 @@ class Match(models.Model):
     is_online = models.BooleanField(default=False)
     is_full = models.BooleanField(default=False)
 
-    location_text = models.CharField(max_length=100, default='')
-    location_latitude = models.PositiveSmallIntegerField(default=0)
-    location_longitude = models.PositiveSmallIntegerField(default=0)
+    location_text = models.CharField(max_length=200, blank=True, default='')
+    location_latitude = models.FloatField(blank=True, default=0)
+    location_longitude = models.FloatField(
+        blank=True, default=0)
 
     # 0 means not periodic
     period = models.PositiveSmallIntegerField(default=0)
-    additional_info = models.TextField(default='')
+    additional_info = models.TextField(blank=True, default='')
 
     is_age_restricted = models.BooleanField(default=False)
     restrict_age_from = models.PositiveSmallIntegerField(default=0)
