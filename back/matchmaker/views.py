@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 import arrow
 from djangorestframework_camel_case.parser import CamelCaseJSONParser
+from djangorestframework_camel_case.util import underscoreize
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 
 
@@ -35,7 +36,8 @@ def match(request):
     '''Makes and returns a new match.'''
     if request.method == 'POST':
         try:
-            data = CamelCaseJSONParser().parse(request)
+            data = underscoreize(request.POST)
+            data['match_thumbnail'] = request.FILES['matchThumbnail']
             category_idx = data['category']
             time_begin = arrow.get(data['time_begin']).datetime
             time_end = arrow.get(data['time_end']).datetime
@@ -43,10 +45,13 @@ def match(request):
             data['time_end'] = time_end
         except (KeyError, arrow.parser.ParserError):
             return HttpResponseBadRequest()
+
         category = get_object_or_404(Category, indexes=category_idx)
         data['category'] = category
         data['host_user_id'] = request.user.id
+        data = data.dict()
         match_serializer = MatchSerializer(data=data)
+
         if match_serializer.is_valid():
             new_match_obj = match_serializer.create(data)
             participation = Participation(user=USER.objects.get(
@@ -59,6 +64,7 @@ def match(request):
                 CamelCaseJSONRenderer().render(new_match_data))
             return JsonResponse(response, status=201)
         # 400
+        # print(match_serializer.errors) need to return error info
         return HttpResponseBadRequest()
     # 405
     return HttpResponseNotAllowed(['POST'])

@@ -2,19 +2,25 @@
 matchmaker tests
 '''
 import json
+import tempfile
 from unittest import mock
 from unittest.mock import patch
 from django.test import TestCase, Client
+from django.test.client import encode_multipart
 from django.conf import settings
 from django.forms.models import model_to_dict
 
 import arrow
+from PIL import Image
 from google.cloud.language_v1.proto import language_service_pb2
 
 from userapp.tests import create_dummy_user
 from matchmaker.models import Match, Category
 from matchmaker.serializers import MatchSerializer
 from matchmaker import nlp
+
+BOUNDARY = 'BoUnDaRyStRiNg'
+MULTIPART_CONTENT = 'multipart/form-data; boundary=%s' % BOUNDARY
 
 
 def create_dummy_category():
@@ -75,7 +81,7 @@ class MatchMakerTestCase(TestCase):
     '''Tests for the app Matchmaker'''
 
     def setUp(self):
-        # TODO Setup test database here
+        # Setup test database here TODO
         pass
 
     def test_matchserializer(self):
@@ -87,45 +93,56 @@ class MatchMakerTestCase(TestCase):
         client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
         test_category = create_dummy_category()
         test_match = create_dummy_match(test_user, test_category)
-        response = client.post('/api/match/',
-                               json.dumps({'title': 'TEST_TITLE',
-                                           'category': test_category.indexes,
-                                           'capacity': 4,
-                                           'locationText': 'TEST_LOCATION_TEXT',
-                                           'period': 3,
-                                           'additionalInfo': 'TEST_ADDITIONAL_INFO',
-                                           'isAgeRestricted': True,
-                                           'restrictAgeFrom': 4,
-                                           'restrictAgeTo': 7,
-                                           'isGenderRestricted': True,
-                                           'restrictedGender': settings.MALE,
-                                           'timeBegin': '2019-11-03T08:07:46+09:00',
-                                           'timeEnd': '2019-11-03T08:07:46+09:00', }),
-                               content_type='application/json',
-                               HTTP_X_CSRFTOKEN=csrftoken)
-        serializer = MatchSerializer(response.json(), data=response.json())
-        self.assertEqual(serializer.is_valid(), True)
-        self.assertEqual(serializer.data['num_participants'], 1)
 
-        test_match_dict = model_to_dict(test_match)
-        test_match_dict['category'] = test_category
-        test_match_dict['host_user_id'] = test_user.id
-        del test_match_dict['host_user']
-        del test_match_dict['match_thumbnail']
-        print("FIRST", test_match_dict)
-        test_match_dict = {'id': 7, 'title': 'TEST_TITLE', 'category': test_category,
-                           'capacity': 4, 'location_text': 'TEST_LOCATION_TEXT',
-                           'period': 3, 'additional_info': 'TEST_ADDITIONAL_INFO',
-                           'is_age_restricted': True, 'restrict_age_from': 4,
-                           'restrict_age_to': 7, 'is_gender_restricted': True,
-                           'restricted_gender': True,
-                           'time_begin': arrow.get('2019-11-03T08:07:46+09:00').datetime,
-                           'time_end': arrow.get('2019-11-03T08:07:46+09:00').datetime,
-                           'host_user_id': test_user.id}
-        serializer = MatchSerializer(test_match_dict, data=test_match_dict)
-        print("SECOND", test_match_dict)
-        self.assertEqual(serializer.is_valid(), True)
-        self.assertEqual(serializer.data['num_participants'], 0)
+        with tempfile.NamedTemporaryFile(suffix='.jpg') as temp_file:
+            test_image = Image.new('RGB', (100, 100))
+            test_image.save(temp_file)
+            temp_file.seek(0)
+            form = encode_multipart(BOUNDARY, {
+                'matchThumbnail': temp_file,
+                'title': 'TEST_TITLE',
+                'category': '0,0',
+                'capacity': 5,
+                'locationText': 'TEST_LOCATION_TEXT',
+                'period': 3,
+                'additionalInfo': 'TEST_ADDITIONAL_INFO',
+                'isAgeRestricted': True,
+                'restrictAgeFrom': 4,
+                'restrictAgeTo': 7,
+                'isGenderRestricted': True,
+                'restrictedGender': settings.MALE,
+                'timeBegin': '2019-11-03T08:07:46+09:00',
+                'timeEnd': '2019-11-03T08:07:46+09:00',
+            })
+            response = client.post('/api/match/',
+                                   data=form,
+                                   content_type=MULTIPART_CONTENT,
+                                   HTTP_X_CSRFTOKEN=csrftoken)
+            self.assertEqual(response.status_code, 201)
+
+            serializer = MatchSerializer(response.json(), data=response.json())
+            self.assertEqual(serializer.is_valid(), True)
+            self.assertEqual(serializer.data['num_participants'], 1)
+
+            test_match_dict = model_to_dict(test_match)
+            test_match_dict['category'] = test_category
+            test_match_dict['host_user_id'] = test_user.id
+            del test_match_dict['host_user']
+            del test_match_dict['match_thumbnail']
+
+            test_match_dict = {'id': 7, 'title': 'TEST_TITLE', 'category': test_category,
+                               'capacity': 4, 'location_text': 'TEST_LOCATION_TEXT',
+                               'period': 3, 'additional_info': 'TEST_ADDITIONAL_INFO',
+                               'is_age_restricted': True, 'restrict_age_from': 4,
+                               'restrict_age_to': 7, 'is_gender_restricted': True,
+                               'restricted_gender': True,
+                               'time_begin': arrow.get('2019-11-03T08:07:46+09:00').datetime,
+                               'time_end': arrow.get('2019-11-03T08:07:46+09:00').datetime,
+                               'host_user_id': test_user.id}
+            serializer = MatchSerializer(test_match_dict, data=test_match_dict)
+
+            self.assertEqual(serializer.is_valid(), True)
+            self.assertEqual(serializer.data['num_participants'], 0)
 
     def test_category(self):
         '''test category'''
@@ -134,37 +151,42 @@ class MatchMakerTestCase(TestCase):
 
     def test_http_response_404(self):
         '''Checks if the views module handles bad requests correctly.'''
-        client = Client(enforce_csrf_checks=True)
-        response = client.get('/api/token/')
-        csrftoken = response.cookies['csrftoken'].value
-        create_dummy_user('TEST_EMAIL@test.com')
-        client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
-        # starts here
-        response = client.post('/api/match/',
-                               json.dumps({'title': 'TEST_TITLE',
-                                           'category': [99999, 99999],
-                                           'capacity': 4,
-                                           'locationText': 'TEST_LOCATION_TEXT',
-                                           'period': 3,
-                                           'additionalInfo': 'TEST_ADDITIONAL_INFO',
-                                           'isAgeRestricted': True,
-                                           'restrictAgeFrom': 4,
-                                           'restrictAgeTo': 7,
-                                           'isGenderRestricted': True,
-                                           'restrictedGender': settings.MALE,
-                                           'timeBegin': '2019-11-03T08:07:46+09:00',
-                                           'timeEnd': '2019-11-03T08:07:46+09:00', }),
-                               content_type='application/json',
-                               HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 404)
+        with tempfile.NamedTemporaryFile() as temp_file:
+            client = Client(enforce_csrf_checks=True)
+            response = client.get('/api/token/')
+            csrftoken = response.cookies['csrftoken'].value
+            create_dummy_user('TEST_EMAIL@test.com')
+            client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
+            # starts here
+            form = encode_multipart(BOUNDARY, {
+                "matchThumbnail": temp_file,
+                'title': 'TEST_TITLE',
+                'category': 9999,
+                'capacity': 4,
+                'locationText': 'TEST_LOCATION_TEXT',
+                'period': 3,
+                'additionalInfo': 'TEST_ADDITIONAL_INFO',
+                'isAgeRestricted': True,
+                'restrictAgeFrom': 4,
+                'restrictAgeTo': 7,
+                'isGenderRestricted': True,
+                'restrictedGender': settings.MALE,
+                'timeBegin': '2019-11-03T08:07:46+09:00',
+                'timeEnd': '2019-11-03T08:07:46+09:00',
+            })
+            response = client.post('/api/match/',
+                                   data=form,
+                                   content_type=MULTIPART_CONTENT,
+                                   HTTP_X_CSRFTOKEN=csrftoken)
+            self.assertEqual(response.status_code, 404)
 
-        response = client.post(f'/api/match/9999/join/',
-                               HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 404)
+            response = client.post(f'/api/match/9999/join/',
+                                   HTTP_X_CSRFTOKEN=csrftoken)
+            self.assertEqual(response.status_code, 404)
 
-        # starts here
-        response = client.get('/api/match/2/', HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 404)
+            # starts here
+            response = client.get('/api/match/2/', HTTP_X_CSRFTOKEN=csrftoken)
+            self.assertEqual(response.status_code, 404)
 
     def test_http_response_405(self):
         '''Checks if the views module handles bad requests correctly.'''
@@ -240,7 +262,7 @@ class MatchMakerTestCase(TestCase):
         self.assertEqual(response.status_code, 400)
         response = client.post('/api/match/',
                                json.dumps({'title': 'TEST_TITLE',
-                                           'category': test_category.indexes,
+                                           'category': '0,0',
                                            'capacity': 'TEST_ERR_STR',
                                            'locationText': 'TEST_LOCATION_TEXT',
                                            'period': 'TEST_ERR_STR',
@@ -254,10 +276,33 @@ class MatchMakerTestCase(TestCase):
                                            'timeEnd': '2019-11-03T08:07:46+09:00', }),
                                content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 400)
+###############
+        with tempfile.NamedTemporaryFile() as temp_file:
+            form = encode_multipart(BOUNDARY, {
+                'matchThumbnail': temp_file,
+                'title': 'TEST_TITLE',
+                'category': '0,0',
+                'capacity': 5,
+                'locationText': 'TEST_LOCATION_TEXT',
+                'period': 3,
+                'additionalInfo': 'TEST_ADDITIONAL_INFO',
+                'isAgeRestricted': True,
+                'restrictAgeFrom': 4,
+                'restrictAgeTo': 7,
+                'isGenderRestricted': True,
+                'restrictedGender': settings.MALE,
+                'timeBegin': '2019-11-03T08:07:46+09:00',
+                'timeEnd': '2019-11-03T08:07:46+09:00',
+            })
+            response = client.post('/api/match/',
+                                   data=form,
+                                   content_type=MULTIPART_CONTENT,
+                                   HTTP_X_CSRFTOKEN=csrftoken)
+            self.assertEqual(response.status_code, 400)
 
         response = client.put(f'/api/match/{test_match.id}/',
                               json.dumps({'title': 'TEST_TITLE',
-                                          'category': test_category.indexes,
+                                          'category': '0,0',
                                           'capacity': 'TEST_ERR_STR',
                                           'locationText': 'TEST_LOCATION_TEXT',
                                           'period': 'TEST_ERR_STR',
@@ -285,65 +330,74 @@ class MatchMakerTestCase(TestCase):
 
     def test_match(self):
         '''Checks if the views module handles various match-related requests correctly.'''
-        client = Client(enforce_csrf_checks=True)
-        response = client.get('/api/token/')
-        csrftoken = response.cookies['csrftoken'].value
-        test_user = create_dummy_user('TEST_EMAIL@test.com')
-        client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
-        test_category = create_dummy_category()
+        with tempfile.NamedTemporaryFile(suffix='.jpg') as temp_file:
+            test_image = Image.new('RGB', (100, 100))
+            test_image.save(temp_file)
+            temp_file.seek(0)
 
-        test_match = Match.objects.create(
-            title='TEST_TITLE', host_user=test_user, category=test_category)
-        self.assertEqual(test_match.__str__(), 'TEST_TITLE')
+            client = Client(enforce_csrf_checks=True)
+            response = client.get('/api/token/')
+            csrftoken = response.cookies['csrftoken'].value
+            test_user = create_dummy_user('TEST_EMAIL@test.com')
+            client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
+            test_category = create_dummy_category()
 
-        response = client.post('/api/match/',
-                               json.dumps({'title': 'TEST_TITLE',
-                                           'category': test_category.indexes,
-                                           'capacity': 4,
-                                           'locationText': 'TEST_LOCATION_TEXT',
-                                           'period': 3,
-                                           'additionalInfo': 'TEST_ADDITIONAL_INFO',
-                                           'isAgeRestricted': True,
-                                           'restrictAgeFrom': 4,
-                                           'restrictAgeTo': 7,
-                                           'isGenderRestricted': True,
-                                           'restrictedGender': settings.MALE,
-                                           'timeBegin': '2019-11-03T08:07:46+09:00',
-                                           'timeEnd': '2019-11-03T08:07:46+09:00', }),
-                               content_type='application/json',
-                               HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 201)
-        match_id = response.json()['id']
-        response = client.get(
-            f'/api/match/{match_id}/', HTTP_X_CSRFTOKEN=csrftoken)
-        match = response.json()
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(match['title'], 'TEST_TITLE')
-        self.assertEqual(match['category']['indexes'], '[0, 0]')
+            test_match = Match.objects.create(
+                title='TEST_TITLE', host_user=test_user, category=test_category)
+            self.assertEqual(test_match.__str__(), 'TEST_TITLE')
 
-        test_match = Match.objects.get(id=match_id)
-        self.assertEqual(test_match.view_count, 1)
-        response = client.get(
-            f'/api/match/{match_id}/', HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(test_match.view_count, 1)
+            form = encode_multipart(BOUNDARY, {
+                'matchThumbnail': temp_file,
+                'title': 'TEST_TITLE',
+                'category': '0,0',
+                'capacity': 4,
+                'locationText': 'TEST_LOCATION_TEXT',
+                'period': 3,
+                'additionalInfo': 'TEST_ADDITIONAL_INFO',
+                'isAgeRestricted': True,
+                'restrictAgeFrom': 4,
+                'restrictAgeTo': 7,
+                'isGenderRestricted': True,
+                'restrictedGender': settings.MALE,
+                'timeBegin': '2019-11-03T08:07:46+09:00',
+                'timeEnd': '2019-11-03T08:07:46+09:00',
+            })
+            response = client.post('/api/match/',
+                                   data=form,
+                                   content_type=MULTIPART_CONTENT,
+                                   HTTP_X_CSRFTOKEN=csrftoken)
+            self.assertEqual(response.status_code, 201)
+            match_id = response.json()['id']
+            response = client.get(
+                f'/api/match/{match_id}/', HTTP_X_CSRFTOKEN=csrftoken)
+            match = response.json()
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(match['title'], 'TEST_TITLE')
+            self.assertEqual(match['category']['indexes'], '[0, 0]')
 
-        response = client.put(f'/api/match/{match_id}/',
-                              json.dumps({'title': 'TEST_PUT_TITLE',
-                                          'category': test_category.indexes,
-                                          'capacity': 4,
-                                          'locationText': 'TEST_PUT_LOCATION_TEXT',
-                                          'period': 3,
-                                          'additionalInfo': 'TEST_PUT_ADDITIONAL_INFO',
-                                          'isAgeRestricted': True,
-                                          'restrictAgeFrom': 4,
-                                          'restrictAgeTo': 7,
-                                          'isGenderRestricted': True,
-                                          'restrictedGender': settings.MALE,
-                                          'timeBegin': '2019-11-03T08:07:46+09:00',
-                                          'timeEnd': '2019-11-03T08:07:46+09:00', }),
-                              content_type='application/json',
-                              HTTP_X_CSRFTOKEN=csrftoken)
-        self.assertEqual(response.status_code, 200)
+            test_match = Match.objects.get(id=match_id)
+            self.assertEqual(test_match.view_count, 1)
+            response = client.get(
+                f'/api/match/{match_id}/', HTTP_X_CSRFTOKEN=csrftoken)
+            self.assertEqual(test_match.view_count, 1)
+
+            response = client.put(f'/api/match/{match_id}/',
+                                  json.dumps({'title': 'TEST_PUT_TITLE',
+                                              'category': '0,0',
+                                              'capacity': 4,
+                                              'locationText': 'TEST_PUT_LOCATION_TEXT',
+                                              'period': 3,
+                                              'additionalInfo': 'TEST_PUT_ADDITIONAL_INFO',
+                                              'isAgeRestricted': True,
+                                              'restrictAgeFrom': 4,
+                                              'restrictAgeTo': 7,
+                                              'isGenderRestricted': True,
+                                              'restrictedGender': settings.MALE,
+                                              'timeBegin': '2019-11-03T08:07:46+09:00',
+                                              'timeEnd': '2019-11-03T08:07:46+09:00', }),
+                                  content_type='application/json',
+                                  HTTP_X_CSRFTOKEN=csrftoken)
+            self.assertEqual(response.status_code, 200)
 
     @patch.object(nlp, 'enums', mock.Mock(side_effect=GoogleCloudLanguageMock.enums))
     @patch.object(nlp, 'types', mock.Mock(side_effect=GoogleCloudLanguageMock.types))
@@ -377,21 +431,21 @@ class MatchMakerTestCase(TestCase):
 
     def test_match_new(self):
         '''Checks if get_new_match performs correctly.'''
-        # TODO Make complex test cases
+        # Make complex test cases TODO
         client = Client()
         response = client.get('/api/match/new/')
         self.assertEqual(len(json.loads(response.content.decode())), 0)
 
     def test_match_hot(self):
         '''Checks if get_hot_match performs correctly.'''
-        # TODO Make complex test cases
+        # Make complex test cases TODO
         client = Client()
         response = client.get('/api/match/hot/')
         self.assertEqual(len(json.loads(response.content.decode())), 0)
 
     def test_match_recommend(self):
         '''Checks if get_recommend_match performs correctly.'''
-        # TODO Make complex test cases
+        # Make complex test cases TODO
         client = Client()
         response = client.get('/api/match/recommend/')
         self.assertEqual(len(json.loads(response.content.decode())), 0)

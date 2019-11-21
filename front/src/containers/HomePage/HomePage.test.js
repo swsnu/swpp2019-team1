@@ -25,6 +25,9 @@ const stubMatch = {
   hot: [testmatch],
   new: [],
   recommend: [],
+  category: '',
+  location: '',
+  title: '',
 };
 const mockStore = getMockStore(stubUser, stubMatch);
 

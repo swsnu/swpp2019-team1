@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 
 import './MatchForm.css';
 import { categories } from '../../../store/reducers/matchReducer';
-
+import ImageUpload from '../../ImageUpload/ImageUpload';
 // const { RangePicker } = DatePicker;
 
 const MatchSchema = Yup.object().shape({
@@ -71,6 +71,12 @@ const MatchForm = ({
               <FormItem name="title" label="Title">
                 <Input name="title" id="title" placeholder="Match Title" />
               </FormItem>
+              <Form.Item name="matchThumbnail" label="Thumbnail" hasFeedback>
+                <ImageUpload
+                  fieldName="matchThumbnail"
+                  setFieldValue={file => setFieldValue('matchThumbnail', file)}
+                />
+              </Form.Item>
               <Form.Item name="category" label="Category" hasFeedback>
                 <Cascader
                   name="category"
