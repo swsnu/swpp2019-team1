@@ -73,7 +73,7 @@ const initialState = {
 //     location: 'TEST_LOCATION',
 //     hostName: 'TEST_HOSTNAME',
 //     restriction: 'TEST_RESTRICTION',
-//     additionalInfo: 'TEST_ADITIONALINFO',
+//     additionalInfo: 'TEST_ADITIONAL_INFO',
 //   },
 //   myMatch: [],
 // };

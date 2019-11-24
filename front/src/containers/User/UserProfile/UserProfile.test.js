@@ -52,13 +52,12 @@ const stubMatch = {
     },
     title: 'TEST_TITLE',
     hostName: 'TEST_HOSTNAME',
-    additionalInfo: 'TEST_ADITIONALINFO',
+    additionalInfo: 'TEST_ADITIONAL_INFO',
     // matchThumbnail
     category: [0, 0],
     capacity: 2,
     isOnline: false,
     locationText: '',
-    // latitude and longitude will be implemented or removed after applying Google Map API
     // locationLatitude: '',
     // locationLongitude: '',
     timeBegin: moment('2019-11-07T00:35:38.334Z'),
