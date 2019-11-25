@@ -14,7 +14,7 @@ import getMockStore from '../../../../test-utils/getMockStore';
 import { history } from '../../../../store/store';
 import * as actionCreators from '../../../../store/actions/match';
 
-jest.mock('../../../../components/Map/Map', () => () => 'GoogleMap');
+jest.mock('../../../../components/Map/GoogleMap', () => () => 'GoogleMap');
 const stubUser = {};
 const stubMatch = {
   selected: {

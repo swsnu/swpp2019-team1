@@ -3,6 +3,7 @@
   margin: 20px auto 0;
   padding: 20px;
   border: 1px solid lightgrey;
+  font-size: 20px;
 }
 .Buttons {
   display: flex;

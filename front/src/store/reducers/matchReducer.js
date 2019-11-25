@@ -58,6 +58,7 @@ const initialState = {
   category: '',
   location: '',
   title: '',
+  additionalInfo: '',
 };
 
 // const testInitialState = {
@@ -108,6 +109,7 @@ const matchReducer = (state, action) => {
         category: action.category,
         location: action.location,
         title: action.title,
+        additionalInfo: action.additionalInfo,
       };
     default:
       break;

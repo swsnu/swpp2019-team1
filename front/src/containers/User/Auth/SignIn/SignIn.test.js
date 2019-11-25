@@ -52,7 +52,7 @@ describe('<SignIn />', () => {
     const component = mount(signIn);
     const wrapper = component.find(Form);
     await act(async () => {
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100)).catch(() => {});
       wrapper.simulate('submit');
     });
     expect(spySignIn).toHaveBeenCalledTimes(0);
@@ -71,20 +71,20 @@ describe('<SignIn />', () => {
     let wrapper = component.find('Input');
 
     await act(async () => {
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100)).catch(() => {});
       wrapper.at(0).prop('onChange')({
         target: { name: 'email', value: dummyInput.email },
       });
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100)).catch(() => {});
       wrapper.at(1).prop('onChange')({
         target: { name: 'password', value: dummyInput.password },
       });
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100)).catch(() => {});
       wrapper = component.find(Form);
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100)).catch(() => {});
       wrapper.simulate('submit');
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 100)).catch(() => {});
     });
 
     expect(signInInstance.state).toEqual(dummyInput);
@@ -99,9 +99,9 @@ describe('<SignIn />', () => {
       });
     const component = mount(signIn);
     const wrapper = component.find(Button);
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 100)).catch(() => {});
     wrapper.at(1).simulate('click');
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 100)).catch(() => {});
     expect(spyHistoryPush).toHaveBeenCalledWith('/signup');
   });
 });

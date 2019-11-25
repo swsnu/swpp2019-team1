@@ -191,12 +191,13 @@ export const createMatch = match => {
   };
 };
 
-const sendNlpTextAction = (category, location, title) => {
+const sendNlpTextAction = (category, location, title, nlpText) => {
   return {
     type: actionTypes.SEND_NLP_TEXT,
     category,
     location,
     title,
+    additionalInfo: nlpText,
   };
 };
 
@@ -208,8 +209,10 @@ export const sendNlpText = nlpText => {
           res.data.categories[0].name,
           res.data.locations[0].name,
           res.data.events[0].name,
+          nlpText,
         ),
       );
+      dispatch(push(`/match/create`));
     });
   };
 };

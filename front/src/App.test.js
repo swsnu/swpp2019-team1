@@ -28,7 +28,7 @@ describe('App', () => {
       </Provider>
     );
     const component = mount(app);
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 100)).catch(() => {});
 
     expect(component.find('.App').length).toBe(1);
     expect(component.find('.HomePage').length).toBe(1);

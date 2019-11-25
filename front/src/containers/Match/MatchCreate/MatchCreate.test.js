@@ -15,7 +15,7 @@ import { history } from '../../../store/store';
 import * as actionCreators from '../../../store/actions/match';
 import ImageUpload from '../../../components/ImageUpload/ImageUpload';
 
-jest.mock('../../../components/Map/Map', () => () => 'GoogleMap');
+jest.mock('../../../components/Map/GoogleMap', () => () => 'GoogleMap');
 
 const stubUser = {};
 const stubMatch = {
@@ -165,7 +165,7 @@ describe('<MatchCreate />', () => {
 
   it('should go back on cancel', async () => {
     const component = mount(matchCreate);
-    const wrapper = component.find('#cancel-button').at(1);
+    const wrapper = component.find('#cancel-button').at(0);
     wrapper.simulate('click');
   });
 });

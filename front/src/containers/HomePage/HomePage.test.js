@@ -93,16 +93,6 @@ describe('<HomePage />', () => {
     expect(spyHistoryPush).toHaveBeenCalledWith('/match/1');
   });
 
-  it('should redirect to match create when create button clicked', () => {
-    const spyHistoryPush = jest
-      .spyOn(history, 'push')
-      .mockImplementation(() => null);
-    const component = mount(homePage);
-    const wrapper = component.find('#Home-create-button').at(0);
-    wrapper.simulate('click');
-    expect(spyHistoryPush).toHaveBeenCalledWith('/match/create');
-  });
-
   it('should redirect to search page when search button clicked', () => {
     const spyHistoryPush = jest
       .spyOn(history, 'push')
@@ -117,18 +107,18 @@ describe('<HomePage />', () => {
     const component = mount(homePage);
     // nlpText change
     const nlpText = 'TEST_NLP_TEXT';
-    const wrapper = component.find(`#nlp-query-input-field`);
-    expect(wrapper.length).toBe(1);
-    wrapper.simulate('change', { target: { value: nlpText } });
+    const wrapper = component.find(`#Home-create-textinput`);
+    expect(wrapper.length).toBe(2);
+    wrapper.at(0).simulate('change', { target: { value: nlpText } });
     const createInstance = component.find(HomePage.WrappedComponent).instance();
-    expect(createInstance.state.nlpText).toEqual(nlpText);
+    expect(createInstance.state.inputText).toEqual(nlpText);
   });
 
   it('should handle button clicks', async () => {
     const component = mount(homePage);
-    const wrapper = component.find('#nlp-query-button');
-    expect(wrapper.length).toBe(1);
-    wrapper.simulate('click');
+    const wrapper = component.find('#Home-create-button');
+    expect(wrapper.length).toBe(2);
+    wrapper.at(0).simulate('click');
     expect(spySendNlpText).toBeCalledTimes(1);
   });
 });

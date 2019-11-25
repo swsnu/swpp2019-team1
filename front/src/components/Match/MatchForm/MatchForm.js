@@ -7,7 +7,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import './MatchForm.css';
-import GoogleMap from '../../Map/Map';
+import GoogleMap from '../../Map/GoogleMap';
 
 import { categories } from '../../../store/reducers/matchReducer';
 import ImageUpload from '../../ImageUpload/ImageUpload';
@@ -96,7 +96,11 @@ const MatchForm = ({
                 people
               </FormItem>
               <FormItem name="additionalInfo" label="Additional Info">
-                <Input.TextArea name="additionalInfo" rows={4} />
+                <Input.TextArea
+                  name="additionalInfo"
+                  rows={4}
+                  placeholder="Details"
+                />
               </FormItem>
               <Form.Item name="locationText" label="Location" hasFeedback>
                 <GoogleMap
@@ -152,7 +156,7 @@ const MatchForm = ({
 };
 
 export const MatchPropTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   // matchThumbnail,
   category: PropTypes.arrayOf(PropTypes.number),
   capacity: PropTypes.number.isRequired,
@@ -180,6 +184,7 @@ MatchForm.propTypes = {
 };
 
 MatchForm.defaultProps = {
+  title: '',
   timeBegin: null,
   timeEnd: null,
 };

@@ -113,18 +113,18 @@ export const getUser = id => {
   };
 };
 
-export const getUserList = () => null;
+// export const getUserList = () => null;
 
-const restoreUserAction = user => {
-  return {
-    type: actionTypes.SIGN_IN,
-    user,
-  };
-};
+// const restoreUserAction = user => {
+//   return {
+//     type: actionTypes.SIGN_IN,
+//     user,
+//   };
+// };
 
 export const restoreUser = () => {
   return dispatch => {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    dispatch(restoreUserAction(currentUser));
+    dispatch(signInAction(currentUser));
   };
 };
