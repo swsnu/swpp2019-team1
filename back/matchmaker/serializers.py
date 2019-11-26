@@ -91,3 +91,4 @@ class ParticipationSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.user = validated_data.get('user', instance.user)
         instance.match = validated_data.get('match', instance.match)
+        

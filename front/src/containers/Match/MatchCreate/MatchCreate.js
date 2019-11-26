@@ -22,8 +22,10 @@ const createButton = (
 class MatchCreate extends Component {
   constructor(props) {
     super(props);
+    // using category : not implemented
+    const { title, additionalInfo } = this.props;
     this.state = {
-      title: '',
+      title,
       // matchThumbnail
       category: null,
       capacity: 2,
@@ -33,7 +35,7 @@ class MatchCreate extends Component {
       timeBegin: null,
       timeEnd: null,
       // timeRange: ['',''],
-      additionalInfo: '',
+      additionalInfo,
     };
   }
 
@@ -110,7 +112,23 @@ class MatchCreate extends Component {
 MatchCreate.propTypes = {
   onCreate: PropTypes.func.isRequired,
   history: ReactRouterPropTypes.history.isRequired,
+  // category: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  additionalInfo: PropTypes.string,
 };
+
+MatchCreate.defaultProps = {
+  title: '',
+  additionalInfo: '',
+};
+const mapStateToProps = state => {
+  return {
+    // category: state.match.category,
+    title: state.match.title,
+    additionalInfo: state.match.additionalInfo,
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     onCreate: createMatchInfo =>
@@ -118,6 +136,6 @@ const mapDispatchToProps = dispatch => {
   };
 };
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(withRouter(MatchCreate));

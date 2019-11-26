@@ -303,12 +303,16 @@ describe('ActionMatch', () => {
         resolve(result);
       });
     });
+    const spyPush = jest
+      .spyOn(history, 'push')
+      .mockImplementation(path => path);
     store.dispatch(actionCreators.sendNlpText('analyze this')).then(() => {
       const newState = store.getState();
       expect(newState.match.category).toBe('category');
       expect(newState.match.location).toBe('location');
       expect(newState.match.title).toBe('event');
       expect(spyPost).toHaveBeenCalledTimes(1);
+      expect(spyPush).toHaveBeenCalledWith('/match/create');
       done();
     });
   });

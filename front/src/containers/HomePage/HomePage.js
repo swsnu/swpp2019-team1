@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import PropTypes from 'prop-types';
@@ -7,17 +8,19 @@ import { Card, Row, Button, Icon } from 'antd';
 import * as actionCreators from '../../store/actions/index';
 import MatchPreviewTile from '../../components/Match/MatchPreviewTile/MatchPreviewTile';
 
+import './HomePage.css';
+
 class HomePage extends Component {
   constructor(props) {
     super(props);
-    this.state = { nlpText: '' };
+    this.state = { inputText: '' };
   }
 
   componentDidMount() {
-    const { onGetHotMatch, onGetNewMatch, onGetRecommendMatch } = this.props;
-    onGetHotMatch();
-    onGetNewMatch();
-    onGetRecommendMatch();
+    const { getHotMatch, getNewMatch, getRecommendMatch } = this.props;
+    getHotMatch();
+    getNewMatch();
+    getRecommendMatch();
   }
 
   matchToComponent = match => {
@@ -37,41 +40,85 @@ class HomePage extends Component {
     );
   };
 
+  onClickCreateButton = () => {
+    const { getNlpResult } = this.props;
+    const { inputText } = this.state;
+    getNlpResult(inputText);
+  };
+
   render() {
-    const {
-      history,
-      matchHot,
-      matchNew,
-      matchRecommend,
-      onClickNlpText,
-      category,
-      location,
-      title,
-    } = this.props;
-    const { nlpText } = this.state;
+    const { history, matchHot, matchNew, matchRecommend } = this.props;
+    const { inputText } = this.state;
     const componentHot = matchHot.map(this.matchToComponent);
     const componentNew = matchNew.map(this.matchToComponent);
     const componentRecommend = matchRecommend.map(this.matchToComponent);
     return (
-      <div className="HomePage">
+      <div className="HomePage" style={{ textAlign: 'center', fontSize: 40 }}>
         <div className="Home-search">
-          <div className="Home-search-message">Find a match you want</div>
+          <div
+            className="Home-search-message"
+            style={{ marginTop: 70, marginBottom: 15, color: '#03bcce' }}
+          >
+            Find A Match
+          </div>
           <Button
             id="Home-search-button"
             onClick={() => history.push('/search')}
             block
+            size="large"
           >
             <Icon type="search" />
             Search
           </Button>
         </div>
-        <div className="Home-create">
-          <div className="Home-create-message">Make your own matching now!</div>
+        <div className="Home-create" style={{ margin: 40 }}>
+          <div
+            className="Home-create-message"
+            style={{
+              marginBottom: 20,
+              marginLeft: '10%',
+              marginRight: '10%',
+              color: '#00aa00',
+            }}
+          >
+            Make Your Own Match
+          </div>
+          <div className="Home-create-input">
+            <View
+              style={{
+                borderColor: 'blue',
+                borderWidth: 6,
+                borderRadius: 5,
+                width: '60%',
+                marginLeft: '20%',
+                marginRight: '20%',
+                paddingVertical: 10,
+                marginBottom: 20,
+              }}
+            >
+              <TextInput
+                style={{
+                  fontSize: 20,
+                  textAlign: 'center',
+                }}
+                id="Home-create-textinput"
+                multiline
+                numberOfLines={4}
+                onChangeText={text => this.setState({ inputText: text })}
+                value={inputText}
+                editable
+                maxLength={500}
+                placeholder="Tell us about your Match :)"
+                placeholderTextColor="blue"
+              />
+            </View>
+          </div>
           <Button
             id="Home-create-button"
             type="primary"
-            onClick={() => history.push('/match/create')}
+            onClick={this.onClickCreateButton}
             block
+            size="large"
           >
             <Icon type="plus-circle" />
             Create Now
@@ -91,27 +138,6 @@ class HomePage extends Component {
           <Card title="Recommend Matches">
             <Row gutter={(16, 16)}>{componentRecommend}</Row>
           </Card>
-        </div>
-        <div className="HomeCategory Nlp-Create-match">
-          <input
-            id="nlp-query-input-field"
-            value={nlpText}
-            onChange={event => this.setState({ nlpText: event.target.value })}
-          />
-          <button
-            type="button"
-            id="nlp-query-button"
-            onClick={() => onClickNlpText(nlpText)}
-          >
-            Search
-          </button>
-          <p>
-            category : {category}
-            <br />
-            location : {location}
-            <br />
-            title : {title}
-          </p>
         </div>
       </div>
     );
@@ -154,14 +180,11 @@ HomePage.propTypes = {
       capacity: PropTypes.number,
     }),
   ).isRequired,
-  category: PropTypes.string.isRequired,
-  location: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  onGetHotMatch: PropTypes.func.isRequired,
-  onGetNewMatch: PropTypes.func.isRequired,
-  onGetRecommendMatch: PropTypes.func.isRequired,
+  getHotMatch: PropTypes.func.isRequired,
+  getNewMatch: PropTypes.func.isRequired,
+  getRecommendMatch: PropTypes.func.isRequired,
   onClickMatch: PropTypes.func.isRequired,
-  onClickNlpText: PropTypes.func.isRequired,
+  getNlpResult: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => {
@@ -169,19 +192,16 @@ const mapStateToProps = state => {
     matchHot: state.match.hot,
     matchNew: state.match.new,
     matchRecommend: state.match.recommend,
-    category: state.match.category,
-    location: state.match.location,
-    title: state.match.title,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    onGetHotMatch: () => dispatch(actionCreators.getHotMatch()),
-    onGetNewMatch: () => dispatch(actionCreators.getNewMatch()),
-    onGetRecommendMatch: () => dispatch(actionCreators.getRecommendMatch()),
+    getHotMatch: () => dispatch(actionCreators.getHotMatch()),
+    getNewMatch: () => dispatch(actionCreators.getNewMatch()),
+    getRecommendMatch: () => dispatch(actionCreators.getRecommendMatch()),
     onClickMatch: mid => dispatch(push(`/match/${mid}`)),
-    onClickNlpText: query => dispatch(actionCreators.sendNlpText(query)),
+    getNlpResult: query => dispatch(actionCreators.sendNlpText(query)),
   };
 };
 

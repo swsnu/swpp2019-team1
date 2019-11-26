@@ -3,7 +3,7 @@ export {
   signOut,
   createUser,
   getUser,
-  getUserList,
+  // getUserList,
   restoreUser,
 } from './user';
 

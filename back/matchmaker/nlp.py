@@ -37,7 +37,12 @@ def query(request):
                 locations.append(entity)
             elif entity['type'] == 'EVENT':
                 events.append(entity)
-
+        if 'categories' not in response:
+            response['categories'] = ['']
+        if len(locations) == 0:
+            locations.append('')
+        if len(events) == 0:
+            events.append('')
         response['text'] = text
         response['locations'] = locations
         response['events'] = events

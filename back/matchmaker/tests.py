@@ -46,16 +46,30 @@ class GoogleCloudLanguageMock:
                 confidence=0.6100000143051147)
             response = language_service_pb2.ClassifyTextResponse(categories=[category])
             return response
+
         # google_analysis_response = client.analyze_entities(document=document)
         def analyze_entities(self, document=None):
             '''analyze_entities'''
             entity_location = language_service_pb2.Entity(name="Amphitheatre Pkwy", type=2)
             entity_event = language_service_pb2.Entity(name="Consumer Electronic Show", type=4)
-            entity_adrdess = language_service_pb2.Entity(
+            entity_address = language_service_pb2.Entity(
                 name="Mountain View (1600 Amphitheatre Pkwy", type=10)
             response = language_service_pb2.AnalyzeEntitiesResponse(
-                entities=[entity_location, entity_event, entity_adrdess])
+                entities=[entity_location, entity_event, entity_address])
             return response
+
+    class LanguageServiceClientEmpty:
+        '''LanguageServiceClient'''
+        # google_category_response = client.classify_text(document=document)
+        def classify_text(self, document=None):
+            '''classify_text'''
+            return language_service_pb2.ClassifyTextResponse()
+
+        # google_analysis_response = client.analyze_entities(document=document)
+        def analyze_entities(self, document=None):
+            '''analyze_entities'''
+            entity_anything_else = language_service_pb2.Entity(name="Anything Else", type=3)
+            return language_service_pb2.AnalyzeEntitiesResponse(entities=[entity_anything_else])
 
     '''
     document = types.Document(
@@ -404,6 +418,27 @@ class MatchMakerTestCase(TestCase):
     @patch.object(nlp, 'LanguageServiceClient',
                   mock.Mock(side_effect=GoogleCloudLanguageMock.LanguageServiceClient))
     def test_nlp(self):#, Language_service_client_mock, types_mock, enums_mock):
+        '''Checks if the views module handles search query correctly.'''
+        client = Client(enforce_csrf_checks=True)
+        response = client.get('/api/token/')
+        csrftoken = response.cookies['csrftoken'].value
+        create_dummy_user('TEST_EMAIL@test.com')
+        client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
+
+        response = client.post('/api/match/nlp/', json.dumps({
+            'nlp_text': 'Google, headquartered in Mountain View (1600 Amphitheatre '
+                        'Pkwy, Mountain View, CA 940430), unveiled the new Android phone for $799'
+                        ' at the Consumer Electronic Show. Sundar Pichai said in his keynote that'
+                        ' users love their new Android phones.'}),
+                               content_type='application/json',
+                               HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 200)
+
+    @patch.object(nlp, 'enums', mock.Mock(side_effect=GoogleCloudLanguageMock.enums))
+    @patch.object(nlp, 'types', mock.Mock(side_effect=GoogleCloudLanguageMock.types))
+    @patch.object(nlp, 'LanguageServiceClient',
+                  mock.Mock(side_effect=GoogleCloudLanguageMock.LanguageServiceClientEmpty))
+    def test_nlp_empty(self):#, Language_service_client_mock, types_mock, enums_mock):
         '''Checks if the views module handles search query correctly.'''
         client = Client(enforce_csrf_checks=True)
         response = client.get('/api/token/')

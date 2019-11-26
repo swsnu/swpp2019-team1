@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import GoogleMapReact from 'google-map-react';
 
-import GoogleMap from './Map';
+import GoogleMap from './GoogleMap';
 
 jest.mock('./SearchBox', () => () => 'SearchBox');
 

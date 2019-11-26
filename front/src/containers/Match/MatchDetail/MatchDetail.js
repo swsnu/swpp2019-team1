@@ -5,7 +5,7 @@ import { push } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { Button } from 'antd';
-import GoogleMap from '../../../components/Map/Map';
+import GoogleMap from '../../../components/Map/GoogleMap';
 import * as actionCreators from '../../../store/actions/index';
 import { MatchPropTypes } from '../../../components/Match/MatchForm/MatchForm';
 import './MatchDetail.css';
@@ -70,7 +70,7 @@ class MatchDetail extends Component {
     if (selected.hostUser.id === userid)
       return (
         <div className="HostButtons">
-          <Button type="primary" id="enter-chatroom-button" onClick={() => {}}>
+          <Button type="primary" id="enter-chatroom-button">
             Enter Chatroom
           </Button>
           <Button
