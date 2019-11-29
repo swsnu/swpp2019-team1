@@ -176,14 +176,8 @@ const config = {
 
 export const createMatch = match => {
   const formData = new FormData();
-  // eslint-disable-next-line no-restricted-syntax
-  for (const key in match) {
-    if (key === 'timeBegin' || key === 'timeEnd') {
-      formData.append(key, match[key].format());
-    } else {
-      formData.append(key, match[key]);
-    }
-  }
+  Object.keys(match).forEach(key => formData.append(key, match[key]));
+
   return dispatch => {
     return axios.post(`/api/match/`, formData, config).then(res => {
       dispatch(createMatchAction());

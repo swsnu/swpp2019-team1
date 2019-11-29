@@ -4,7 +4,7 @@ import json
 from django.contrib.auth import get_user_model
 from django.contrib import auth
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseNotFound, JsonResponse
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 
 from djangorestframework_camel_case.parser import CamelCaseJSONParser
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
@@ -38,6 +38,8 @@ def sign_up(request):
     return HttpResponseNotAllowed(['POST'])
 
 
+@csrf_exempt
+@ensure_csrf_cookie
 def sign_in(request):
     ''' sign in '''
     if request.method == 'POST':
