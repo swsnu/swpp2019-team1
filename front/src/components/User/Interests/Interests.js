@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Cascader } from 'antd';
-import { categories } from '../../../store/reducers/matchReducer';
+import { categories } from '../../../store/staticData/categories';
 
 const Interests = ({ interestArray, onChangeInterest }) => (
   <div className="Interests">

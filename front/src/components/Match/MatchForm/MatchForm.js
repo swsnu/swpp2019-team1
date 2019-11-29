@@ -9,7 +9,7 @@ import * as Yup from 'yup';
 import './MatchForm.css';
 import GoogleMap from '../../Map/GoogleMap';
 
-import { categories } from '../../../store/reducers/matchReducer';
+import { categories } from '../../../store/staticData/categories';
 import ImageUpload from '../../ImageUpload/ImageUpload';
 // const { RangePicker } = DatePicker;
 
