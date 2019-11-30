@@ -1,6 +1,8 @@
 matrix:
   include:
     - language: node_js
+      git:
+        depth: false
       node_js:
         - "10"
       dist: trusty
@@ -21,6 +23,8 @@ matrix:
         - yarn coveralls
 
     - language: python
+      git:
+        depth: false
       python: 3.7.4
       dist: xenial
       services:
