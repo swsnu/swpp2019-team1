@@ -13,6 +13,7 @@ from django.forms.models import model_to_dict
 import arrow
 from PIL import Image
 from google.cloud.language_v1.proto import language_service_pb2
+from google.api_core.exceptions import InvalidArgument
 
 from userapp.tests import create_dummy_user
 from matchmaker.models import Match, Category
@@ -70,6 +71,13 @@ class GoogleCloudLanguageMock:
             '''analyze_entities'''
             entity_anything_else = language_service_pb2.Entity(name="Anything Else", type=3)
             return language_service_pb2.AnalyzeEntitiesResponse(entities=[entity_anything_else])
+
+    class LanguageServiceClientInvalid:
+        '''LanguageServiceClient'''
+        # google_category_response = client.classify_text(document=document)
+        def classify_text(self, document=None):
+            '''classify_text'''
+            raise InvalidArgument('Invalid text content: too few tokens (words) to process.')
 
     '''
     document = types.Document(
@@ -417,8 +425,42 @@ class MatchMakerTestCase(TestCase):
     @patch.object(nlp, 'types', mock.Mock(side_effect=GoogleCloudLanguageMock.types))
     @patch.object(nlp, 'LanguageServiceClient',
                   mock.Mock(side_effect=GoogleCloudLanguageMock.LanguageServiceClient))
-    def test_nlp(self):#, Language_service_client_mock, types_mock, enums_mock):
-        '''Checks if the views module handles search query correctly.'''
+    def test_nlp(self):
+        '''Checks if nlp query works correctly.'''
+        client = Client(enforce_csrf_checks=True)
+        response = client.get('/api/token/')
+        csrftoken = response.cookies['csrftoken'].value
+        create_dummy_user('TEST_EMAIL@test.com')
+        client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
+
+        response = client.post('/api/match/nlp/', json.dumps({
+            'nlp_text': 'Google, headquartered in Mountain View'}),
+                               content_type='application/json',
+                               HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 200)
+
+        response = client.post('/api/match/nlp/', json.dumps({
+            'nlp_text': 'Google, headquartered in Mountain View (1600 Amphitheatre '
+                        'Pkwy, Mountain View, CA 940430), unveiled the new Android phone for $799'
+                        ' at the Consumer Electronic Show. Sundar Pichai said in his keynote that'
+                        ' users love their new Android phones.'}),
+                               content_type='application/json',
+                               HTTP_X_CSRFTOKEN=csrftoken)
+        response_dict = json.loads(response.content.decode())
+        self.assertEqual(response_dict['categories'],
+                         [{'name': '/Internet & Telecom/Mobile & Wireless',
+                           'confidence': 0.6100000143051147}])
+        self.assertEqual(response_dict['locations'],
+                         [{'name': 'Amphitheatre Pkwy', 'type': 'LOCATION'}])
+        self.assertEqual(response_dict['events'],
+                         [{'name': 'Consumer Electronic Show', 'type': 'EVENT'}])
+
+    @patch.object(nlp, 'enums', mock.Mock(side_effect=GoogleCloudLanguageMock.enums))
+    @patch.object(nlp, 'types', mock.Mock(side_effect=GoogleCloudLanguageMock.types))
+    @patch.object(nlp, 'LanguageServiceClient',
+                  mock.Mock(side_effect=GoogleCloudLanguageMock.LanguageServiceClientEmpty))
+    def test_nlp_empty(self):
+        '''Checks if the empty nlp response is handled correctly.'''
         client = Client(enforce_csrf_checks=True)
         response = client.get('/api/token/')
         csrftoken = response.cookies['csrftoken'].value
@@ -437,22 +479,28 @@ class MatchMakerTestCase(TestCase):
     @patch.object(nlp, 'enums', mock.Mock(side_effect=GoogleCloudLanguageMock.enums))
     @patch.object(nlp, 'types', mock.Mock(side_effect=GoogleCloudLanguageMock.types))
     @patch.object(nlp, 'LanguageServiceClient',
-                  mock.Mock(side_effect=GoogleCloudLanguageMock.LanguageServiceClientEmpty))
-    def test_nlp_empty(self):#, Language_service_client_mock, types_mock, enums_mock):
-        '''Checks if the views module handles search query correctly.'''
-        client = Client(enforce_csrf_checks=True)
+                  mock.Mock(side_effect=GoogleCloudLanguageMock.LanguageServiceClientInvalid))
+    def test_nlp_invalid_argument(self):
+        '''Checks if the invalid argument error is handled correctly.'''
+        client = Client()
         response = client.get('/api/token/')
         csrftoken = response.cookies['csrftoken'].value
         create_dummy_user('TEST_EMAIL@test.com')
         client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
 
-        response = client.post('/api/match/nlp/', json.dumps({
-            'nlp_text': 'Google, headquartered in Mountain View (1600 Amphitheatre '
-                        'Pkwy, Mountain View, CA 940430), unveiled the new Android phone for $799'
-                        ' at the Consumer Electronic Show. Sundar Pichai said in his keynote that'
-                        ' users love their new Android phones.'}),
+        response = client.post('/api/match/nlp/', json.dumps({'nlp_text': 'Invalid Text'}),
                                content_type='application/json',
-                               HTTP_X_CSRFTOKEN=csrftoken)
+                               HTTP_X_CSRFOKEN=csrftoken)
+        self.assertEqual(response.status_code, 200)
+
+        response_dict = json.loads(response.content.decode())
+        self.assertEqual(response_dict['categories'], [{'name': ''}])
+        self.assertEqual(response_dict['locations'], [{'name': ''}])
+        self.assertEqual(response_dict['events'], [{'name': ''}])
+
+        response = client.post('/api/match/nlp/', json.dumps({'nlp_text': '  '}),
+                               content_type='application/json',
+                               HTTP_X_CSRFOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
 
     def test_search(self):
