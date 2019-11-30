@@ -317,6 +317,62 @@ describe('ActionMatch', () => {
     });
   });
 
+  it(`'sendNlpText' should request nlp analysis correctly w/o subcategory`, done => {
+    const spyPost = jest.spyOn(axios, 'post').mockImplementation(() => {
+      return new Promise(resolve => {
+        const result = {
+          status: 200,
+          data: {
+            categories: [{ name: '/Arts & Entertainment' }],
+            locations: [{ name: 'location' }],
+            events: [{ name: 'event' }],
+          },
+        };
+        resolve(result);
+      });
+    });
+    const spyPush = jest
+      .spyOn(history, 'push')
+      .mockImplementation(path => path);
+    store.dispatch(actionCreators.sendNlpText('analyze this')).then(() => {
+      const newState = store.getState();
+      expect(newState.match.category).toStrictEqual([1, 0]);
+      expect(newState.match.location).toBe('location');
+      expect(newState.match.title).toBe('event');
+      expect(spyPost).toHaveBeenCalledTimes(1);
+      expect(spyPush).toHaveBeenCalledWith('/match/create');
+      done();
+    });
+  });
+
+  it(`'sendNlpText' should request nlp analysis correctly with empty category`, done => {
+    const spyPost = jest.spyOn(axios, 'post').mockImplementation(() => {
+      return new Promise(resolve => {
+        const result = {
+          status: 200,
+          data: {
+            categories: [{ name: '' }],
+            locations: [{ name: 'location' }],
+            events: [{ name: 'event' }],
+          },
+        };
+        resolve(result);
+      });
+    });
+    const spyPush = jest
+      .spyOn(history, 'push')
+      .mockImplementation(path => path);
+    store.dispatch(actionCreators.sendNlpText('analyze this')).then(() => {
+      const newState = store.getState();
+      expect(newState.match.category).toBe(null);
+      expect(newState.match.location).toBe('location');
+      expect(newState.match.title).toBe('event');
+      expect(spyPost).toHaveBeenCalledTimes(1);
+      expect(spyPush).toHaveBeenCalledWith('/match/create');
+      done();
+    });
+  });
+
   it(`'editMatch' should request match create correctly and push on success`, done => {
     const spyPut = jest.spyOn(axios, 'put').mockImplementation(() => {
       return new Promise(resolve => {

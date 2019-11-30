@@ -187,6 +187,7 @@ export const createMatch = match => {
 };
 
 const convertCategoryToArray = string => {
+  if (!string) return null;
   const splited = string.substring(1).split('/');
 
   const CToACallback = (acc, ctgn) => {
@@ -196,7 +197,9 @@ const convertCategoryToArray = string => {
   };
 
   const result = splited.reduce(CToACallback, { ctgs: categories, arr: [] });
-  return result.arr;
+  const { arr } = result;
+  if (result.ctgs) return arr.concat([0]);
+  return arr;
 };
 
 const sendNlpTextAction = (category, location, title, nlpText) => {
