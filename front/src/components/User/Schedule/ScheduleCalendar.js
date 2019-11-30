@@ -1,64 +1,104 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Calendar, Badge } from 'antd';
+import moment from 'moment';
+import PropTypes from 'prop-types';
+
+import ScheduleTable from './ScheduleTable';
+import { MatchPropTypes } from '../../Match/MatchForm/MatchForm';
+
 import './ScheduleCalendar.css';
 
-export function getListData(value) {
-  let listData;
-  // if (value.month() !== 10) return [];
-  switch (value.date()) {
-    case 21:
-      listData = [
-        { type: 'warning', content: 'Watch Star Trek film' },
-        { type: 'success', content: 'Comic Con' },
-        { type: 'error', content: 'Train museum' },
-      ];
-      break;
-    default:
-  }
-  return listData || [];
-}
-
-export function dateCellRender(value) {
-  const listData = getListData(value);
-  return (
-    <ul className="events">
-      {listData.map(item => (
-        <li key={item.content}>
-          <Badge status={item.type} text={item.content} />
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-export function getMonthData(value) {
-  if (value.month() === 8) {
-    return 1394;
-  }
-  return null;
-}
-
-export function monthCellRender(value) {
-  const num = getMonthData(value);
-  return num ? (
-    <div className="notes-month">
-      <section>{num}</section>
-      <span>Backlog number</span>
-    </div>
-  ) : null;
-}
-
 // eslint-disable-next-line react/prop-types
-const ScheduleCalendar = ({ style }) => (
-  <div className="ScheduleCalendar" style={style}>
-    <Calendar
-      dateCellRender={dateCellRender}
-      monthCellRender={monthCellRender}
-    />
-  </div>
-);
+class ScheduleCalendar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { selectedValue: moment() };
+    this.searchInput = React.createRef();
+  }
 
-ScheduleCalendar.propTypes = {};
+  isInPeriod = (value, timeBegin, timeEnd) => {
+    return (
+      timeBegin.format('YYYYMMDD') <= value.format('YYYYMMDD') &&
+      timeEnd.format('YYYYMMDD') >= value.format('YYYYMMDD')
+    );
+  };
+
+  selectSchedule = value => {
+    const { schedule } = this.props;
+    const selectedSchedule = schedule.filter(match =>
+      this.isInPeriod(value, match.timeBegin, match.timeEnd),
+    );
+    return selectedSchedule;
+  };
+
+  getListData = value => {
+    const listData = [];
+
+    const selectedSchedule = this.selectSchedule(value);
+    selectedSchedule.forEach(match =>
+      listData.push({ type: 'success', content: match.title, id: match.id }),
+    );
+
+    return listData;
+  };
+
+  dateCellRender = value => {
+    const listData = this.getListData(value);
+    return (
+      <ul className="events">
+        {listData.map(item => (
+          <li key={item.id}>
+            <Badge status={item.type} text={item.content} />
+          </li>
+        ))}
+      </ul>
+    );
+  };
+  /*
+  getMonthData = value => {
+    if (value.month() === 8) {
+      return 1394;
+    }
+    return null;
+  };
+
+  monthCellRender = value => {
+    const num = this.getMonthData(value);
+    return num ? (
+      <div className="notes-month">
+        <section>{num}</section>
+        <span>Backlog number</span>
+      </div>
+    ) : null;
+  };
+  */
+
+  render() {
+    // eslint-disable-next-line react/prop-types
+    const { style } = this.props;
+    const { selectedValue } = this.state;
+    return (
+      <div className="ScheduleCalendar" style={style}>
+        <Calendar
+          dateCellRender={this.dateCellRender}
+          value={selectedValue}
+          onChange={value => this.setState({ selectedValue: value })}
+        />
+        <ScheduleTable
+          style={{
+            width: 1000,
+            border: '1px solid #d9d9d9',
+            borderRadius: 4,
+          }}
+          schedule={this.selectSchedule(selectedValue)}
+        />
+      </div>
+    );
+  }
+}
+ScheduleCalendar.propTypes = {
+  schedule: PropTypes.arrayOf(PropTypes.shape(MatchPropTypes)).isRequired,
+};
 
 ScheduleCalendar.defaultProps = {};
 

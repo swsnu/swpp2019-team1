@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { push } from 'connected-react-router';
 import { message } from 'antd';
+import moment from 'moment';
 
 import * as actionTypes from './actionTypes';
 
@@ -107,9 +108,19 @@ const getUserAction = user => {
 
 export const getUser = id => {
   return dispatch => {
-    return axios
-      .get(`/api/user/${id}`)
-      .then(res => dispatch(getUserAction(res.data)));
+    return axios.get(`/api/user/${id}`).then(res => {
+      const { data } = res;
+      const { schedule } = data;
+      const userInfo = {
+        ...data,
+        schedule: schedule.map(match => ({
+          ...match,
+          timeBegin: moment(match.timeBegin),
+          timeEnd: moment(match.timeEnd),
+        })),
+      };
+      dispatch(getUserAction(userInfo));
+    });
   };
 };
 
