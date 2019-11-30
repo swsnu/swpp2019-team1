@@ -88,6 +88,20 @@ describe('<GoogleMap />', () => {
     component.instance().onPlacesChanged(testPlaces);
     expect(stubMarker).toHaveBeenCalledTimes(3);
   });
+
+  it('should not call setMap when marker is null', () => {
+    const component = mount(googleMap);
+    const wrapper = component.find(GoogleMapReact);
+    wrapper.prop('onGoogleApiLoaded')({
+      map: stubMapInstance,
+      maps: stubMapsApi,
+    });
+    expect(stubMarker).toHaveBeenCalledTimes(1);
+    component.instance().setState({ marker: null });
+    component.instance().onPlacesChanged(testPlaces);
+    expect(stubMarker).toHaveBeenCalledTimes(2);
+  });
+
   it('should call setFieldValue when map is in form', () => {
     const component = mount(googleMapInForm);
     const wrapper = component.find(GoogleMapReact);
