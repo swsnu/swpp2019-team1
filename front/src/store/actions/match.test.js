@@ -295,7 +295,7 @@ describe('ActionMatch', () => {
         const result = {
           status: 200,
           data: {
-            categories: [{ name: 'category' }],
+            categories: [{ name: '/Adult' }],
             locations: [{ name: 'location' }],
             events: [{ name: 'event' }],
           },
@@ -308,7 +308,7 @@ describe('ActionMatch', () => {
       .mockImplementation(path => path);
     store.dispatch(actionCreators.sendNlpText('analyze this')).then(() => {
       const newState = store.getState();
-      expect(newState.match.category).toBe('category');
+      expect(newState.match.category).toStrictEqual([0]);
       expect(newState.match.location).toBe('location');
       expect(newState.match.title).toBe('event');
       expect(spyPost).toHaveBeenCalledTimes(1);

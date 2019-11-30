@@ -3,6 +3,7 @@ import { push } from 'connected-react-router';
 import { message } from 'antd';
 import moment from 'moment';
 import * as actionTypes from './actionTypes';
+import { categories } from '../staticData/categories';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
@@ -191,10 +192,23 @@ export const createMatch = match => {
   };
 };
 
+const convertCategoryToArray = string => {
+  const splited = string.substring(1).split('/');
+
+  const CToACallback = (acc, ctgn) => {
+    const { ctgs, arr } = acc;
+    const target = ctgs.filter(obj => obj.label === ctgn)[0];
+    return { ctgs: target.children, arr: arr.concat([target.value]) };
+  };
+
+  const result = splited.reduce(CToACallback, { ctgs: categories, arr: [] });
+  return result.arr;
+};
+
 const sendNlpTextAction = (category, location, title, nlpText) => {
   return {
     type: actionTypes.SEND_NLP_TEXT,
-    category,
+    category: convertCategoryToArray(category),
     location,
     title,
     additionalInfo: nlpText,

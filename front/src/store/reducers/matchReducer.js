@@ -8,7 +8,7 @@ const initialState = {
   selected: undefined,
   // the following may not be needed
   myMatch: [],
-  category: '',
+  category: null,
   location: '',
   title: '',
   additionalInfo: '',
