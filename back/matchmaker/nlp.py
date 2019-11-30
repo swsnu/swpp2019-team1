@@ -8,6 +8,40 @@ from google.api_core.exceptions import InvalidArgument
 from djangorestframework_camel_case.parser import CamelCaseJSONParser
 from django.http import HttpResponseBadRequest, HttpResponseNotAllowed, JsonResponse
 
+RESPONSE_EMPTY = {}
+RESPONSE_EMPTY['categories'] = [{'name': ''}]
+RESPONSE_EMPTY['locations'] = [{'name': ''}]
+RESPONSE_EMPTY['events'] = [{'name': ''}]
+
+def check_text(text):
+    '''Check text.'''
+    split_text = text.split()
+    num_tokens = len(split_text)
+    if num_tokens == 0:
+        return None
+    if num_tokens < 20:
+        text += (" " + text) * int(20 / num_tokens + 1)
+    return text
+
+def make_response(response, analysis_response):
+    '''Make response'''
+    locations = []
+    events = []
+    for entity in analysis_response['entities']:
+        if entity['type'] == 'LOCATION':
+            locations.append(entity)
+        elif entity['type'] == 'EVENT':
+            events.append(entity)
+    if 'categories' not in response:
+        response['categories'] = [{'name': ''}]
+    if len(locations) == 0:
+        locations.append({'name': ''})
+    if len(events) == 0:
+        events.append({'name': ''})
+    response['locations'] = locations
+    response['events'] = events
+
+    return response
 
 def query(request):
     '''Gets NLP API response'''
@@ -18,18 +52,11 @@ def query(request):
         except KeyError:
             return HttpResponseBadRequest()
 
-        response_empty = {}
-        response_empty['categories'] = [{'name': ''}]
-        response_empty['locations'] = [{'name': ''}]
-        response_empty['events'] = [{'name': ''}]
+        text = check_text(text)
 
-        split_text = text.split()
-        num_tokens = len(split_text)
+        if text is None:
+            return JsonResponse(RESPONSE_EMPTY, status=200)
 
-        if num_tokens == 0:
-            return JsonResponse(response_empty, status=200)
-        if num_tokens < 20:
-            text += (" " + text) * int(20 / num_tokens + 1)
         client = LanguageServiceClient()
 
         # pylint: disable=no-member
@@ -44,22 +71,9 @@ def query(request):
             response = MessageToDict(google_category_response)
             analysis_response = MessageToDict(google_analysis_response)
         except InvalidArgument:
-            return JsonResponse(response_empty, status=200)
+            return JsonResponse(RESPONSE_EMPTY, status=200)
 
-        locations = []
-        events = []
-        for entity in analysis_response['entities']:
-            if entity['type'] == 'LOCATION':
-                locations.append(entity)
-            elif entity['type'] == 'EVENT':
-                events.append(entity)
-        if 'categories' not in response:
-            response['categories'] = [{'name': ''}]
-        if len(locations) == 0:
-            locations.append({'name': ''})
-        if len(events) == 0:
-            events.append({'name': ''})
-        response['locations'] = locations
-        response['events'] = events
+        response = make_response(response, analysis_response)
+
         return JsonResponse(response, status=200)
     return HttpResponseNotAllowed(['POST'])
