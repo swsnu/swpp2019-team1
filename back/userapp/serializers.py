@@ -1,8 +1,6 @@
 ''' Custom user model serializer '''
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-# from django.conf import settings  # settings.AUTH_USER_MODEL
-
 
 class UserSerializer(serializers.ModelSerializer):
     ''' Custom user model serializer '''

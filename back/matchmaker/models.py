@@ -5,10 +5,6 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 from django_mysql.models import ListCharField
-#from django.contrib.auth import get_user_model
-
-#USER = get_user_model()
-
 
 class Category(models.Model):
     '''

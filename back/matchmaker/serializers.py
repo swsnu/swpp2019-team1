@@ -1,8 +1,6 @@
 ''' matchmaker serializer '''
 from rest_framework import serializers
 from matchmaker.models import Match, Participation, Category
-# from django.conf import settings  # settings.AUTH_USER_MODEL
-
 
 class MatchSerializer(serializers.ModelSerializer):
     ''' match serializer '''

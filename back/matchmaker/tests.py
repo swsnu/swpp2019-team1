@@ -488,7 +488,7 @@ class MatchMakerTestCase(TestCase):
         create_dummy_user('TEST_EMAIL@test.com')
         client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
 
-        response = client.post('/api/match/nlp/', json.dumps({'nlp_text': 'Invalid Text'}),
+        response = client.post('/api/match/nlp/', json.dumps({'nlp_text': '  '}),
                                content_type='application/json',
                                HTTP_X_CSRFOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
@@ -498,7 +498,7 @@ class MatchMakerTestCase(TestCase):
         self.assertEqual(response_dict['locations'], [{'name': ''}])
         self.assertEqual(response_dict['events'], [{'name': ''}])
 
-        response = client.post('/api/match/nlp/', json.dumps({'nlp_text': '  '}),
+        response = client.post('/api/match/nlp/', json.dumps({'nlp_text': 'Another Invalid Text'}),
                                content_type='application/json',
                                HTTP_X_CSRFOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
