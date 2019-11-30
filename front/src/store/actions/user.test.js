@@ -190,7 +190,12 @@ it(`'getUser' should request getting user correctly`, done => {
         status: 200,
         data: {
           id: 1,
-          schedule: [{ timeBegin: '20191130', timeEnd: '20191130' }],
+          schedule: [
+            {
+              timeBegin: '20191130',
+              timeEnd: '20191130',
+            },
+          ],
         },
       };
       resolve(result);
