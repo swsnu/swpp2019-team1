@@ -11,6 +11,9 @@ from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 
 from userapp.serializers import UserSerializer
 
+from matchmaker.models import Match, Participation
+from matchmaker.serializers import MatchSerializer
+
 USER = get_user_model()
 
 
@@ -79,6 +82,13 @@ def user_detail(request, user_id):
         data = serializer.data
         del data['password']
         data['fullName'] = user.get_full_name()
+        participation_list = Participation.objects.values().filter(user_id=user_id)
+        match_list = []
+        for participation in participation_list:
+            match = Match.objects.get(id=participation['match_id'])
+            match_json = MatchSerializer(match).data
+            match_list.append(match_json)
+        data['schedule'] = match_list
         response = json.loads(
             CamelCaseJSONRenderer().render(data))
         return JsonResponse(response)
