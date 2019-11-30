@@ -1,52 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
 
-export const categories = [
-  {
-    value: 0,
-    label: 'Movie',
-    children: [
-      {
-        value: 0,
-        label: 'SF',
-      },
-      {
-        value: 1,
-        label: 'Action',
-      },
-      {
-        value: 2,
-        label: 'Comedy',
-      },
-      {
-        value: 3,
-        label: 'Romance',
-      },
-    ],
-  },
-  {
-    value: 1,
-    label: 'Study',
-    children: [
-      {
-        value: 0,
-        label: 'Physics',
-      },
-      {
-        value: 1,
-        label: 'Biology',
-      },
-      {
-        value: 2,
-        label: 'Computer Science',
-      },
-      {
-        value: 3,
-        label: 'Mechanical Engineering',
-      },
-    ],
-  },
-];
-
 const initialState = {
   hot: [],
   new: [],
