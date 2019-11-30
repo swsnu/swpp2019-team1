@@ -14,6 +14,7 @@ class GoogleMap extends Component {
       mapsApiLoaded: false,
       mapInstance: null,
       mapsApi: null,
+      marker: null,
     };
   }
 
@@ -24,23 +25,25 @@ class GoogleMap extends Component {
       mapsApi: maps,
     });
     const { center, locationText } = this.props;
-    // eslint-disable-next-line no-unused-vars
     const marker = new maps.Marker({
       position: center,
       map,
       title: locationText,
     });
+    this.setState({ marker });
   };
 
   renderMarkers = places => {
-    const { mapInstance } = this.state;
-    const { mapsApi } = this.state;
-    // eslint-disable-next-line no-unused-vars
-    const marker = new mapsApi.Marker({
+    const { mapInstance, mapsApi } = this.state;
+    let { marker } = this.state;
+    if (marker) marker.setMap(null);
+    marker = new mapsApi.Marker({
       position: places[0].geometry.location,
       map: mapInstance,
       title: places[0].name,
     });
+    marker.setMap(mapInstance);
+    this.setState({ marker });
   };
 
   renderMap = places => {

@@ -36,7 +36,6 @@ def match(request):
     if request.method == 'POST':
         try:
             data = underscoreize(request.POST)
-            data['match_thumbnail'] = request.FILES['matchThumbnail']
             category_idx = data['category']
             time_begin = arrow.get(data['time_begin']).datetime
             time_end = arrow.get(data['time_end']).datetime
@@ -44,7 +43,10 @@ def match(request):
             data['time_end'] = time_end
         except (KeyError, arrow.parser.ParserError):
             return HttpResponseBadRequest()
-
+        try:
+            data['match_thumbnail'] = request.FILES['matchThumbnail']
+        except KeyError:
+            pass
         category = get_object_or_404(Category, indexes=category_idx)
         data['category'] = category
         data['host_user_id'] = request.user.id

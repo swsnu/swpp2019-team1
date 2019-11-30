@@ -22,6 +22,7 @@ const stubUser = {
     gender: true,
     birthdate: moment().format(),
     message: 'TEST_MESSAGE',
+    schedule: [],
   },
 };
 
@@ -36,6 +37,7 @@ const stubFemaleUser = {
     gender: false,
     birthdate: moment().format(),
     message: 'TEST_MESSAGE',
+    schedule: [],
   },
 };
 

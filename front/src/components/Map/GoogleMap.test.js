@@ -16,7 +16,9 @@ describe('<GoogleMap />', () => {
     setCenter: jest.fn(),
     setZoom: jest.fn(),
   };
-  const stubMarker = jest.fn(() => {});
+  const stubMarker = jest.fn(() => ({
+    setMap: jest.fn(() => {}),
+  }));
   const stubMapsApi = { Marker: stubMarker };
   let testPlaces;
   let googleMap;

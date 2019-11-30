@@ -1,20 +1,23 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Table } from 'antd';
+import sf from 'sf';
 
-const dataSource = [
-  {
-    key: '1',
-    title: 'Watch Star Trek film',
-    time: '1:20 PM',
-    participants: 4,
-  },
-  {
-    key: '2',
-    title: 'Comic con',
-    time: '5:00 PM',
-    participants: 5,
-  },
-];
+function formatScheduleTable(schedule) {
+  return schedule.map(match => ({
+    key: match.id,
+    title: (
+      <Link
+        to={sf('/match/{0}', match.id)}
+        className={sf('Match({0})DetailLink', match.id)}
+      >
+        {match.title}
+      </Link>
+    ),
+    time: match.timeBegin.format('h:mm a'), // TODO: fix time
+    participants: match.numParticipants,
+  }));
+}
 
 const columns = [
   {
@@ -37,9 +40,9 @@ const columns = [
   },
 ];
 // eslint-disable-next-line react/prop-types
-const ScheduleTable = ({ style }) => (
+const ScheduleTable = ({ style, schedule }) => (
   <div className="ScheduleTable" style={style}>
-    <Table dataSource={dataSource} columns={columns} />
+    <Table dataSource={formatScheduleTable(schedule)} columns={columns} />
   </div>
 );
 ScheduleTable.propTypes = {};
