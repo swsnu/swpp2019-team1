@@ -14,10 +14,11 @@ import {
   Tabs,
   Descriptions,
 } from 'antd';
+
 import * as actionCreators from '../../../store/actions/index';
 import Interests from '../../../components/User/Interests/Interests';
 import ScheduleCalendar from '../../../components/User/Schedule/ScheduleCalendar';
-import ScheduleTable from '../../../components/User/Schedule/ScheduleTable';
+import { MatchPropTypes } from '../../../components/Match/MatchForm/MatchForm';
 
 const { TabPane } = Tabs;
 const { Item } = Descriptions;
@@ -125,7 +126,7 @@ class UserProfile extends Component {
           style={{
             border: '1px solid rgb(235, 237, 240)',
           }}
-          subTitle="cooper@caltech.edu"
+          // subTitle="cooper@caltech.edu"
           extra={[
             <Button
               key="1"
@@ -143,25 +144,15 @@ class UserProfile extends Component {
           footer={
             <Tabs defaultActiveKey="1">
               <TabPane tab="Schedule" key="1">
-                <div
-                  className="Schedule"
-                  style={{
-                    display: 'flex',
-                  }}
-                >
+                <div className="Schedule">
                   <ScheduleCalendar
                     style={{
-                      width: 800,
+                      width: 1000,
                       border: '1px solid #d9d9d9',
                       borderRadius: 4,
+                      display: 'flex',
                     }}
-                  />
-                  <ScheduleTable
-                    style={{
-                      width: 500,
-                      border: '1px solid #d9d9d9',
-                      borderRadius: 4,
-                    }}
+                    schedule={selectedUser.schedule}
                   />
                 </div>
               </TabPane>
@@ -205,6 +196,7 @@ UserProfile.propTypes = {
     gender: PropTypes.bool,
     birthdate: PropTypes.string.isRequired,
     message: PropTypes.string,
+    schedule: PropTypes.arrayOf(PropTypes.shape(MatchPropTypes)),
   }),
   history: ReactRouterPropTypes.history.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
