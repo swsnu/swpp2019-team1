@@ -72,6 +72,8 @@ def parse(filename):
                 if ctg not in temp:
                     temp[ctg] = {}
                 temp = temp[ctg]
+            if temp != result and temp == {}:
+                temp.update({'other*': {}})
             temp.update({entry[-1]: {}})
 
         return result
@@ -79,5 +81,5 @@ def parse(filename):
 
 if __name__ == '__main__':
     RESULT_DICT = parse('raw.txt')
-    # generate_js_category(RESULT_DICT)
+    generate_js_category(RESULT_DICT)
     generate_sql_script(RESULT_DICT)
