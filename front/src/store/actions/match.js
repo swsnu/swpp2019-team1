@@ -191,15 +191,15 @@ const convertCategoryToArray = string => {
   const splited = string.substring(1).split('/');
 
   const CToACallback = (acc, ctgn) => {
-    const { ctgs, arr } = acc;
+    const { ctgs, array } = acc;
     const target = ctgs.filter(obj => obj.label === ctgn)[0];
-    return { ctgs: target.children, arr: arr.concat([target.value]) };
+    return { ctgs: target.children, array: array.concat([target.value]) };
   };
 
-  const result = splited.reduce(CToACallback, { ctgs: categories, arr: [] });
-  const { arr } = result;
-  if (result.ctgs) return arr.concat([0]);
-  return arr;
+  const result = splited.reduce(CToACallback, { ctgs: categories, array: [] });
+  const { array } = result;
+  if (result.ctgs) return array.concat([0]);
+  return array;
 };
 
 const sendNlpTextAction = (category, location, title, nlpText) => {
@@ -235,8 +235,11 @@ const editMatchAction = () => {
 };
 
 export const editMatch = (id, match) => {
+  const formData = new FormData();
+  Object.keys(match).forEach(key => formData.append(key, match[key]));
+
   return dispatch => {
-    return axios.put(`/api/match/${id}/`, match).then(() => {
+    return axios.post(`/api/match/${id}/`, formData, config).then(() => {
       dispatch(editMatchAction());
       dispatch(push(`/match/${id}`));
     });

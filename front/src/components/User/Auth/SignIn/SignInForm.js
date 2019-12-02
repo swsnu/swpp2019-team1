@@ -40,10 +40,14 @@ const SignInForm = ({
               <Input
                 name="email"
                 id="email"
-                placeholder="Email"
+                placeholder="  Email"
                 onChange={onEmailChange}
                 prefix={
-                  <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                  <Icon
+                    className="icon"
+                    type="user"
+                    style={{ color: 'rgba(0,0,0,.25)' }}
+                  />
                 }
               />
             </FormItem>
@@ -52,9 +56,13 @@ const SignInForm = ({
                 onChange={onPasswordChange}
                 name="password"
                 id="password"
-                placeholder="Password"
+                placeholder="  Password"
                 prefix={
-                  <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
+                  <Icon
+                    className="icon"
+                    type="lock"
+                    style={{ color: 'rgba(0,0,0,.25)' }}
+                  />
                 }
               />
             </FormItem>
@@ -63,16 +71,12 @@ const SignInForm = ({
             <SubmitButton className="SignInButton" type="primary">
               Sign In
             </SubmitButton>
-            <div className="SignUpLink">
-              Or
-              <Button
-                className="SignUpButton"
-                type="link"
-                onClick={clickSignUp}
-              >
-                sign up now!
-              </Button>
-            </div>
+          </div>
+          <div className="SignUpLink">
+            &nbsp;Don&apos;t have an account?
+            <Button className="SignUpButton" type="link" onClick={clickSignUp}>
+              Register Now!
+            </Button>
           </div>
         </Form>
       )}

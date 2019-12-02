@@ -374,7 +374,7 @@ describe('ActionMatch', () => {
   });
 
   it(`'editMatch' should request match create correctly and push on success`, done => {
-    const spyPut = jest.spyOn(axios, 'put').mockImplementation(() => {
+    const spyPut = jest.spyOn(axios, 'post').mockImplementation(() => {
       return new Promise(resolve => {
         const result = {
           status: 200,
@@ -386,7 +386,7 @@ describe('ActionMatch', () => {
     const spyPush = jest
       .spyOn(history, 'push')
       .mockImplementation(path => path);
-    store.dispatch(actionCreators.editMatch(stubNewMatch)).then(() => {
+    store.dispatch(actionCreators.editMatch(1, stubNewMatch)).then(() => {
       expect(spyPut).toHaveBeenCalledTimes(1);
       expect(spyPush).toHaveBeenCalledTimes(1);
       done();
