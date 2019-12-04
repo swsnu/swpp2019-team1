@@ -278,7 +278,7 @@ describe('<MatchDetail />', () => {
       .spyOn(history, 'push')
       .mockImplementation(() => {});
     const component = mount(matchDetail);
-    const wrapper = component.find('#host-profile-button');
+    const wrapper = component.find('#host-profile-button').at(0);
     wrapper.simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledWith('/profile/1');
   });
@@ -304,7 +304,7 @@ describe('<MatchDetail />', () => {
   it('should render appropriately at different inputs', () => {
     let component = mount(matchDetailRestrictMale);
     let wrapper = component.find('.Detail-Restrictions');
-    expect(wrapper.text()).toBe('errorFemales, Age 5 to 10');
+    expect(wrapper.text()).toBe('Females, Age 5 to 10[object Object]');
     // wrapper = component.find('.Detail-PlaceDate');
     // expect(wrapper.text()).toBe(
     //   'calendar_today09:35PM, 7th 11 2019The period is 7storefrontabc',
@@ -313,6 +313,6 @@ describe('<MatchDetail />', () => {
     expect(wrapper.text()).toBe('person2/2 (Full)');
     component = mount(matchDetailRestrictFemale);
     wrapper = component.find('.Detail-Restrictions');
-    expect(wrapper.text()).toBe('errorMales');
+    expect(wrapper.text()).toBe('Males[object Object]');
   });
 });

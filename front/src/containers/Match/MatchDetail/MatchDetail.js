@@ -63,6 +63,7 @@ class MatchDetail extends Component {
     if (selected.isAgeRestricted) {
       result += `Age ${selected.restrictAgeFrom} to ${selected.restrictAgeTo}`;
     }
+    if (result.length !== 0) result += <i className="material-icons">error</i>;
     return result;
   };
 
@@ -113,7 +114,7 @@ class MatchDetail extends Component {
         />
         <div className="Detail-Header">
           <div className="Detail-MainInfo">
-            <img src={selected.matchThumbnail} alt="thumb" />
+            <img src={selected.matchThumbnail} alt="No Pic" />
             <b id="detail-title">{selected.title}</b>
             <b id="detail-capacity">
               <i className="material-icons" id="materials-icon-person">
@@ -122,63 +123,62 @@ class MatchDetail extends Component {
               {this.renderCapacity(selected.numParticipants, selected.capacity)}
             </b>
             <br />
-            <div className="Detail-PlaceDate">
+            <div className="Detail-PlaceDate-And-Host">
               <i className="material-icons">calendar_today</i>
               {selected.timeBegin.format('YYYY/MM/DD, h:mm a')}
               {this.renderPeriod(selected.period)}
-              <div className="Detail-Location">
-                <i className="material-icons">storefront</i>
-                {selected.locationText}
-              </div>
-            </div>
-            <div className="Detail-Host">
-              <button
-                type="button"
+              <Button
+                type="link"
                 id="host-profile-button"
                 onClick={() => this.clickUserHandler()}
               >
                 {selected.hostUser.username}
-              </button>
+              </Button>
+              <div className="Detail-Place">
+                <i className="material-icons">storefront</i>
+                {selected.locationText}
+              </div>
             </div>
           </div>
         </div>
+        <div id="Detail-GoogleMap">
+          <GoogleMap
+            center={{
+              lat: selected.locationLatitude,
+              lng: selected.locationLongitude,
+            }}
+            height="700px"
+            width="100%"
+            zoom={15}
+            locationText={selected.locationText}
+          />
+        </div>
         <div className="Detail-Restrictions">
-          <i className="material-icons">error</i>
           {this.renderRestrictions(selected)}
         </div>
-        <GoogleMap
-          center={{
-            lat: selected.locationLatitude,
-            lng: selected.locationLongitude,
-          }}
-          height="400px"
-          width="400px"
-          zoom={15}
-          locationText={selected.locationText}
-        />
         <div className="Detail-Additional-Info">
-          <svg height="15" width="280">
+          <svg height="15" width="30%">
             <line
               x1="0"
               y1="0"
-              x2="280"
+              x2="100%"
               y2="0"
-              style={{ stroke: '#000000', strokeWidth: 8 }}
+              style={{ stroke: '#0000bb', strokeWidth: 8 }}
             />
             Your browser does not support inline SVG.
           </svg>
-          <span className="bold">Match Info</span>
-          <svg height="15" width="280">
+          <span className="MatchInfo"> Match Info </span>
+          <svg height="15" width="30%">
             <line
               x1="0"
               y1="0"
-              x2="228070"
+              x2="100%"
               y2="0"
-              style={{ stroke: '#000000', strokeWidth: 8 }}
+              style={{ stroke: '#0000bb', strokeWidth: 8 }}
             />
             Your browser does not support inline SVG.
           </svg>
-          {selected.additionalInfo}
+          <div id="additional-info-text">{selected.additionalInfo}</div>
         </div>
         {this.renderButtons(selected, currentUser ? currentUser.id : 0)}
       </div>

@@ -1,10 +1,26 @@
 #Home-search-button {
-  width: 20%;
+  width: 220px;
   height: 50px;
   font-size: 25px;
 }
 #Home-create-button {
-  width: 30%;
+  width: 250px;
   height: 50px;
   font-size: 25px;
+}
+.Home-create-message-powered-by {
+  font-size: 15px;
+}
+.HomeCategory {
+  width: 900px;
+  font-size: 50px;
+  flex-direction: row;
+}
+.ant-card {
+  border-radius: 8px;
+}
+#HomeMatchPreviewTile {
+  width: 260px;
+  margin: 5px;
+  border-radius: 8px;
 }
