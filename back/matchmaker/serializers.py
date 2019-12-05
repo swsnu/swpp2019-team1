@@ -16,14 +16,11 @@ class MatchSerializer(serializers.ModelSerializer):
         depth = 1
 
     def _num_participants(self, obj):
-        #pylint: disable=no-self-use
-        try:
-            if isinstance(obj, dict):
-                participation = Participation.objects.filter(match=obj["id"])
-            else:
-                participation = Participation.objects.filter(match=obj.id)
-        except Participation.DoesNotExist:
-            return 0
+        # pylint: disable=no-self-use
+        if isinstance(obj, dict):
+            participation = Participation.objects.filter(match=obj["id"])
+        else:
+            participation = Participation.objects.filter(match=obj.id)
         return participation.count()
 
     def create(self, validated_data):
@@ -36,8 +33,8 @@ class MatchSerializer(serializers.ModelSerializer):
         instance.title = validated_data.get('title', instance.title)
         new_match_thumbnail = validated_data.get(
             'match_thumbnail', instance.match_thumbnail)
-        if new_match_thumbnail is not None:
-            instance.match_thumbnail = new_match_thumbnail
+        instance.match_thumbnail = new_match_thumbnail
+
         instance.category_id = validated_data.get(
             'category_id', instance.category_id)
         instance.capacity = validated_data.get('capacity', instance.capacity)
@@ -68,16 +65,6 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
         validators = []
         depth = 1
-    '''
-    def create(self, validated_data):
-        category = super(CategorySerializer, self).create(
-            validated_data)
-        category.save()
-        return category
-
-    def update(self, instance, validated_data):
-        instance.name = validated_data.get('name', instance.name)
-    '''
 
 
 class ParticipationSerializer(serializers.ModelSerializer):
@@ -93,7 +80,3 @@ class ParticipationSerializer(serializers.ModelSerializer):
             validated_data)
         participation.save()
         return participation
-
-    def update(self, instance, validated_data):
-        instance.user = validated_data.get('user', instance.user)
-        instance.match = validated_data.get('match', instance.match)

@@ -117,7 +117,6 @@ export const getUser = id => {
           ...match,
           timeBegin: moment(match.timeBegin),
           timeEnd: moment(match.timeEnd),
-          category: JSON.parse(match.category.indexes),
         })),
       };
       dispatch(getUserAction(userInfo));

@@ -192,6 +192,8 @@ it(`'getUser' should request getting user correctly`, done => {
           id: 1,
           schedule: [
             {
+              id: 1,
+              title: 'test_match',
               timeBegin: '20191130',
               timeEnd: '20191130',
             },

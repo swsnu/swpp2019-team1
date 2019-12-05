@@ -27,7 +27,7 @@ const stubMatch = {
     hostName: 'TEST_HOSTNAME',
     additionalInfo: 'TEST_ADITIONAL_INFO',
     // matchThumbnail
-    category: [0, 0],
+    category: [0],
     capacity: 2,
     isOnline: false,
     locationText: '',
@@ -119,14 +119,13 @@ describe('<MatchEdit />', () => {
 
     // category change
     const categoryOption = {
-      value: [0, 0],
+      value: [1, 0],
       selectedOptions: [
-        { value: 0, label: 'Movie', children: Array(4) },
-        { value: 0, label: 'SF' },
+        { value: 1, label: 'Arts & Entertainment', children: Array(14) },
+        { value: 0, label: 'other*' },
       ],
     };
-    // eslint-disable-next-line no-unused-vars
-    const category = [0, 0];
+
     const capacity = 3;
     const additionalInfo = 'TEST_ADDITIONAL_INFO';
     // eslint-disable-next-line no-unused-vars
@@ -171,7 +170,7 @@ describe('<MatchEdit />', () => {
       await new Promise(resolve => setTimeout(resolve, 100));
       wrapper.simulate('submit');
       await new Promise(resolve => setTimeout(resolve, 100));
-      expect(spyEditMatch).toBeCalledTimes(1);
+      expect(spyEditMatch).toBeCalledTimes(0);
 
       // timeBegin change
       wrapper = component.find(DatePicker).at(0);
@@ -191,7 +190,7 @@ describe('<MatchEdit />', () => {
       wrapper.simulate('submit');
       await new Promise(resolve => setTimeout(resolve, 100));
     });
-    expect(spyEditMatch).toBeCalledTimes(2);
+    expect(spyEditMatch).toBeCalledTimes(1);
   });
 
   it('should go back on cancel', async () => {

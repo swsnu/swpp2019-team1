@@ -13,9 +13,13 @@ const stubUser = {};
 const testmatch = {
   id: 1,
   title: 'TestTitle',
-  host: 'HostName',
-  location: 'Test Location',
-  time: '2019-11-12T06:29:50.304Z',
+  hostUser: {
+    id: 1,
+    username: 'TEST_HOST_USER',
+  },
+  locationText: 'Test Location',
+  timeBegin: '2019-11-12T06:29:50.304Z',
+  timeEnd: '2019-11-12T06:29:50.304Z',
   numParticipants: 2,
   capacity: 4,
 };
@@ -95,8 +99,8 @@ describe('<Search />', () => {
       .spyOn(history, 'push')
       .mockImplementation(() => null);
     const component = mount(search);
-    const wrapper = component.find('#SearchMatchPreviewTile');
-    wrapper.simulate('click');
+    const wrapper = component.find('.SearchMatchPreviewTile');
+    wrapper.at(0).simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledWith('/match/1');
   });
 });
