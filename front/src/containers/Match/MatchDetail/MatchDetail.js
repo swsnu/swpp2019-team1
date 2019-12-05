@@ -114,7 +114,6 @@ class MatchDetail extends Component {
         />
         <div className="Detail-Header">
           <div className="Detail-MainInfo">
-            <img src={selected.matchThumbnail} alt="No Pic" />
             <b id="detail-title">{selected.title}</b>
             <b id="detail-capacity">
               <i className="material-icons" id="materials-icon-person">
@@ -141,18 +140,20 @@ class MatchDetail extends Component {
             </div>
           </div>
         </div>
-        <div id="Detail-GoogleMap">
-          <GoogleMap
-            center={{
-              lat: selected.locationLatitude,
-              lng: selected.locationLongitude,
-            }}
-            height="700px"
-            width="100%"
-            zoom={15}
-            locationText={selected.locationText}
-          />
-        </div>
+        {!!selected.locationText && (
+          <div className="Detail-GoogleMap">
+            <GoogleMap
+              center={{
+                lat: selected.locationLatitude,
+                lng: selected.locationLongitude,
+              }}
+              height="700px"
+              width="100%"
+              zoom={15}
+              locationText={selected.locationText}
+            />
+          </div>
+        )}
         <div className="Detail-Restrictions">
           {this.renderRestrictions(selected)}
         </div>
@@ -178,6 +179,7 @@ class MatchDetail extends Component {
             />
             Your browser does not support inline SVG.
           </svg>
+          <img src={selected.matchThumbnail} alt="No Pic" />
           <div id="additional-info-text">{selected.additionalInfo}</div>
         </div>
         {this.renderButtons(selected, currentUser ? currentUser.id : 0)}

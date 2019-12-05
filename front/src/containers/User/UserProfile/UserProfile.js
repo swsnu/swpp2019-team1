@@ -41,7 +41,7 @@ const renderContent = user => (
 const menu = (
   <Menu>
     <Menu.Item>
-      <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">
+      <a target="_blank" rel="noopener noreferrer" href="">
         1st menu item
       </a>
     </Menu.Item>
@@ -138,7 +138,7 @@ class UserProfile extends Component {
             <DropdownMenu key="more" />,
           ]}
           avatar={{
-            src: 'https://i.imgur.com/fYdbabs.png',
+            src: '/media/thumbnail/default-user.png',
           }}
           breadcrumb={{ routes }}
           footer={

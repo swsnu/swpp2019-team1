@@ -75,7 +75,7 @@ class Header extends Component {
             <Avatar
               shape="square"
               size="large"
-              src="https://i.imgur.com/fYdbabs.png"
+              src="/media/thumbnail/default-user.png"
             />
             <Icon type="down" />
           </Button>

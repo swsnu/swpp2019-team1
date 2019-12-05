@@ -2,6 +2,7 @@
 from rest_framework import serializers
 from matchmaker.models import Match, Participation, Category
 
+
 class MatchSerializer(serializers.ModelSerializer):
     ''' match serializer '''
     num_participants = serializers.SerializerMethodField('_num_participants')
@@ -33,18 +34,25 @@ class MatchSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
+        new_match_thumbnail = validated_data.get(
+            'match_thumbnail', instance.match_thumbnail)
+        if new_match_thumbnail is not None:
+            instance.match_thumbnail = new_match_thumbnail
         instance.category_id = validated_data.get(
             'category_id', instance.category_id)
         instance.capacity = validated_data.get('capacity', instance.capacity)
         instance.location_text = validated_data.get(
             'location_text', instance.location_text)
-        instance.period = validated_data.get(
-            'period', instance.period)
+        instance.location_latitude = validated_data.get(
+            'location_latitude', instance.location_latitude)
+        instance.location_longitude = validated_data.get(
+            'location_longitude', instance.location_longitude)
         instance.additional_info = validated_data.get(
             'additional_info', instance.additional_info)
-        instance.is_age_restricted = validated_data.get(
-            'is_age_restricted', instance.is_age_restricted)
-
+        instance.time_begin = validated_data.get(
+            'time_begin', instance.time_begin)
+        instance.time_end = validated_data.get(
+            'time_end', instance.time_end)
         instance.save()
         return instance
 
@@ -89,4 +97,3 @@ class ParticipationSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.user = validated_data.get('user', instance.user)
         instance.match = validated_data.get('match', instance.match)
-        

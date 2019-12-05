@@ -29,6 +29,7 @@ def match_simple_serializer(match_object):
         'numParticipants': match_object.participation_match.all().count(),
     }
 
+
 def process_post_request(request):
     '''Process POST requests with match information'''
     try:
@@ -50,12 +51,14 @@ def process_post_request(request):
     data = data.dict()
     return data
 
+
 def match(request):
     '''Makes and returns a new match.'''
     if request.method == 'POST':
         data = process_post_request(request)
         match_serializer = MatchSerializer(data=data)
         if match_serializer.is_valid():
+            print(data)
             new_match_obj = match_serializer.create(data)
             participation = Participation(user=USER.objects.get(
                 pk=request.user.id), match=new_match_obj)
@@ -124,10 +127,10 @@ def match_detail(request, match_id):
             return HttpResponseForbidden()
 
         data = process_post_request(request)
-        match_serializer = MatchSerializer(
-            match_obj, data=data, partial=True)
+        print(data)
+        match_serializer = MatchSerializer(data=data)
         if match_serializer.is_valid():
-            match_obj = match_serializer.save()
+            match_serializer.update(match_obj, data)
             match_data = match_serializer.validated_data
             match_data.update({"id": match_obj.pk,
                                'num_participants': match_obj.participation_match.all().count()})

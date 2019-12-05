@@ -57,19 +57,19 @@ class MatchEdit extends Component {
   // handleLocationSearch = () => {};
 
   onClickEdit = matchFormInfo => {
-    const { onEdit } = this.props;
+    const { onEdit, match } = this.props;
 
     this.setState(prevState => ({ ...prevState, ...matchFormInfo }));
     const { timeBegin, timeEnd } = matchFormInfo;
 
     const matchInfo = {
-      ...this.state,
+      ...matchFormInfo,
       timeBegin: timeBegin ? timeBegin.format() : timeBegin,
       timeEnd: timeEnd ? timeEnd.format() : timeEnd,
     };
 
     // matchInfo.category = matchInfo.category.indexes;
-    onEdit(matchInfo.id, matchInfo);
+    onEdit(match.params.id, matchInfo);
   };
 
   onClickCancel = () => {
@@ -82,7 +82,7 @@ class MatchEdit extends Component {
     const {
       id,
       title,
-      // matchThumbnail,
+      matchThumbnail,
       category,
       capacity,
       locationText,
@@ -98,7 +98,6 @@ class MatchEdit extends Component {
       <div className="MatchEdit">
         <MatchForm
           title={title}
-          // matchThumbnail
           category={category}
           capacity={capacity}
           locationText={locationText}
