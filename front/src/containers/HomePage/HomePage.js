@@ -53,11 +53,21 @@ class HomePage extends Component {
     const componentNew = matchNew.map(this.matchToComponent);
     const componentRecommend = matchRecommend.map(this.matchToComponent);
     return (
-      <div className="HomePage" style={{ textAlign: 'center', fontSize: 40 }}>
+      <div
+        className="HomePage"
+        style={{
+          textAlign: 'center',
+          fontSize: 40,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         <div className="Home-search">
           <div
             className="Home-search-message"
-            style={{ marginTop: 70, marginBottom: 15, color: '#03bcce' }}
+            style={{ marginTop: 70, marginBottom: 15, color: 'black' }}
           >
             Find A Match
           </div>
@@ -75,23 +85,27 @@ class HomePage extends Component {
           <div
             className="Home-create-message"
             style={{
-              marginBottom: 20,
-              marginLeft: '10%',
-              marginRight: '10%',
-              color: '#00aa00',
+              color: 'green',
             }}
           >
             Make Your Own Match
+          </div>{' '}
+          <div
+            className="Home-create-message-powered-by"
+            style={{
+              marginBottom: 20,
+              color: 'teal',
+            }}
+          >
+            powered by Google NLP
           </div>
           <div className="Home-create-input">
             <View
               style={{
                 borderColor: 'blue',
-                borderWidth: 6,
-                borderRadius: 5,
-                width: '60%',
-                marginLeft: '20%',
-                marginRight: '20%',
+                borderWidth: 4,
+                borderRadius: 10,
+                width: 500,
                 paddingVertical: 10,
                 marginBottom: 20,
               }}
@@ -107,8 +121,8 @@ class HomePage extends Component {
                 onChangeText={text => this.setState({ inputText: text })}
                 value={inputText}
                 editable
-                maxLength={500}
-                placeholder="Tell us about your Match :)"
+                maxLength={800}
+                placeholder="Tell us about your Match!"
                 placeholderTextColor="blue"
               />
             </View>
@@ -125,17 +139,17 @@ class HomePage extends Component {
           </Button>
         </div>
         <div className="HomeCategory Hot-match">
-          <Card title="Hot Matches">
+          <Card title={<span style={{ fontSize: 35 }}>Hot Matches</span>}>
             <Row gutter={(16, 16)}>{componentHot}</Row>
           </Card>
         </div>
         <div className="HomeCategory New-match">
-          <Card title="New Matches">
+          <Card title={<span style={{ fontSize: 35 }}>New Matches</span>}>
             <Row gutter={(16, 16)}>{componentNew}</Row>
           </Card>
         </div>
         <div className="HomeCategory Recommend-match">
-          <Card title="Recommend Matches">
+          <Card title={<span style={{ fontSize: 35 }}>Recommend Matches</span>}>
             <Row gutter={(16, 16)}>{componentRecommend}</Row>
           </Card>
         </div>

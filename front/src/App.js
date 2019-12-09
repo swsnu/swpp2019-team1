@@ -19,7 +19,7 @@ import UserProfile from './containers/User/UserProfile/UserProfile';
 function App(props) {
   const { history } = props;
   return (
-    <div className="App" style={{ backgroundColor: '#ffdddd' }}>
+    <div className="App" style={{ backgroundColor: 'powderblue' }}>
       <ConnectedRouter history={history}>
         <Header />
         <Switch>

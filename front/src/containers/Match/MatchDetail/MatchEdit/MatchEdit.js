@@ -21,8 +21,7 @@ class MatchEdit extends Component {
     this.state = {
       id: null,
       title: '',
-      // matchThumbnail
-      category: null,
+      category: '',
       capacity: 2,
       locationText: '',
       locationLatitude: 37.4494771,
@@ -61,8 +60,12 @@ class MatchEdit extends Component {
     const { onEdit } = this.props;
 
     this.setState(prevState => ({ ...prevState, ...matchFormInfo }));
+    const { timeBegin, timeEnd } = matchFormInfo;
+
     const matchInfo = {
       ...this.state,
+      timeBegin: timeBegin ? timeBegin.format() : timeBegin,
+      timeEnd: timeEnd ? timeEnd.format() : timeEnd,
     };
 
     // matchInfo.category = matchInfo.category.indexes;

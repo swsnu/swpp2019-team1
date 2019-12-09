@@ -26,7 +26,6 @@ class MatchCreate extends Component {
     const { title, additionalInfo, category } = this.props;
     this.state = {
       title,
-      // matchThumbnail
       category,
       capacity: 2,
       locationText: '',
@@ -59,9 +58,6 @@ class MatchCreate extends Component {
     onCreate(matchInfo);
   };
 
-  // TODO
-  // onClickCreate = () => {};
-
   // this will be implemented or removed after applying Google Map API
   // LocationSearch = () => {};
   onClickCancel = () => {
@@ -72,7 +68,6 @@ class MatchCreate extends Component {
   render() {
     const {
       title,
-      // matchThumbnail,
       category,
       capacity,
       locationText,
@@ -86,7 +81,6 @@ class MatchCreate extends Component {
       <div className="MatchCreate">
         <MatchForm
           title={title}
-          // matchThumbnail
           category={category}
           capacity={capacity}
           locationText={locationText}

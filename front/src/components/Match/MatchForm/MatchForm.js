@@ -90,7 +90,7 @@ const MatchForm = ({
                   }}
                 />
               </Form.Item>
-              <FormItem name="capacity" label="Capacity">
+              <FormItem name="capacity" label="Max Capacity">
                 Up to
                 <InputNumber name="capacity" min={2} />
                 people
@@ -144,7 +144,7 @@ const MatchForm = ({
             </div>
             <div className="Buttons">
               {submitButton}
-              <Button id="cancel-button" onClick={clickCancel}>
+              <Button id="cancel-button" type="danger" onClick={clickCancel}>
                 Cancel
               </Button>
             </div>
