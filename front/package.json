@@ -5,7 +5,11 @@
   "license": "unlicensed",
   "proxy": "http://localhost:8000",
   "dependencies": {
+    "@babel/core": "*",
     "@svgr/webpack": "^4.3.3",
+    "@types/googlemaps": "^3.0.0",
+    "@types/markerclustererplus": "^2.1.29",
+    "@types/react": "^15.0.0",
     "antd": "^3.25.2",
     "axios": "^0.19.0",
     "connected-react-router": "^6.5.2",
@@ -16,7 +20,7 @@
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
-    "react": "^16.9.0",
+    "react": "16.9.0",
     "react-dom": "^16.9.0",
     "react-geocode": "^0.2.1",
     "react-google-autocomplete": "^1.1.2",
@@ -35,6 +39,7 @@
     "redux-thunk": "^2.3.0",
     "serialize-javascript": "^2.1.1",
     "sf": "^0.2.0",
+    "typescript": "^3.7.3",
     "yup": "^0.27.0"
   },
   "scripts": {
