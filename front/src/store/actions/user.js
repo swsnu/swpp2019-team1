@@ -21,7 +21,7 @@ export const signIn = signInInfo => {
       .post('/api/user/signin/', signInInfo)
       .then(async res => {
         const { data } = res;
-        await localStorage.setItem(
+        await sessionStorage.setItem(
           'currentUser',
           JSON.stringify({
             ...data.user,
@@ -49,7 +49,7 @@ export const signOut = () => {
     return axios
       .post('/api/user/signout/')
       .then(() => {
-        localStorage.removeItem('currentUser');
+        sessionStorage.removeItem('currentUser');
         dispatch(signOutAction());
         dispatch(push('/signin'));
       })
@@ -135,7 +135,7 @@ export const getUser = id => {
 
 export const restoreUser = () => {
   return dispatch => {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
     dispatch(signInAction(currentUser));
   };
 };
