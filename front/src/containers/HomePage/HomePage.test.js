@@ -11,13 +11,22 @@ import * as actionCreators from '../../store/actions/match';
 
 // jest.mock('../../components/HomeMatchTile/HomeMatchTile', () => {})
 
-const stubUser = {};
+const stubUser = {
+  currentUser: {
+    id: 1,
+  },
+};
+const stubSignOutUser = {};
 const testmatch = {
   id: 1,
   title: 'TestTitle',
-  host: 'HostName',
-  location: 'Test Location',
-  time: '2019-11-12T06:29:50.304Z',
+  hostUser: {
+    id: 1,
+    username: 'TEST_HOST_USER',
+  },
+  locationText: 'Test Location',
+  timeBegin: '2019-11-12T06:29:50.304Z',
+  timeEnd: '2019-11-12T06:29:50.304Z',
   numParticipants: 2,
   capacity: 4,
 };
@@ -30,6 +39,7 @@ const stubMatch = {
   title: '',
 };
 const mockStore = getMockStore(stubUser, stubMatch);
+const mockSignOutStore = getMockStore(stubSignOutUser, stubMatch);
 
 describe('<HomePage />', () => {
   let homePage;
@@ -88,8 +98,8 @@ describe('<HomePage />', () => {
       .spyOn(history, 'push')
       .mockImplementation(() => null);
     const component = mount(homePage);
-    const wrapper = component.find('#HomeMatchPreviewTile');
-    wrapper.simulate('click');
+    const wrapper = component.find('.HomeMatchPreviewTile');
+    wrapper.at(0).simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledWith('/match/1');
   });
 
@@ -115,8 +125,22 @@ describe('<HomePage />', () => {
   });
 
   it('should handle button clicks', async () => {
-    const component = mount(homePage);
-    const wrapper = component.find('#Home-create-button');
+    let component = mount(homePage);
+    let wrapper = component.find('#Home-create-button');
+    expect(wrapper.length).toBe(2);
+    wrapper.at(0).simulate('click');
+    expect(spySendNlpText).toBeCalledTimes(1);
+    homePage = (
+      <Provider store={mockSignOutStore}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route path="/" exact component={HomePage} />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+    component = mount(homePage);
+    wrapper = component.find('#Home-create-button');
     expect(wrapper.length).toBe(2);
     wrapper.at(0).simulate('click');
     expect(spySendNlpText).toBeCalledTimes(1);

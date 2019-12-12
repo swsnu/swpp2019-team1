@@ -16,6 +16,7 @@ from matchmaker.serializers import MatchSerializer
 
 USER = get_user_model()
 
+
 @ensure_csrf_cookie
 def token(request):
     ''' get csrf token '''
@@ -23,7 +24,8 @@ def token(request):
         return HttpResponse(status=204)
     return HttpResponseNotAllowed(['GET'])
 
-# @csrf_exempt
+
+@csrf_exempt
 def sign_up(request):
     ''' sign up '''
     if request.method == 'POST':
@@ -38,6 +40,7 @@ def sign_up(request):
         return JsonResponse(serializer.data, status=400)
     # 405
     return HttpResponseNotAllowed(['POST'])
+
 
 @csrf_exempt
 @ensure_csrf_cookie
@@ -54,6 +57,7 @@ def sign_in(request):
         return HttpResponse(status=400)
     # 405
     return HttpResponseNotAllowed(['POST'])
+
 
 @csrf_exempt
 def sign_out(request):

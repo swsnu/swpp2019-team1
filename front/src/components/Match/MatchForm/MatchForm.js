@@ -23,7 +23,12 @@ const MatchSchema = Yup.object().shape({
     .required('Required'),
   locationText: Yup.string(),
   additionalInfo: Yup.string(),
-  // timeBegin: Yup.string().required('Required!'),
+  timeBegin: Yup.object()
+    .nullable()
+    .required('Required!'),
+  timeEnd: Yup.object()
+    .nullable()
+    .required('Required!'),
 });
 export const disableDate = (beginValue, endValue) => {
   if (!beginValue || !endValue) {

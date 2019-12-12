@@ -5,6 +5,8 @@ import json
 from django.test import TestCase, Client
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from matchmaker.models import Match, Category, Participation
+#from matchmaker.tests import create_dummy_category
 
 USER = get_user_model()
 
@@ -53,23 +55,6 @@ class UserappTestCase(TestCase):
     def test_csrf(self):
         ''' test csrf '''
         client = Client(enforce_csrf_checks=True)
-        response = client.post('/api/user/signup/',
-                               json.dumps({
-                                   'email': 'TEST_EMAIL@test.com',
-                                   'password': 'TEST_PASSWORD',
-                                   'username': 'TEST_USERNAME',
-                                   'firstName': 'TEST_FIRST_NAME',
-                                   'lastName': 'TEST_LAST_NAME',
-                                   'phoneNumber': '010-1234-5678',
-                                   'gender': True,
-                                   'birthdate': '2000-01-01',
-                                   'message': 'None',
-                                   'isEmailPublic': True,
-                                   'isSchedulePublic': True,
-                                   'isInterestPublic': True}),
-                               content_type='application/json')
-        # Request without csrf token returns 403 response
-        self.assertEqual(response.status_code, 403)
 
         # GET request
         response = client.get('/api/token/')
@@ -223,6 +208,10 @@ class UserappTestCase(TestCase):
         '''test user detail'''
         client = Client(enforce_csrf_checks=True)
         test_user = create_dummy_user('TEST_EMAIL@test.com')
+        test_category = Category.objects.create(name='TEST_NAME', indexes=[0])
+        test_match = Match.objects.create(
+            title='TEST_TITLE', host_user=test_user, category=test_category)
+        Participation.objects.create(user=test_user, match=test_match)
         response = client.get('/api/token/')
         csrftoken = response.cookies['csrftoken'].value
         last_password = test_user.password

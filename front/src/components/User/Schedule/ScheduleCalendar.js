@@ -3,8 +3,8 @@ import { Calendar, Badge } from 'antd';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
+import momentPropTypes from 'react-moment-proptypes';
 import ScheduleTable from './ScheduleTable';
-import { MatchPropTypes } from '../../Match/MatchForm/MatchForm';
 
 import './ScheduleCalendar.css';
 
@@ -97,7 +97,14 @@ class ScheduleCalendar extends Component {
   }
 }
 ScheduleCalendar.propTypes = {
-  schedule: PropTypes.arrayOf(PropTypes.shape(MatchPropTypes)).isRequired,
+  schedule: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      title: PropTypes.string,
+      timeBegin: momentPropTypes.momentObj,
+      timeEnd: momentPropTypes.momentObj,
+    }),
+  ).isRequired,
 };
 
 ScheduleCalendar.defaultProps = {};

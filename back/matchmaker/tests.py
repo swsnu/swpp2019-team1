@@ -26,7 +26,7 @@ MULTIPART_CONTENT = 'multipart/form-data; boundary=%s' % BOUNDARY
 
 def create_dummy_category():
     '''create dummy category'''
-    return Category.objects.create(name='TEST_NAME', indexes=[0, 0])
+    return Category.objects.create(name='TEST_NAME', indexes=[0])
 
 
 def create_dummy_match(test_user, test_category):
@@ -123,7 +123,7 @@ class MatchMakerTestCase(TestCase):
             form = encode_multipart(BOUNDARY, {
                 'matchThumbnail': temp_file,
                 'title': 'TEST_TITLE',
-                'category': '0,0',
+                'category': '0',
                 'capacity': 5,
                 'locationText': 'TEST_LOCATION_TEXT',
                 'period': 3,
@@ -284,7 +284,7 @@ class MatchMakerTestCase(TestCase):
         self.assertEqual(response.status_code, 400)
         response = client.post('/api/match/',
                                json.dumps({'title': 'TEST_TITLE',
-                                           'category': '0,0',
+                                           'category': '0',
                                            'capacity': 'TEST_ERR_STR',
                                            'locationText': 'TEST_LOCATION_TEXT',
                                            'period': 'TEST_ERR_STR',
@@ -303,7 +303,7 @@ class MatchMakerTestCase(TestCase):
             form = encode_multipart(BOUNDARY, {
                 'matchThumbnail': temp_file,
                 'title': 'TEST_TITLE',
-                'category': '0,0',
+                'category': '0',
                 'capacity': 5,
                 'locationText': 'TEST_LOCATION_TEXT',
                 'period': 3,
@@ -324,7 +324,7 @@ class MatchMakerTestCase(TestCase):
 
         response = client.post(f'/api/match/{test_match.id}/',
                                json.dumps({'title': 'TEST_TITLE',
-                                           'category': '0,0',
+                                           'category': '0',
                                            'capacity': 'TEST_ERR_STR',
                                            'locationText': 'TEST_LOCATION_TEXT',
                                            'period': 'TEST_ERR_STR',
@@ -371,7 +371,7 @@ class MatchMakerTestCase(TestCase):
             form = encode_multipart(BOUNDARY, {
                 'matchThumbnail': temp_file,
                 'title': 'TEST_TITLE',
-                'category': '0,0',
+                'category': '0',
                 'capacity': 4,
                 'locationText': 'TEST_LOCATION_TEXT',
                 'period': 3,
@@ -395,7 +395,7 @@ class MatchMakerTestCase(TestCase):
             match = response.json()
             self.assertEqual(response.status_code, 200)
             self.assertEqual(match['title'], 'TEST_TITLE')
-            self.assertEqual(match['category']['indexes'], '[0, 0]')
+            self.assertEqual(match['category']['indexes'], '[0]')
 
             test_match = Match.objects.get(id=match_id)
             self.assertEqual(test_match.view_count, 1)
@@ -414,11 +414,33 @@ class MatchMakerTestCase(TestCase):
                                    HTTP_X_CSRFTOKEN=csrftoken)
             self.assertEqual(response.status_code, 200)
 
+        form = encode_multipart(BOUNDARY, {
+            'title': 'TEST_TITLE',
+            'category': '0',
+            'capacity': 5,
+            'locationText': 'TEST_LOCATION_TEXT',
+            'period': 3,
+            'additionalInfo': 'TEST_ADDITIONAL_INFO',
+            'isAgeRestricted': True,
+            'restrictAgeFrom': 4,
+            'restrictAgeTo': 7,
+            'isGenderRestricted': True,
+            'restrictedGender': settings.MALE,
+            'timeBegin': '2019-11-03T08:07:46+09:00',
+            'timeEnd': '2019-11-03T08:07:46+09:00',
+            })
+
+        response = client.post(f'/api/match/{match_id}/',
+                               data=form,
+                               content_type=MULTIPART_CONTENT,
+                               HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 200)
+
         with tempfile.NamedTemporaryFile() as temp_file:
             form = encode_multipart(BOUNDARY, {
                 'matchThumbnail': temp_file,
                 'title': 'TEST_TITLE',
-                'category': '0,0',
+                'category': '0',
                 'capacity': 5,
                 'locationText': 'TEST_LOCATION_TEXT',
                 'period': 3,
@@ -539,22 +561,31 @@ class MatchMakerTestCase(TestCase):
         '''Checks if get_new_match performs correctly.'''
         # Make complex test cases TODO
         client = Client()
+        test_user = create_dummy_user('TEST_EMAIL@test.com')
+        test_category = create_dummy_category()
+        create_dummy_match(test_user, test_category)
         response = client.get('/api/match/new/')
-        self.assertEqual(len(json.loads(response.content.decode())), 0)
+        self.assertEqual(len(json.loads(response.content.decode())), 1)
 
     def test_match_hot(self):
         '''Checks if get_hot_match performs correctly.'''
         # Make complex test cases TODO
         client = Client()
+        test_user = create_dummy_user('TEST_EMAIL@test.com')
+        test_category = create_dummy_category()
+        create_dummy_match(test_user, test_category)
         response = client.get('/api/match/hot/')
-        self.assertEqual(len(json.loads(response.content.decode())), 0)
+        self.assertEqual(len(json.loads(response.content.decode())), 1)
 
     def test_match_recommend(self):
         '''Checks if get_recommend_match performs correctly.'''
         # Make complex test cases TODO
         client = Client()
+        test_user = create_dummy_user('TEST_EMAIL@test.com')
+        test_category = create_dummy_category()
+        create_dummy_match(test_user, test_category)
         response = client.get('/api/match/recommend/')
-        self.assertEqual(len(json.loads(response.content.decode())), 0)
+        self.assertEqual(len(json.loads(response.content.decode())), 1)
 
     def test_match_join(self):
         '''Checks if match_join performs correctly.'''

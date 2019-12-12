@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.conf import settings
 from django_mysql.models import ListCharField
 
+
 class Category(models.Model):
     '''
     Category model
@@ -38,7 +39,7 @@ class Match(models.Model):
         blank=False
     )
     match_thumbnail = models.ImageField(
-        upload_to='thumbnail/', blank=True, null=True, default='thumbnail/default-user.png')
+        upload_to='thumbnail/', blank=True, null=True, default='')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     capacity = models.PositiveSmallIntegerField(default=2)
     is_online = models.BooleanField(default=False)

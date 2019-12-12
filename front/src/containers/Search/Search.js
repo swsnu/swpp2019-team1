@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
+import { Col } from 'antd';
 import PropTypes from 'prop-types';
 
 import * as actionCreators from '../../store/actions/index';
@@ -21,17 +22,13 @@ class Search extends Component {
   matchToComponent = match => {
     const { onClickMatch } = this.props;
     return (
-      <MatchPreviewTile
-        key={match.id}
-        page="Search"
-        title={match.title}
-        host={match.host}
-        location={match.location}
-        time={match.time}
-        numParticipants={match.numParticipants}
-        capacity={match.capacity}
-        clickHandler={() => onClickMatch(match.id)}
-      />
+      <Col span={8} key={match.id}>
+        <MatchPreviewTile
+          page="Search"
+          match={match}
+          clickHandler={() => onClickMatch(match.id)}
+        />
+      </Col>
     );
   };
 

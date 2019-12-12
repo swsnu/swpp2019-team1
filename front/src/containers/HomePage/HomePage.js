@@ -3,7 +3,7 @@ import { View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import PropTypes from 'prop-types';
-import { Card, Row, Button, Icon } from 'antd';
+import { Card, Col, Row, Button, Icon } from 'antd';
 
 import * as actionCreators from '../../store/actions/index';
 import MatchPreviewTile from '../../components/Match/MatchPreviewTile/MatchPreviewTile';
@@ -26,17 +26,13 @@ class HomePage extends Component {
   matchToComponent = match => {
     const { onClickMatch } = this.props;
     return (
-      <MatchPreviewTile
-        key={match.id}
-        page="Home"
-        title={match.title}
-        host={match.host}
-        location={match.location}
-        time={match.time}
-        numParticipants={match.numParticipants}
-        capacity={match.capacity}
-        clickHandler={() => onClickMatch(match.id)}
-      />
+      <Col span={8} key={match.id}>
+        <MatchPreviewTile
+          page="Home"
+          match={match}
+          clickHandler={() => onClickMatch(match.id)}
+        />
+      </Col>
     );
   };
 
@@ -155,17 +151,17 @@ class HomePage extends Component {
 
         <div className="HomeCategory Hot-match">
           <Card title={<span style={{ fontSize: 35 }}>Hot Matches</span>}>
-            <Row gutter={(16, 16)}>{componentHot}</Row>
+            <Row gutter={[16, 16]}>{componentHot}</Row>
           </Card>
         </div>
         <div className="HomeCategory New-match">
           <Card title={<span style={{ fontSize: 35 }}>New Matches</span>}>
-            <Row gutter={(16, 16)}>{componentNew}</Row>
+            <Row gutter={[16, 16]}>{componentNew}</Row>
           </Card>
         </div>
         <div className="HomeCategory Recommend-match">
           <Card title={<span style={{ fontSize: 35 }}>Recommend Matches</span>}>
-            <Row gutter={(16, 16)}>{componentRecommend}</Row>
+            <Row gutter={[16, 16]}>{componentRecommend}</Row>
           </Card>
         </div>
       </div>
@@ -181,10 +177,12 @@ HomePage.propTypes = {
       id: PropTypes.number,
       title: PropTypes.string,
       host: PropTypes.string,
-      location: PropTypes.string,
-      time: PropTypes.string,
+      locationText: PropTypes.string,
+      timeBegin: PropTypes.string,
+      timeEnd: PropTypes.string,
       numParticipants: PropTypes.number,
       capacity: PropTypes.number,
+      matchThumbnail: PropTypes.string,
     }),
   ).isRequired,
   matchNew: PropTypes.arrayOf(
@@ -192,10 +190,12 @@ HomePage.propTypes = {
       id: PropTypes.number,
       title: PropTypes.string,
       host: PropTypes.string,
-      location: PropTypes.string,
-      time: PropTypes.string,
+      locationText: PropTypes.string,
+      timeBegin: PropTypes.string,
+      timeEnd: PropTypes.string,
       numParticipants: PropTypes.number,
       capacity: PropTypes.number,
+      matchThumbnail: PropTypes.string,
     }),
   ).isRequired,
   matchRecommend: PropTypes.arrayOf(
@@ -203,10 +203,12 @@ HomePage.propTypes = {
       id: PropTypes.number,
       title: PropTypes.string,
       host: PropTypes.string,
-      location: PropTypes.string,
-      time: PropTypes.string,
+      locationText: PropTypes.string,
+      timeBegin: PropTypes.string,
+      timeEnd: PropTypes.string,
       numParticipants: PropTypes.number,
       capacity: PropTypes.number,
+      matchThumbnail: PropTypes.string,
     }),
   ).isRequired,
   getHotMatch: PropTypes.func.isRequired,
@@ -216,7 +218,10 @@ HomePage.propTypes = {
   getNlpResult: PropTypes.func.isRequired,
   currentUser: PropTypes.shape({
     id: PropTypes.number,
-  }).isRequired,
+  }),
+};
+HomePage.defaultProps = {
+  currentUser: null,
 };
 const mapStateToProps = state => {
   return {

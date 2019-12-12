@@ -87,14 +87,13 @@ describe('<MatchCreate />', () => {
       .instance();
     // category change
     const categoryOption = {
-      value: [0, 0],
+      value: [1, 0],
       selectedOptions: [
-        { value: 0, label: 'Movie', children: Array(4) },
-        { value: 0, label: 'SF' },
+        { value: 1, label: 'Arts & Entertainment', children: Array(14) },
+        { value: 0, label: 'other*' },
       ],
     };
-    // eslint-disable-next-line no-unused-vars
-    const category = [0, 0];
+
     const capacity = 3;
     const additionalInfo = 'TEST_ADDITIONAL_INFO';
     // eslint-disable-next-line no-unused-vars
@@ -140,7 +139,7 @@ describe('<MatchCreate />', () => {
       await new Promise(resolve => setTimeout(resolve, 100));
       wrapper.simulate('submit');
       await new Promise(resolve => setTimeout(resolve, 100));
-      expect(spyCreateMatch).toBeCalledTimes(1);
+      expect(spyCreateMatch).toBeCalledTimes(0);
 
       // timeBegin change
       wrapper = component.find(DatePicker).at(0);
@@ -160,7 +159,7 @@ describe('<MatchCreate />', () => {
       wrapper.simulate('submit');
       await new Promise(resolve => setTimeout(resolve, 100));
     });
-    expect(spyCreateMatch).toBeCalledTimes(2);
+    expect(spyCreateMatch).toBeCalledTimes(1);
   });
 
   it('should go back on cancel', async () => {

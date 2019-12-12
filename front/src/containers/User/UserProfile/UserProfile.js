@@ -1,24 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import momentPropTypes from 'react-moment-proptypes';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
-import {
-  PageHeader,
-  Menu,
-  Dropdown,
-  Icon,
-  Button,
-  Typography,
-  Row,
-  Tabs,
-  Descriptions,
-} from 'antd';
+import { PageHeader, Button, Typography, Row, Tabs, Descriptions } from 'antd';
 
 import * as actionCreators from '../../../store/actions/index';
 import Interests from '../../../components/User/Interests/Interests';
 import ScheduleCalendar from '../../../components/User/Schedule/ScheduleCalendar';
-import { MatchPropTypes } from '../../../components/Match/MatchForm/MatchForm';
 
 const { TabPane } = Tabs;
 const { Item } = Descriptions;
@@ -37,37 +27,6 @@ const renderContent = user => (
     <Item label="Message">{user.message}</Item>
   </Descriptions>
 );
-
-const menu = (
-  <Menu>
-    <Menu.Item>
-      <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">
-        1st menu item
-      </a>
-    </Menu.Item>
-  </Menu>
-);
-
-const DropdownMenu = () => {
-  return (
-    <Dropdown key="more" overlay={menu}>
-      <Button
-        style={{
-          border: 'none',
-          padding: 0,
-        }}
-      >
-        <Icon
-          type="ellipsis"
-          style={{
-            fontSize: 20,
-            verticalAlign: 'top',
-          }}
-        />
-      </Button>
-    </Dropdown>
-  );
-};
 
 const routes = [
   {
@@ -135,10 +94,9 @@ class UserProfile extends Component {
             >
               Edit
             </Button>,
-            <DropdownMenu key="more" />,
           ]}
           avatar={{
-            src: 'https://i.imgur.com/fYdbabs.png',
+            src: '/media/thumbnail/default-user.png',
           }}
           breadcrumb={{ routes }}
           footer={
@@ -196,7 +154,14 @@ UserProfile.propTypes = {
     gender: PropTypes.bool,
     birthdate: PropTypes.string.isRequired,
     message: PropTypes.string,
-    schedule: PropTypes.arrayOf(PropTypes.shape(MatchPropTypes)),
+    schedule: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        title: PropTypes.string,
+        timeBegin: momentPropTypes.momentObj,
+        timeEnd: momentPropTypes.momentObj,
+      }),
+    ),
   }),
   history: ReactRouterPropTypes.history.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
