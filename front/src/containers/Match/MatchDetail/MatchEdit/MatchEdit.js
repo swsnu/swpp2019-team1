@@ -21,7 +21,7 @@ class MatchEdit extends Component {
     this.state = {
       id: null,
       title: '',
-      category: '',
+      category: null,
       capacity: 2,
       locationText: '',
       locationLatitude: 37.4494771,
