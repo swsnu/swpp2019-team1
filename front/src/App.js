@@ -33,6 +33,7 @@ function App(props) {
           <Route path="/profile/:id" exact component={UserProfile} />
           <Redirect from="/" to="/home" />
         </Switch>
+        <div style={{ backgroundColor: 'powderblue', padding: 50 }} />
         <Footer />
       </ConnectedRouter>
     </div>
