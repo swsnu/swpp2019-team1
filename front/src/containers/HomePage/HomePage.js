@@ -47,7 +47,13 @@ class HomePage extends Component {
   };
 
   render() {
-    const { history, matchHot, matchNew, matchRecommend } = this.props;
+    const {
+      history,
+      matchHot,
+      matchNew,
+      matchRecommend,
+      currentUser,
+    } = this.props;
     const { inputText } = this.state;
     const componentHot = matchHot.map(this.matchToComponent);
     const componentNew = matchNew.map(this.matchToComponent);
@@ -132,12 +138,21 @@ class HomePage extends Component {
             type="primary"
             onClick={this.onClickCreateButton}
             block
+            disabled={currentUser === null}
             size="large"
           >
             <Icon type="plus-circle" />
             Create Now
           </Button>
+          <div>
+            {currentUser === null ? (
+              <div style={{ fontSize: 15 }}>You should be logged in!</div>
+            ) : (
+              ''
+            )}
+          </div>
         </div>
+
         <div className="HomeCategory Hot-match">
           <Card title={<span style={{ fontSize: 35 }}>Hot Matches</span>}>
             <Row gutter={(16, 16)}>{componentHot}</Row>
@@ -199,13 +214,16 @@ HomePage.propTypes = {
   getRecommendMatch: PropTypes.func.isRequired,
   onClickMatch: PropTypes.func.isRequired,
   getNlpResult: PropTypes.func.isRequired,
+  currentUser: PropTypes.shape({
+    id: PropTypes.number,
+  }).isRequired,
 };
-
 const mapStateToProps = state => {
   return {
     matchHot: state.match.hot,
     matchNew: state.match.new,
     matchRecommend: state.match.recommend,
+    currentUser: state.user.currentUser,
   };
 };
 
