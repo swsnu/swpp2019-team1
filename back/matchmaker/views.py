@@ -30,6 +30,8 @@ def get_match_detail_json(request, match_id):
         {'hostUser': {'id': match_obj.host_user.id, 'username': match_obj.host_user.username}})
     match_json.update(
         {'num_participants': match_obj.participation_match.all().count(),
+         'participants': [participation['user_id']
+                          for participation in match_obj.participation_match.values()],
          'host_name': match_obj.host_user.username})
     if match_json['match_thumbnail'] is None:
         match_json.update(

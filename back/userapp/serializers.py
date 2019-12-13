@@ -1,6 +1,28 @@
 ''' Custom user model serializer '''
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from django.conf import settings
+from djoser.serializers import TokenSerializer
+from djoser.conf import settings as djoser_settings
+from stream_chat import StreamChat
+
+
+class StreamTokenSerializer(TokenSerializer):
+    '''stream token serializer'''
+    stream_token = serializers.SerializerMethodField()
+
+    class Meta:
+        model = djoser_settings.TOKEN_MODEL
+        fields = ('auth_token', 'stream_token')
+
+    # pylint: disable=no-self-use
+    def get_stream_token(self, obj):
+        '''get stream token'''
+        chat_client = StreamChat(api_key=settings.STREAM_KEY,
+                                 api_secret=settings.STREAM_SECRET)
+        token = chat_client.create_token(obj.user.username)
+        return token.decode('ascii')
+
 
 class UserSerializer(serializers.ModelSerializer):
     ''' Custom user model serializer '''

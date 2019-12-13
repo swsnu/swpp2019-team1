@@ -12,6 +12,18 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+# chat api
+STREAM_KEY = 'cj5mb4hpbmk6'
+STREAM_SECRET = 'tg8e72xgshedsts7vp4k2y544948th83sf7xaw9d7tt4eshfmay5ygr8pvgup5wx'
+
+DJOSER = {
+    'SERIALIZERS': {
+        'token': 'userapp.serializers.StreamTokenSerializer',
+    }
+}
+
+CORS_ORIGIN_ALLOW_ALL = True
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -33,18 +45,25 @@ FEMALE = False
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'matchmaker.apps.MatchmakerConfig',
     'userapp.apps.UserappConfig',
-    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
 ]
 
 REST_FRAMEWORK = {
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
 
     'DEFAULT_RENDERER_CLASSES': (
         'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
@@ -65,6 +84,7 @@ REST_FRAMEWORK = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

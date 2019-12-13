@@ -1,15 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Table } from 'antd';
-import sf from 'sf';
 
 function formatScheduleTable(schedule) {
   return schedule.map(match => ({
     key: match.id,
     title: (
       <Link
-        to={sf('/match/{0}', match.id)}
-        className={sf('Match({0})DetailLink', match.id)}
+        to={`/match/${match.id}`}
+        className={`Match(${match.id})DetailLink`}
       >
         {match.title}
       </Link>

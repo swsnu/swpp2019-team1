@@ -40,6 +40,8 @@ class UserProfileEdit extends Component {
     return (
       <div className="UserProfileEdit">
         <SignUpForm
+          password=""
+          passwordConfirm=""
           username={currentUser.username}
           firstName={currentUser.firstName}
           lastName={currentUser.lastName}
