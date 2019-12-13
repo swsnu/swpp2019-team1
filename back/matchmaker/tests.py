@@ -16,7 +16,7 @@ from google.cloud.language_v1.proto import language_service_pb2
 from google.api_core.exceptions import InvalidArgument
 
 from userapp.tests import create_dummy_user
-from matchmaker.models import Match, Category
+from matchmaker.models import Match, Category, Interest
 from matchmaker.serializers import MatchSerializer
 from matchmaker import nlp
 
@@ -582,8 +582,21 @@ class MatchMakerTestCase(TestCase):
         # Make complex test cases TODO
         client = Client()
         test_user = create_dummy_user('TEST_EMAIL@test.com')
+        test_user_2 = create_dummy_user('TEST_SECOND_EMAIL@test.com')
+
         test_category = create_dummy_category()
-        create_dummy_match(test_user, test_category)
+        create_dummy_match(test_user_2, test_category)
+        response = client.get('/api/match/recommend/')
+        self.assertEqual(response.status_code, 401)
+        client.login(email='TEST_SECOND_EMAIL@test.com', password='TEST_PASSWORD')
+        Interest.objects.create(user=test_user_2, category=test_category)
+        response = client.get('/api/match/recommend/')
+        self.assertEqual(len(json.loads(response.content.decode())), 0)
+        client.logout()
+        client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
+        response = client.get('/api/match/recommend/')
+        self.assertEqual(len(json.loads(response.content.decode())), 0)
+        Interest.objects.create(user=test_user, category=test_category)
         response = client.get('/api/match/recommend/')
         self.assertEqual(len(json.loads(response.content.decode())), 1)
 

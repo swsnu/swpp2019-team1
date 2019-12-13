@@ -1,12 +1,11 @@
 '''
 userapp test
 '''
-import json
+import simplejson as json
 from django.test import TestCase, Client
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from matchmaker.models import Match, Category, Participation
-#from matchmaker.tests import create_dummy_category
+from matchmaker.models import Match, Category, Participation, Interest
 
 USER = get_user_model()
 
@@ -212,6 +211,7 @@ class UserappTestCase(TestCase):
         test_match = Match.objects.create(
             title='TEST_TITLE', host_user=test_user, category=test_category)
         Participation.objects.create(user=test_user, match=test_match)
+        Interest.objects.create(user=test_user, category=test_category)
         response = client.get('/api/token/')
         csrftoken = response.cookies['csrftoken'].value
         last_password = test_user.password
@@ -254,3 +254,34 @@ class UserappTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         changed_password = USER.objects.get(id=test_user.id).password
         self.assertNotEqual(changed_password, last_password)
+
+    def test_user_interest(self):
+        '''test user interest'''
+        client = Client(enforce_csrf_checks=True)
+        test_user = create_dummy_user('TEST_EMAIL@test.com')
+        Category.objects.create(indexes=[0])
+        response = client.get('/api/token/')
+        csrftoken = response.cookies['csrftoken'].value
+        # not allowed
+        response = client.post(f'/api/user/{test_user.id}/interest/',
+                               content_type='application/json',
+                               HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 405)
+        # unauthenticated
+        response = client.put(f'/api/user/{test_user.id}/interest/',
+                              content_type='application/json',
+                              HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 401)
+        # with indexes
+        client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
+        response = client.put(f'/api/user/{test_user.id}/interest/',
+                              json.dumps({'0'}, iterable_as_array=True),
+                              content_type='application/json',
+                              HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 200)
+        # without indexes
+        response = client.put(f'/api/user/{test_user.id}/interest/',
+                              json.dumps({None}, iterable_as_array=True),
+                              content_type='application/json',
+                              HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 200)

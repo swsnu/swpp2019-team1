@@ -26,7 +26,7 @@ describe('<SignUpForm />', () => {
         phoneNumber={dummySignUpState.phoneNumber}
         gender={dummySignUpState.gender}
         birthdate={dummySignUpState.birthdate}
-        clickSignUp={() => null}
+        clickSubmit={() => null}
       />
     );
     const component = shallow(signUpForm);

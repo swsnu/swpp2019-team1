@@ -15,6 +15,7 @@ import MatchEdit from './containers/Match/MatchDetail/MatchEdit/MatchEdit';
 import SignIn from './containers/User/Auth/SignIn/SignIn';
 import SignUp from './containers/User/Auth/SignUp/SignUp';
 import UserProfile from './containers/User/UserProfile/UserProfile';
+import UserProfileEdit from './containers/User/UserProfile/UserProfileEdit/UserProfileEdit';
 
 function App(props) {
   const { history } = props;
@@ -31,6 +32,7 @@ function App(props) {
           <Route path="/signin" exact component={SignIn} />
           <Route path="/signup" exact component={SignUp} />
           <Route path="/profile/:id" exact component={UserProfile} />
+          <Route path="/profile/:id/edit" exact component={UserProfileEdit} />
           <Redirect from="/" to="/home" />
         </Switch>
         <div style={{ backgroundColor: 'powderblue', padding: 50 }} />

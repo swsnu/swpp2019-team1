@@ -23,6 +23,23 @@ class Category(models.Model):
         return self.name
 
 
+class Interest(models.Model):
+    '''
+    Interest model
+    '''
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='interest_user',
+        blank=False
+    )
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
+        related_name='interest_category'
+    )
+
+
 class Match(models.Model):
     '''
     Match model

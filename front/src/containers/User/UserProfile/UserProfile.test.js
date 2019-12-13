@@ -5,11 +5,11 @@ import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch } from 'react-router-dom';
 import { Cascader } from 'antd';
 import moment from 'moment';
+import axios from 'axios';
 
 import UserProfile from './UserProfile';
 import getMockStore from '../../../test-utils/getMockStore';
 import { history } from '../../../store/store';
-import * as actionCreators from '../../../store/actions/user';
 
 const stubUser = {
   selectedUser: {
@@ -23,6 +23,10 @@ const stubUser = {
     birthdate: moment().format(),
     message: 'TEST_MESSAGE',
     schedule: [],
+    interests: [],
+  },
+  currentUser: {
+    id: 1,
   },
 };
 
@@ -38,11 +42,18 @@ const stubFemaleUser = {
     birthdate: moment().format(),
     message: 'TEST_MESSAGE',
     schedule: [],
+    interests: [],
+  },
+  currentUser: {
+    id: 1,
   },
 };
 
 const stubNoUser = {
   selectedUser: null,
+  currentUser: {
+    id: 1,
+  },
 };
 
 const stubMatch = {
@@ -83,7 +94,8 @@ describe('<UserProfile />', () => {
   let userProfile;
   let userProfileFemaleUser;
   let userProfileNoUser;
-  let spyGetUser;
+  let spyPut;
+  let spyGet;
   let spyHistoryPush;
   beforeEach(() => {
     spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(() => {});
@@ -139,11 +151,25 @@ describe('<UserProfile />', () => {
         </ConnectedRouter>
       </Provider>
     );
-    spyGetUser = jest
-      .spyOn(actionCreators, 'getUser')
-      .mockImplementation(() => {
-        return () => {};
+    spyGet = jest.spyOn(axios, 'get').mockImplementation(() => {
+      return new Promise(resolve => {
+        const result = {
+          status: 201,
+          data: {
+            ...stubUser.selectedUser,
+          },
+        };
+        resolve(result);
       });
+    });
+    spyPut = jest.spyOn(axios, 'put').mockImplementation(() => {
+      return new Promise(resolve => {
+        const result = {
+          status: 201,
+        };
+        resolve(result);
+      });
+    });
   });
   afterEach(() => {
     jest.clearAllMocks();
@@ -153,20 +179,14 @@ describe('<UserProfile />', () => {
     const component = mount(userProfile);
     const wrapper = component.find('.UserProfile');
     expect(wrapper.length).toBe(1);
-    expect(spyGetUser).toBeCalledTimes(1);
+    expect(spyGet).toBeCalledTimes(1);
   });
 
   it('should render without errors when user is female', () => {
     const component = mount(userProfileFemaleUser);
     const wrapper = component.find('.UserProfile');
     expect(wrapper.length).toBe(1);
-    expect(spyGetUser).toBeCalledTimes(1);
-  });
-
-  it('should render nothing when selectedUser is null', () => {
-    const component = mount(userProfileNoUser);
-    const wrapper = component.find('.UserProfile');
-    expect(wrapper.length).toBe(0);
+    expect(spyGet).toBeCalledTimes(1);
   });
 
   it('should redirected to profile edit page when edit button clicked', async () => {
@@ -175,7 +195,7 @@ describe('<UserProfile />', () => {
 
     const wrapper = component.find('#edit-profile-button').at(0);
     wrapper.simulate('click');
-    expect(spyHistoryPush).toHaveBeenCalledWith('/profile/edit');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/profile/1/edit');
   });
 
   it('should change interests when interests changed', async () => {
@@ -190,5 +210,30 @@ describe('<UserProfile />', () => {
     wrapper.at(0).prop('onChange')([0, 0], ['TEST_OPT_1', 'TEST_OPT_2']);
     wrapper.at(1).prop('onChange')([0, 0], ['TEST_OPT_1', 'TEST_OPT_2']);
     wrapper.at(2).prop('onChange')([0, 0], ['TEST_OPT_1', 'TEST_OPT_2']);
+
+    const instance = component.find(UserProfile.WrappedComponent).instance();
+    instance.onClickEditInterest();
+    expect(instance.state.isEdit).toBe(true);
+    instance.onClickEditInterest();
+    expect(instance.state.isEdit).toBe(false);
+    expect(spyPut).toBeCalledTimes(1);
+  });
+
+  it('should render nothing when selectedUser is null', async () => {
+    spyGet = jest.spyOn(axios, 'get').mockImplementation(() => {
+      return new Promise((resolve, reject) => {
+        const error = {
+          response: {
+            status: 401,
+          },
+        };
+        reject(error);
+      });
+    });
+    const component = mount(userProfileNoUser);
+    await new Promise(resolve => setTimeout(resolve, 100));
+
+    const wrapper = component.find('.UserProfile');
+    expect(wrapper.length).toBe(0);
   });
 });

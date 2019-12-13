@@ -3,6 +3,7 @@ import { View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { Card, Col, Row, Button, Icon } from 'antd';
 
 import * as actionCreators from '../../store/actions/index';
@@ -16,11 +17,13 @@ class HomePage extends Component {
     this.state = { inputText: '' };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { getHotMatch, getNewMatch, getRecommendMatch } = this.props;
     getHotMatch();
     getNewMatch();
-    getRecommendMatch();
+    await new Promise(resolve => setTimeout(resolve, 50));
+    const { currentUser } = this.props;
+    if (currentUser) getRecommendMatch();
   }
 
   matchToComponent = match => {
@@ -148,7 +151,15 @@ class HomePage extends Component {
             )}
           </div>
         </div>
-
+        {currentUser !== null && (
+          <div className="HomeCategory Recommend-match">
+            <Card
+              title={<span style={{ fontSize: 35 }}>Recommended Matches</span>}
+            >
+              <Row gutter={[16, 16]}>{componentRecommend}</Row>
+            </Card>
+          </div>
+        )}
         <div className="HomeCategory Hot-match">
           <Card title={<span style={{ fontSize: 35 }}>Hot Matches</span>}>
             <Row gutter={[16, 16]}>{componentHot}</Row>
@@ -159,19 +170,12 @@ class HomePage extends Component {
             <Row gutter={[16, 16]}>{componentNew}</Row>
           </Card>
         </div>
-        <div className="HomeCategory Recommend-match">
-          <Card title={<span style={{ fontSize: 35 }}>Recommend Matches</span>}>
-            <Row gutter={[16, 16]}>{componentRecommend}</Row>
-          </Card>
-        </div>
       </div>
     );
   }
 }
 HomePage.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }).isRequired,
+  history: ReactRouterPropTypes.history.isRequired,
   matchHot: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number,

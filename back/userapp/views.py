@@ -5,14 +5,15 @@ from django.contrib.auth import get_user_model
 from django.contrib import auth
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseNotFound, JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
+from django.shortcuts import get_object_or_404
 
 from djangorestframework_camel_case.parser import CamelCaseJSONParser
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 
 from userapp.serializers import UserSerializer
 
-from matchmaker.models import Match, Participation
-from matchmaker.serializers import MatchSerializer
+from matchmaker.models import Match, Participation, Interest, Category
+from matchmaker.serializers import MatchSerializer, CategorySerializer
 
 USER = get_user_model()
 
@@ -53,7 +54,9 @@ def sign_in(request):
         if user is not None:
             auth.login(request, user)
             serializer = UserSerializer(user)
-            return JsonResponse({'user': serializer.data}, status=200)
+            response = json.loads(
+                CamelCaseJSONRenderer().render(serializer.data))
+            return JsonResponse({'user': response}, status=200)
         return HttpResponse(status=400)
     # 405
     return HttpResponseNotAllowed(['POST'])
@@ -70,7 +73,7 @@ def sign_out(request):
     # 405
     return HttpResponseNotAllowed(['POST'])
 
-
+#pylint: disable=too-many-locals
 def user_detail(request, user_id):
     ''' user detail '''
     try:
@@ -91,6 +94,13 @@ def user_detail(request, user_id):
             match_json = MatchSerializer(match).data
             match_list.append(match_json)
         data['schedule'] = match_list
+        interest_list = Interest.objects.values().filter(user_id=user_id)
+        category_list = []
+        for interest in interest_list:
+            category = Category.objects.get(id=interest['category_id'])
+            category_json = CategorySerializer(category).data
+            category_list.append(category_json['indexes'])
+        data['interests'] = category_list
         response = json.loads(
             CamelCaseJSONRenderer().render(data))
         return JsonResponse(response)
@@ -107,3 +117,21 @@ def user_detail(request, user_id):
 
     # 405
     return HttpResponseNotAllowed(['GET', 'PATCH'])
+
+
+def user_interest(request, user_id):
+    '''user interest'''
+    if request.method == 'PUT':
+        if request.user.is_authenticated and user_id == request.user.id:
+            data = CamelCaseJSONParser().parse(request)
+            request.user.interest_user.all().delete()
+            print(data)
+            for indexes in data:
+                print(indexes)
+                if indexes is not None and indexes != []:
+                    category = get_object_or_404(Category, indexes=indexes)
+                    Interest.objects.create(
+                        user=request.user, category=category)
+            return HttpResponse(status=200)
+        return HttpResponse(status=401)
+    return HttpResponseNotAllowed(['PUT'])
