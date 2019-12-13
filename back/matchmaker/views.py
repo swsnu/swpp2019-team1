@@ -52,7 +52,9 @@ def process_post_request(request):
         data['match_thumbnail'] = request.FILES['matchThumbnail']
     except KeyError:
         pass
+    print("HERE1")
     category = get_object_or_404(Category, indexes=category_idx)
+    print("HERE2")
     data['category'] = category
     data['host_user_id'] = request.user.id
     data = data.dict()
@@ -62,9 +64,13 @@ def process_post_request(request):
 def match(request):
     '''Makes and returns a new match.'''
     if request.method == 'POST':
+        print("HERE")
         data = process_post_request(request)
+        print("HERE")
         match_serializer = MatchSerializer(data=data)
+        print("HERE")
         if match_serializer.is_valid():
+            print("HERE")
             new_match_obj = match_serializer.create(data)
             participation = Participation(user=USER.objects.get(
                 pk=request.user.id), match=new_match_obj)
