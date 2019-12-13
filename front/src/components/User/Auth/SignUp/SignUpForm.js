@@ -48,6 +48,28 @@ const SignUpSchema = Yup.object().shape({
   gender: Yup.bool().required('Required'),
   birthdate: Yup.string().required('Required'),
 });
+const ProfileEditSchema = Yup.object().shape({
+  password: Yup.string().required('Required'),
+  passwordConfirm: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .required('Passwords must match'),
+  username: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+  firstName: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+  lastName: Yup.string()
+    .max(50, 'Too Long!')
+    .required('Required'),
+  phoneNumber: Yup.string()
+    .matches(phoneRegExp, 'Phone number is not valid')
+    .required('Required'),
+  gender: Yup.bool().required('Required'),
+  birthdate: Yup.string().required('Required'),
+});
 const SignUpForm = ({
   email,
   password,
@@ -58,7 +80,8 @@ const SignUpForm = ({
   phoneNumber,
   gender,
   birthdate,
-  clickSignUp,
+  isProfileEdit,
+  clickSubmit,
 }) => (
   <div className="SignUpForm">
     <Formik
@@ -74,17 +97,19 @@ const SignUpForm = ({
         birthdate,
       }}
       onSubmit={(values, actions) => {
-        clickSignUp(values);
+        clickSubmit(values);
         actions.setSubmitting(false);
       }}
-      validationSchema={SignUpSchema}
+      validationSchema={!isProfileEdit ? SignUpSchema : ProfileEditSchema}
     >
       {({ setFieldValue }) => (
         // eslint-disable-next-line react/jsx-props-no-spreading
         <Form {...formItemLayout}>
-          <FormItem name="email" label="Email">
-            <Input name="email" id="email" placeholder="swpp@snu.ac.kr" />
-          </FormItem>
+          {!isProfileEdit && (
+            <FormItem name="email" label="Email">
+              <Input name="email" id="email" placeholder="swpp@snu.ac.kr" />
+            </FormItem>
+          )}
           <FormItem name="password" label="Password">
             <Input.Password
               name="password"
@@ -144,7 +169,9 @@ const SignUpForm = ({
             />
           </FormItem>
           <div className="button">
-            <SubmitButton type="primary">Sign Up</SubmitButton>
+            <SubmitButton type="primary">
+              {!isProfileEdit ? 'Sign Up' : 'Edit'}
+            </SubmitButton>
           </div>
         </Form>
       )}
@@ -152,7 +179,7 @@ const SignUpForm = ({
   </div>
 );
 SignUpForm.propTypes = {
-  email: PropTypes.string.isRequired,
+  email: PropTypes.string,
   password: PropTypes.string.isRequired,
   passwordConfirm: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
@@ -161,9 +188,12 @@ SignUpForm.propTypes = {
   phoneNumber: PropTypes.string.isRequired,
   gender: PropTypes.bool,
   birthdate: PropTypes.string.isRequired,
-  clickSignUp: PropTypes.func.isRequired,
+  isProfileEdit: PropTypes.bool,
+  clickSubmit: PropTypes.func.isRequired,
 };
 SignUpForm.defaultProps = {
+  email: undefined,
   gender: undefined,
+  isProfileEdit: undefined,
 };
 export default SignUpForm;

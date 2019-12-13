@@ -107,12 +107,21 @@ def match_hot(request):
 def match_recommend(request):
     '''Returns recommend three matches.'''
     if request.method == 'GET':
-        raw_result = Match.objects.all().order_by(
-            '-view_count')[:3].values_list('id')
-        match_id_list = [match_id_tuple[0] for match_id_tuple in raw_result]
-        result = list(
-            map((lambda id: get_match_detail_json(request, id)), list(match_id_list)))
-        return JsonResponse(result, safe=False)
+        if request.user.is_authenticated:
+            interest_list = USER.objects.get(
+                id=request.user.id).interest_user.values()
+            match_id_list = []
+            for interest in interest_list:
+                raw_result = Match.objects.filter(
+                    category_id=interest['category_id']).exclude(
+                        host_user_id=request.user.id).order_by(
+                            '-view_count')[:1].values_list('id')
+                if len(raw_result) > 0:
+                    match_id_list.append(raw_result[0][0])
+            result = list(
+                map((lambda id: get_match_detail_json(request, id)), list(match_id_list)))
+            return JsonResponse(result, safe=False)
+        return HttpResponse(status=401)  # not authenticated
     return HttpResponseNotAllowed(['GET'])
 
 

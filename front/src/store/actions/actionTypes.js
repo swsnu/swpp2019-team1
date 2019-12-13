@@ -3,6 +3,8 @@ export const GET_USER_LIST = 'GET_USER_LIST';
 export const CREATE_USER = 'CREATE_USER';
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_OUT = 'SIGN_OUT';
+export const EDIT_USER = 'EDIT_USER';
+export const EDIT_INTEREST = 'EDIT_INTEREST';
 
 export const GET_MATCH = 'GET_MATCH';
 export const GET_HOT_MATCH = 'GET_HOT_MATCH';

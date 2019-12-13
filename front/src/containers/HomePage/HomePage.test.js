@@ -84,12 +84,13 @@ describe('<HomePage />', () => {
     jest.clearAllMocks();
   });
 
-  it('should render without errors', () => {
+  it('should render without errors', async () => {
     const component = mount(homePage);
     const wrapper = component.find('.HomePage');
     expect(wrapper.length).toBe(1);
     expect(spyGetHotMatch).toBeCalledTimes(1);
     expect(spyGetNewMatch).toBeCalledTimes(1);
+    await new Promise(resolve => setTimeout(resolve, 50));
     expect(spyGetRecommendMatch).toBeCalledTimes(1);
   });
 
@@ -140,6 +141,7 @@ describe('<HomePage />', () => {
       </Provider>
     );
     component = mount(homePage);
+    await new Promise(resolve => setTimeout(resolve, 50));
     wrapper = component.find('#Home-create-button');
     expect(wrapper.length).toBe(2);
     wrapper.at(0).simulate('click');

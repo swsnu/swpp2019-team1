@@ -1,56 +1,91 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Cascader } from 'antd';
+import { Button, Cascader, Icon } from 'antd';
 import { categories } from '../../../store/staticData/categories';
 
-const Interests = ({ interestArray, onChangeInterest }) => (
+const Interests = ({
+  isEdit,
+  isEditable,
+  buttonText,
+  onChangeInterest,
+  onClickButton,
+  valueList,
+}) => (
   <div className="Interests">
     <span>
-      {interestArray[0]}
-      &nbsp;
       <Cascader
         options={categories}
-        onChange={(value, selectedOptions) =>
-          onChangeInterest(value, selectedOptions, 0)
+        defaultValue={valueList[0]}
+        changeOnSelect
+        onChange={onChangeInterest(0)}
+        disabled={!isEdit}
+        style={{ color: 'black' }}
+        allowClear={isEdit}
+        placeholder="Not Selected"
+        suffixIcon={
+          isEdit ? (
+            false
+          ) : (
+            <Icon type="heart" theme="twoTone" twoToneColor="#ffffff" />
+          )
         }
-      >
-        <button type="button">Change Interest</button>
-      </Cascader>
+      />
       <p />
     </span>
     <span>
-      {interestArray[1]}
-      &nbsp;
       <Cascader
         options={categories}
-        onChange={(value, selectedOptions) =>
-          onChangeInterest(value, selectedOptions, 1)
+        defaultValue={valueList[1]}
+        changeOnSelect
+        onChange={onChangeInterest(1)}
+        disabled={!isEdit}
+        style={{ color: 'black' }}
+        allowClear={isEdit}
+        placeholder="Not Selected"
+        suffixIcon={
+          isEdit ? (
+            false
+          ) : (
+            <Icon type="heart" theme="twoTone" twoToneColor="#ffffff" />
+          )
         }
-      >
-        <button type="button">Change Interest</button>
-      </Cascader>
+      />
       <p />
     </span>
     <span>
-      {interestArray[2]}
-      &nbsp;
       <Cascader
         options={categories}
-        onChange={(value, selectedOptions) =>
-          onChangeInterest(value, selectedOptions, 2)
+        defaultValue={valueList[2]}
+        changeOnSelect
+        onChange={onChangeInterest(2)}
+        disabled={!isEdit}
+        style={{ color: 'black' }}
+        allowClear={isEdit}
+        placeholder="Not Selected"
+        suffixIcon={
+          isEdit ? (
+            false
+          ) : (
+            <Icon type="heart" theme="twoTone" twoToneColor="#ffffff" />
+          )
         }
-      >
-        <button type="button">Change Interest</button>
-      </Cascader>
+      />
     </span>
+    {isEditable && (
+      <Button type="primary" onClick={() => onClickButton(valueList)}>
+        {buttonText}
+      </Button>
+    )}
   </div>
 );
-
 Interests.propTypes = {
-  interestArray: PropTypes.arrayOf(PropTypes.string).isRequired,
+  valueList: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)).isRequired,
+  isEditable: PropTypes.bool.isRequired,
+  isEdit: PropTypes.bool.isRequired,
+  buttonText: PropTypes.string.isRequired,
   onChangeInterest: PropTypes.func.isRequired,
+  onClickButton: PropTypes.func.isRequired,
 };
-
 Interests.defaultProps = {};
 
 export default Interests;

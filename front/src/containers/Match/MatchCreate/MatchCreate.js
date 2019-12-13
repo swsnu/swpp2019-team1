@@ -49,8 +49,8 @@ class MatchCreate extends Component {
     }));
     const matchInfo = {
       ...this.state,
-      timeBegin: timeBegin ? timeBegin.format() : timeBegin,
-      timeEnd: timeEnd ? timeEnd.format() : timeEnd,
+      timeBegin: timeBegin.format(),
+      timeEnd: timeEnd.format(),
     };
 
     // matchInfo.category = matchInfo.category.indexes;

@@ -71,6 +71,7 @@ python-dateutil==2.8.0
 pytz==2019.3
 requests==2.22.0
 rsa==4.0
+simplejson==3.17.0
 six==1.12.0
 sqlparse==0.3.0
 toml==0.10.0

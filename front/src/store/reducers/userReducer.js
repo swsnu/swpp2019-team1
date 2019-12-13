@@ -20,6 +20,18 @@ const userReducer = (state, action) => {
       return { ...state, currentUser: null };
     case actionTypes.GET_USER:
       return { ...state, selectedUser: action.user };
+    case actionTypes.EDIT_USER:
+      return {
+        ...state,
+        currentUser: { ...state.currentUser, ...action.userInfo },
+        selectedUser: { ...state.selectedUser, ...action.userInfo },
+      };
+    case actionTypes.EDIT_INTEREST:
+      return {
+        ...state,
+        currentUser: { ...state.currentUser, interests: action.valueList },
+        selectedUser: { ...state.selectedUser, interests: action.valueList },
+      };
     default:
       break;
   }

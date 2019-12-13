@@ -65,8 +65,8 @@ class MatchEdit extends Component {
 
     const matchInfo = {
       ...matchFormInfo,
-      timeBegin: timeBegin ? timeBegin.format() : timeBegin,
-      timeEnd: timeEnd ? timeEnd.format() : timeEnd,
+      timeBegin: timeBegin.format(),
+      timeEnd: timeEnd.format(),
     };
 
     // matchInfo.category = matchInfo.category.indexes;

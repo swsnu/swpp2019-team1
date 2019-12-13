@@ -53,31 +53,48 @@ const Content = ({ children, extraContent }) => {
     </Row>
   );
 };
+
 class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      interestArray: ['Movie/SF', 'Movie/Comics', 'Study/Physics'],
+      valueList: [[], [], []],
+      isEdit: false,
     };
   }
 
   componentDidMount() {
     const { onGetUser, match } = this.props;
-    onGetUser(match.params.id);
+    onGetUser(match.params.id)
+      .then(() => {
+        const { selectedUser } = this.props;
+        this.setState({ valueList: selectedUser.interests });
+      })
+      .catch(() => {});
   }
 
-  onChangeInterest = (value, selectedOptions, i) => {
-    const { interestArray } = this.state;
-    interestArray[i] = selectedOptions.map(o => o.label).join('/');
+  onChangeInterest = index => value => {
+    const { valueList } = this.state;
+    valueList[index] = value;
     this.setState({
-      interestArray,
+      valueList,
     });
   };
 
+  onClickEditInterest = () => {
+    const { onEditInterest, currentUser } = this.props;
+    const { valueList, isEdit } = this.state;
+    if (isEdit) {
+      onEditInterest(currentUser.id, valueList);
+      this.setState({ isEdit: false });
+    } else this.setState({ isEdit: true });
+  };
+
   render() {
-    const { history, selectedUser } = this.props;
+    const { history, selectedUser, currentUser } = this.props;
     if (!selectedUser) return null;
-    const { interestArray } = this.state;
+    const { valueList, isEdit } = this.state;
+    const isEditable = !!currentUser && selectedUser.id === currentUser.id;
     return (
       <div className="UserProfile">
         <PageHeader
@@ -85,15 +102,16 @@ class UserProfile extends Component {
           style={{
             border: '1px solid rgb(235, 237, 240)',
           }}
-          // subTitle="cooper@caltech.edu"
           extra={[
-            <Button
-              key="1"
-              id="edit-profile-button"
-              onClick={() => history.push('/profile/edit')}
-            >
-              Edit
-            </Button>,
+            isEditable && (
+              <Button
+                key="1"
+                id="edit-profile-button"
+                onClick={() => history.push(`/profile/${currentUser.id}/edit`)}
+              >
+                Edit
+              </Button>
+            ),
           ]}
           avatar={{
             src: '/media/thumbnail/default-user.png',
@@ -117,8 +135,12 @@ class UserProfile extends Component {
               <TabPane tab="Interests" key="2">
                 <Typography.Paragraph />
                 <Interests
-                  interestArray={interestArray}
+                  isEdit={isEdit}
+                  isEditable={isEditable}
+                  buttonText={isEdit ? 'Confirm' : 'Edit'}
+                  onClickButton={this.onClickEditInterest}
                   onChangeInterest={this.onChangeInterest}
+                  valueList={valueList}
                 />
               </TabPane>
             </Tabs>
@@ -137,15 +159,19 @@ class UserProfile extends Component {
 const mapStateToProps = state => {
   return {
     selectedUser: state.user.selectedUser,
+    currentUser: state.user.currentUser,
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
     onGetUser: id => dispatch(actionCreators.getUser(id)),
+    onEditInterest: (id, valueList) =>
+      dispatch(actionCreators.editInterest(id, valueList)),
   };
 };
 UserProfile.propTypes = {
   selectedUser: PropTypes.shape({
+    id: PropTypes.number.isRequired,
     email: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     firstName: PropTypes.string.isRequired,
@@ -162,13 +188,20 @@ UserProfile.propTypes = {
         timeEnd: momentPropTypes.momentObj,
       }),
     ),
+    interests: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number))
+      .isRequired,
+  }),
+  currentUser: PropTypes.shape({
+    id: PropTypes.number.isRequired,
   }),
   history: ReactRouterPropTypes.history.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
   onGetUser: PropTypes.func.isRequired,
+  onEditInterest: PropTypes.func.isRequired,
 };
 UserProfile.defaultProps = {
   selectedUser: null,
+  currentUser: null,
 };
 export default connect(
   mapStateToProps,

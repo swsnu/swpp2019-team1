@@ -61,7 +61,7 @@ class SignUp extends Component {
           phoneNumber={phoneNumber}
           gender={gender}
           birthdate={birthdate}
-          clickSignUp={this.clickSignUpHandler}
+          clickSubmit={this.clickSignUpHandler}
         />
       </div>
     );
