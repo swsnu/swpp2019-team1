@@ -10,6 +10,8 @@ import * as actionCreators from '../../../store/actions/index';
 import Interests from '../../../components/User/Interests/Interests';
 import ScheduleCalendar from '../../../components/User/Schedule/ScheduleCalendar';
 
+import './UserProfile.css';
+
 const { TabPane } = Tabs;
 const { Item } = Descriptions;
 const renderContent = user => (
@@ -31,7 +33,7 @@ const renderContent = user => (
 const routes = [
   {
     path: 'index',
-    breadcrumbName: 'Profile',
+    // breadcrumbName: 'Profile',
   },
 ];
 
@@ -99,9 +101,9 @@ class UserProfile extends Component {
       <div className="UserProfile">
         <PageHeader
           title={selectedUser.username}
-          style={{
-            border: '1px solid rgb(235, 237, 240)',
-          }}
+          // style={{
+          //   border: '1px solid rgb(235, 237, 240)',
+          // }}
           extra={[
             isEditable && (
               <Button
@@ -124,8 +126,8 @@ class UserProfile extends Component {
                   <ScheduleCalendar
                     style={{
                       width: 1000,
-                      border: '1px solid #d9d9d9',
-                      borderRadius: 4,
+                      border: '1px solid #7c5a5a',
+                      borderRadius: 6,
                       display: 'flex',
                     }}
                     schedule={selectedUser.schedule}
