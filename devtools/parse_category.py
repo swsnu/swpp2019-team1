@@ -36,10 +36,9 @@ def sql_rec(categories, prev):
     ''' recursive function for generating sql script '''
     for idx, ctg in enumerate(categories):
         indexes = str(idx) if prev == '' else (prev + ',' + str(idx))
-        if categories[ctg] == {}:
-            print('INSERT INTO matchmaker_category(name, indexes) VALUES ("' +
-                  ctg + '", "' + indexes + '");')
-        else:
+        print('INSERT INTO matchmaker_category(name, indexes) VALUES ("' +
+              ctg + '", "' + indexes + '");')
+        if categories[ctg] != {}:
             sql_rec(categories[ctg], indexes)
 
 
