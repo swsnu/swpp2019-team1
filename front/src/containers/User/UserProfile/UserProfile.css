@@ -1,0 +1,83 @@
+/* .ant-breadcrumb {
+  font-size: 30px;
+  text-align: center;
+  margin-top: 5px;
+} */
+
+.ant-breadcrumb + .ant-page-header-heading {
+  margin-top: 20px;
+}
+.ant-page-header-heading-title {
+  font-size: 30px;
+}
+
+#edit-profile-button {
+  font-size: 25px;
+  width: 100px;
+  height: 40px;
+}
+
+.ant-descriptions-item-label {
+  font-size: 25px;
+  font-weight: bold;
+}
+.ant-descriptions-item-content {
+  font-size: 25px;
+}
+.ant-descriptions-item {
+  margin: 30px;
+}
+
+.ant-descriptions-item-colon::after {
+  content: '';
+}
+
+.ant-page-header-footer .ant-tabs-bar .ant-tabs-nav .ant-tabs-tab {
+  font-size: 30px;
+}
+.ant-tabs-ink-bar {
+  height: 4px;
+}
+/* 
+.ant-fullcalendar-fullscreen {
+  margin-top: 10px;
+} */
+.ant-fullcalendar-value {
+  font-size: 20px;
+}
+.ant-fullcalendar-column-header-inner {
+  font-size: 25px;
+}
+
+.ant-fullcalendar-calendar-body {
+  margin-top: 10px;
+}
+
+.ant-select-selection-selected-value {
+  font-size: 25px;
+}
+
+.ant-select-selection {
+  width: 110px;
+}
+.ant-fullcalendar-fullscreen .ant-fullcalendar-month,
+.ant-fullcalendar-fullscreen .ant-fullcalendar-date {
+  border-top: 2px solid #7c5a5a;
+}
+
+.Interests {
+  font-size: 30px;
+  /* padding-bottom: 20px; */
+}
+
+button {
+  /* position: absolute;
+  left: 200px;
+  margin-bottom: 10px;
+  height: 40px; */
+  font-size: 20px;
+}
+
+.UserProfile {
+  padding: 20px 30px;
+}
