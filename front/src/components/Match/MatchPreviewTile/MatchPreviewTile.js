@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Card } from 'antd';
+import './MatchPreviewTile.css';
 
 const { Meta } = Card;
 
@@ -14,7 +15,11 @@ const MatchPreviewTile = props => {
       hoverable
       title={match.title}
       style={{ width: 240 }}
-      cover={<img alt="noPic" src={match.matchThumbnail} />}
+      cover={
+        <div className="Tile-Cover">
+          <img alt="noPic" src={match.matchThumbnail} />
+        </div>
+      }
       onClick={clickHandler}
     >
       <p>Host: {match.hostUser.username}</p>
