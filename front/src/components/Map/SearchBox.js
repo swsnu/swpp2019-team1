@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class SearchBox extends Component {
@@ -35,13 +34,12 @@ class SearchBox extends Component {
 
   render() {
     const { placeholder } = this.props;
-
     return (
       <div className="SearchBox">
         <input
           id="search-box-input"
           ref={this.searchInput}
-          placeholder={placeholder === '' ? 'Search' : placeholder}
+          placeholder={!placeholder ? 'Search' : placeholder}
           type="text"
           style={{
             width: '300px',
@@ -68,16 +66,8 @@ SearchBox.propTypes = {
 };
 
 SearchBox.defaultProps = {
-  placeholder: 'Search...',
+  placeholder: undefined,
   onPlacesChanged: null,
 };
 
-const mapStateToProps = state => {
-  return {
-    placeholder: state.match.location,
-  };
-};
-export default connect(
-  mapStateToProps,
-  null,
-)(SearchBox);
+export default SearchBox;
