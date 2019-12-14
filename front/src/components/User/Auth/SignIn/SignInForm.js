@@ -61,6 +61,7 @@ const SignInForm = ({
                   <Icon
                     className="icon"
                     type="lock"
+                    id="icon-password"
                     style={{ color: 'rgba(0,0,0,.25)' }}
                   />
                 }

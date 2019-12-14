@@ -35,10 +35,10 @@
   font-size: 20px;
 }
 .SignInFormItem {
-  margin-bottom: -5px;
+  margin-bottom: 25px;
 }
 .SignInForm .ant-form-item {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 .ant-input-prefix {
   top: 25px !important;
@@ -51,4 +51,8 @@
 
 .SignInFormItem .ant-input-affix-wrapper {
   height: 50px;
+}
+
+#icon-password {
+  margin-top: 20px;
 }
