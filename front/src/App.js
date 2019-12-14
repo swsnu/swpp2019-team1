@@ -20,9 +20,10 @@ import UserProfileEdit from './containers/User/UserProfile/UserProfileEdit/UserP
 function App(props) {
   const { history } = props;
   return (
-    <div className="App" style={{ backgroundColor: 'powderblue' }}>
+    <div className="App">
       <ConnectedRouter history={history}>
         <Header />
+        <div className="extra" />
         <Switch>
           <Route path="/home" exact component={HomePage} />
           <Route path="/search" exact component={Search} />
@@ -35,7 +36,8 @@ function App(props) {
           <Route path="/profile/:id/edit" exact component={UserProfileEdit} />
           <Redirect from="/" to="/home" />
         </Switch>
-        <div style={{ backgroundColor: 'powderblue', padding: 50 }} />
+        <div className="extra" />
+        <div className="extra" />
         <Footer />
       </ConnectedRouter>
     </div>

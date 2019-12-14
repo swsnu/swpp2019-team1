@@ -90,7 +90,7 @@ class HomePage extends Component {
           <div
             className="Home-create-message"
             style={{
-              color: 'green',
+              color: '',
             }}
           >
             Make Your Own Match
@@ -107,7 +107,6 @@ class HomePage extends Component {
           <div className="Home-create-input">
             <View
               style={{
-                borderColor: 'blue',
                 borderWidth: 4,
                 borderRadius: 10,
                 width: 500,
@@ -128,7 +127,7 @@ class HomePage extends Component {
                 editable
                 maxLength={800}
                 placeholder="Tell us about your Match!"
-                placeholderTextColor="blue"
+                placeholderTextColor="lightpurple"
               />
             </View>
           </div>

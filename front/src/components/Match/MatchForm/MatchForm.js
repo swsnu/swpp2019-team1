@@ -131,8 +131,7 @@ const MatchForm = ({
                       setFieldValue('timeBegin', date);
                     }}
                   />
-                </Form.Item>
-                <Form.Item name="timeEnd" hasFeedback>
+                  &nbsp;~&nbsp;
                   <DatePicker
                     name="timeEnd"
                     disabledDate={value => disableDate(values.timeBegin, value)}
