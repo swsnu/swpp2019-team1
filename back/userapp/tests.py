@@ -6,6 +6,7 @@ from django.test import TestCase, Client
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from matchmaker.models import Match, Category, Participation, Interest
+from .views import default_profile
 
 USER = get_user_model()
 
@@ -285,3 +286,13 @@ class UserappTestCase(TestCase):
                               content_type='application/json',
                               HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
+
+    def test_default_profile(self):
+        ''' test default_profile function '''
+        data = {'profile_picture': None}
+        default_profile(data)
+        self.assertEqual(
+            data['profile_picture'], "https://t1matchmaker.ml/media/profile/default-user.png")
+        default_profile(data)
+        self.assertEqual(
+            data['profile_picture'], "https://t1matchmaker.ml/media/profile/default-user.png")

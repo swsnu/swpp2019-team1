@@ -88,8 +88,8 @@ const MatchForm = ({
                 <Cascader
                   name="category"
                   options={categories}
-                  expandTrigger="hover"
                   defaultValue={category}
+                  changeOnSelect
                   onChange={value => {
                     setFieldValue('category', value);
                   }}

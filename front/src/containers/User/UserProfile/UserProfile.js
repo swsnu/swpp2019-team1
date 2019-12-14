@@ -116,7 +116,7 @@ class UserProfile extends Component {
             ),
           ]}
           avatar={{
-            src: '/media/thumbnail/default-user.png',
+            src: selectedUser.profilePicture,
           }}
           breadcrumb={{ routes }}
           footer={
@@ -179,6 +179,7 @@ UserProfile.propTypes = {
     firstName: PropTypes.string.isRequired,
     lastName: PropTypes.string.isRequired,
     phoneNumber: PropTypes.string.isRequired,
+    profilePicture: PropTypes.string.isRequired,
     gender: PropTypes.bool,
     birthdate: PropTypes.string.isRequired,
     message: PropTypes.string,
