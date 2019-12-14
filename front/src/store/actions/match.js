@@ -208,7 +208,7 @@ const sendNlpTextAction = (category, location, title, nlpText) => {
   return {
     type: actionTypes.SEND_NLP_TEXT,
     category: convertCategoryToArray(category),
-    location,
+    locationText: location,
     title,
     additionalInfo: nlpText,
   };

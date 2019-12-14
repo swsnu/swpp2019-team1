@@ -19,7 +19,15 @@ describe('<GoogleMap />', () => {
   const stubMarker = jest.fn(() => ({
     setMap: jest.fn(() => {}),
   }));
-  const stubMapsApi = { Marker: stubMarker };
+  const stubFindPlaceFromQuery = jest.fn();
+  const stubMapsApi = {
+    Marker: stubMarker,
+    places: {
+      PlacesService: jest.fn(() => ({
+        findPlaceFromQuery: stubFindPlaceFromQuery,
+      })),
+    },
+  };
   let testPlaces;
   let googleMap;
   let googleMapInForm;
@@ -76,17 +84,17 @@ describe('<GoogleMap />', () => {
       map: stubMapInstance,
       maps: stubMapsApi,
     });
-    expect(stubMarker).toHaveBeenCalledTimes(1);
+    expect(stubFindPlaceFromQuery).toHaveBeenCalledTimes(1);
     component.instance().onPlacesChanged(testPlaces);
-    expect(stubMarker).toHaveBeenCalledTimes(2);
+    expect(stubMarker).toHaveBeenCalledTimes(1);
 
     testPlaces[0].geometry.viewport = {};
     component.instance().onPlacesChanged(testPlaces);
-    expect(stubMarker).toHaveBeenCalledTimes(3);
+    expect(stubMarker).toHaveBeenCalledTimes(2);
 
     testPlaces[0].geometry = null;
     component.instance().onPlacesChanged(testPlaces);
-    expect(stubMarker).toHaveBeenCalledTimes(3);
+    expect(stubMarker).toHaveBeenCalledTimes(2);
   });
 
   it('should not call setMap when marker is null', () => {
@@ -96,10 +104,10 @@ describe('<GoogleMap />', () => {
       map: stubMapInstance,
       maps: stubMapsApi,
     });
-    expect(stubMarker).toHaveBeenCalledTimes(1);
+    expect(stubFindPlaceFromQuery).toHaveBeenCalledTimes(1);
     component.instance().setState({ marker: null });
     component.instance().onPlacesChanged(testPlaces);
-    expect(stubMarker).toHaveBeenCalledTimes(2);
+    expect(stubMarker).toHaveBeenCalledTimes(1);
   });
 
   it('should call setFieldValue when map is in form', () => {
