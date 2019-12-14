@@ -34,11 +34,17 @@ class MatchDetail extends Component {
   clickJoinHandler = () => {
     const { match, onJoinMatch } = this.props;
     onJoinMatch(match.params.id);
+    window.location.reload();
   };
 
   clickQuitHandler = () => {
     const { match, onQuitMatch } = this.props;
     onQuitMatch(match.params.id);
+  };
+
+  clickChatRoomHandler = () => {
+    const { match, onClickChatRoom } = this.props;
+    onClickChatRoom(match.params.id);
   };
 
   renderCapacity = (numParticipants, capacity) => {
@@ -68,18 +74,24 @@ class MatchDetail extends Component {
   };
 
   renderButtons = (selected, userid) => {
-    if (selected.hostUser.id === userid)
+    if (selected.participants.includes(userid))
       return (
         <div className="HostButtons">
-          <Button type="primary" id="enter-chatroom-button">
+          <Button
+            type="primary"
+            id="enter-chatroom-button"
+            onClick={this.clickChatRoomHandler}
+          >
             Enter Chatroom
           </Button>
-          <Button
-            id="edit-match-button"
-            onClick={() => this.clickEditHandler()}
-          >
-            Edit
-          </Button>
+          {selected.hostUser.id === userid && (
+            <Button
+              id="edit-match-button"
+              onClick={() => this.clickEditHandler()}
+            >
+              Edit
+            </Button>
+          )}
         </div>
       );
     return (
@@ -202,6 +214,7 @@ const mapDispatchToProps = dispatch => {
     onJoinMatch: mid => dispatch(actionCreators.joinMatch(mid)),
     onQuitMatch: mid => dispatch(actionCreators.quitMatch(mid)),
     onUserProfile: uid => dispatch(push(`/profile/${uid}`)),
+    onClickChatRoom: mid => dispatch(push(`/match/${mid}/chatroom`)),
   };
 };
 
@@ -213,6 +226,7 @@ MatchDetail.propTypes = {
       id: PropTypes.number.isRequired,
       username: PropTypes.string.isRequired,
     }).isRequired,
+    participants: PropTypes.arrayOf(PropTypes.number),
   }),
   currentUser: PropTypes.shape({
     id: PropTypes.number.isRequired,

@@ -29,6 +29,7 @@ export const signIn = signInInfo => {
         );
         dispatch(signInAction(data.user));
         dispatch(push('/home'));
+        sessionStorage.setItem('token', data.token);
       })
       .catch(() => {
         message.error('Wrong email or password');

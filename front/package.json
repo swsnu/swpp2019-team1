@@ -39,6 +39,8 @@
     "redux-thunk": "^2.3.0",
     "serialize-javascript": "^2.1.1",
     "sf": "^0.2.0",
+    "stream-chat": "^1.2.1",
+    "stream-chat-react": "^0.7.14",
     "typescript": "^3.7.3",
     "yup": "^0.27.0"
   },

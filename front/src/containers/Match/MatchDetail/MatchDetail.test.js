@@ -53,6 +53,7 @@ const stubMatch = {
     restrictToMale: false,
     restrictToFemale: false,
     numParticipants: 1,
+    participants: [1],
   },
 };
 
@@ -84,6 +85,7 @@ const stubMatchRestrictMale = {
     restrictToMale: true,
     restrictToFemale: false,
     numParticipants: 2,
+    participants: [1],
   },
 };
 
@@ -115,6 +117,7 @@ const stubMatchRestrictFemale = {
     restrictToMale: false,
     restrictToFemale: true,
     numParticipants: 1,
+    participants: [1],
   },
 };
 const stubMatchUndef = {
@@ -138,6 +141,7 @@ describe('<MatchDetail />', () => {
   let spyJoinMatch;
   let spyQuitMatch;
   beforeEach(() => {
+    jest.spyOn(window.location, 'reload').mockImplementation(() => {});
     const matchParams = {
       params: { id: 1 },
       path: '/match/:id/',
@@ -271,6 +275,16 @@ describe('<MatchDetail />', () => {
     const wrapper = component.find('#edit-match-button').at(0);
     wrapper.simulate('click');
     expect(spyHistoryPush).toHaveBeenCalledWith('/match/1/edit');
+  });
+
+  it('should redirected to chat room page when host clicked', () => {
+    const spyHistoryPush = jest
+      .spyOn(history, 'push')
+      .mockImplementation(() => {});
+    const component = mount(matchDetail);
+    const wrapper = component.find('#enter-chatroom-button').at(0);
+    wrapper.simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/match/1/chatroom');
   });
 
   it('should redirected to user profile page when host clicked', () => {

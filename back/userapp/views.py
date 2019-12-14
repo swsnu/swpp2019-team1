@@ -1,6 +1,5 @@
 ''' custom user views '''
 import json
-
 from django.contrib.auth import get_user_model
 from django.contrib import auth
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseNotFound, JsonResponse
@@ -10,7 +9,7 @@ from django.shortcuts import get_object_or_404
 from djangorestframework_camel_case.parser import CamelCaseJSONParser
 from djangorestframework_camel_case.render import CamelCaseJSONRenderer
 
-from userapp.serializers import UserSerializer
+from userapp.serializers import UserSerializer, StreamTokenSerializer
 
 from matchmaker.models import Match, Participation, Interest, Category
 from matchmaker.serializers import MatchSerializer, CategorySerializer
@@ -39,9 +38,8 @@ def sign_up(request):
         data = CamelCaseJSONParser().parse(request)
         serializer = UserSerializer(data=data)
         if serializer.is_valid():
-            user = serializer.create(data)
-            auth.login(request, user)
             # 200
+            serializer.create(data)
             return JsonResponse(serializer.data, status=201)
         # 400
         return JsonResponse(serializer.data, status=400)
@@ -64,7 +62,8 @@ def sign_in(request):
             default_profile(rdata)
             response = json.loads(
                 CamelCaseJSONRenderer().render(rdata))
-            return JsonResponse({'user': response}, status=200)
+            chat_token = StreamTokenSerializer().get_stream_token(obj=request)
+            return JsonResponse({'user': response, 'token': chat_token}, status=200)
         return HttpResponse(status=400)
     # 405
     return HttpResponseNotAllowed(['POST'])
@@ -81,9 +80,10 @@ def sign_out(request):
     # 405
     return HttpResponseNotAllowed(['POST'])
 
-#pylint: disable=too-many-locals
+# pylint: disable=too-many-locals
 
 
+@ensure_csrf_cookie
 def user_detail(request, user_id):
     ''' user detail '''
     try:
@@ -121,6 +121,7 @@ def user_detail(request, user_id):
         serializer = UserSerializer(user, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            auth.login(request, user)
             response = json.loads(
                 CamelCaseJSONRenderer().render(serializer.data))
             return JsonResponse(response)

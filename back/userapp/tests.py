@@ -246,6 +246,7 @@ class UserappTestCase(TestCase):
                                 content_type='application/json',
                                 HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
+        csrftoken = response.cookies['csrftoken'].value
         # patch user password
         response = client.patch(f'/api/user/{test_user.id}/',
                                 json.dumps(

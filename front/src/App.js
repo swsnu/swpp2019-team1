@@ -16,6 +16,7 @@ import SignIn from './containers/User/Auth/SignIn/SignIn';
 import SignUp from './containers/User/Auth/SignUp/SignUp';
 import UserProfile from './containers/User/UserProfile/UserProfile';
 import UserProfileEdit from './containers/User/UserProfile/UserProfileEdit/UserProfileEdit';
+import ChatRoom from './containers/ChatRoom/ChatRoom';
 
 function App(props) {
   const { history } = props;
@@ -30,6 +31,7 @@ function App(props) {
           <Route path="/match/create" exact component={MatchCreate} />
           <Route path="/match/:id/edit" exact component={MatchEdit} />
           <Route path="/match/:id" exact component={MatchDetail} />
+          <Route path="/match/:id/chatroom" exact component={ChatRoom} />
           <Route path="/signin" exact component={SignIn} />
           <Route path="/signup" exact component={SignUp} />
           <Route path="/profile/:id" exact component={UserProfile} />
