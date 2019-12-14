@@ -297,6 +297,13 @@ describe('<MatchDetail />', () => {
     expect(spyHistoryPush).toHaveBeenCalledWith('/profile/1');
   });
 
+  it('should call quitMatch when quit button clicked', () => {
+    const component = mount(matchDetail);
+    const wrapper = component.find('#quit-match-button').at(0);
+    wrapper.simulate('click');
+    expect(spyQuitMatch).toBeCalledTimes(1);
+  });
+
   it('should call joinMatch when join button clicked', () => {
     const component = mount(matchDetailNotHost);
     let wrapper = component.find('#join-match-button').at(0);
@@ -306,13 +313,6 @@ describe('<MatchDetail />', () => {
     // expect(wrapper.text()).toBe('calendar_today09:35AM, 7th 11 2019storefront');
     wrapper = component.find('#detail-capacity');
     expect(wrapper.text()).toBe('person1/2');
-  });
-
-  it('should call quitMatch when quit button clicked', () => {
-    const component = mount(matchDetailNotHost);
-    const wrapper = component.find('#quit-match-button').at(0);
-    wrapper.simulate('click');
-    expect(spyQuitMatch).toBeCalledTimes(1);
   });
 
   it('should render appropriately at different inputs', () => {

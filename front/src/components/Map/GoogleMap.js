@@ -24,13 +24,18 @@ class GoogleMap extends Component {
       mapInstance: map,
       mapsApi: maps,
     });
-    const { center, locationText } = this.props;
-    const marker = new maps.Marker({
-      position: center,
-      map,
-      title: locationText,
+    const { locationText } = this.props;
+    const service = new maps.places.PlacesService(map);
+    const request = {
+      query: locationText,
+      fields: ['name', 'geometry'],
+    };
+    service.findPlaceFromQuery(request, (results, status) => {
+      if (status === maps.places.PlacesServiceStatus.OK) {
+        this.renderMarkers(results);
+        this.renderMap(results);
+      }
     });
-    this.setState({ marker });
   };
 
   renderMarkers = places => {

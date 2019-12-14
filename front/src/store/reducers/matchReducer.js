@@ -60,7 +60,7 @@ const matchReducer = (state, action) => {
       return {
         ...state,
         category: action.category,
-        location: action.location,
+        locationText: action.locationText,
         title: action.title,
         additionalInfo: action.additionalInfo,
       };
