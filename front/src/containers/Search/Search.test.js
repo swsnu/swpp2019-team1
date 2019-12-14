@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch } from 'react-router-dom';
+import { Cascader } from 'antd';
 
 import Search from './Search';
 import getMockStore from '../../test-utils/getMockStore';
@@ -79,19 +80,30 @@ describe('<Search />', () => {
         return () => {};
       });
     const component = mount(search);
-
+    const categoryOption = {
+      value: [1, 0],
+      selectedOptions: [
+        { value: 1, label: 'Arts & Entertainment', children: Array(14) },
+        { value: 0, label: 'other*' },
+      ],
+    };
     const query = 'query';
-    const time = 'time';
-    const location = 'location';
     let wrapper = component.find('#search-general-query-field');
     wrapper.simulate('change', { target: { value: query } });
-    wrapper = component.find('#search-time-field');
-    wrapper.simulate('change', { target: { value: time } });
-    wrapper = component.find('#search-location-field');
-    wrapper.simulate('change', { target: { value: location } });
-    wrapper = component.find('#search-button');
+    wrapper = component.find(Cascader);
+    wrapper.prop('onChange')(
+      categoryOption.value,
+      categoryOption.selectedOptions,
+    );
+    wrapper.simulate(
+      'change',
+      categoryOption.value,
+      categoryOption.selectedOptions,
+    );
+
+    wrapper = component.find('#search-button').at(1);
     wrapper.simulate('click');
-    expect(spySearchMatch).toHaveBeenCalledWith(query, time, location);
+    expect(spySearchMatch).toHaveBeenCalledTimes(1);
   });
 
   it('should redirect to match detail when match clicked', () => {

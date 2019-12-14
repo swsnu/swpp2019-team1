@@ -483,8 +483,7 @@ describe('ActionMatch', () => {
 
   it(`'searchMatch' with query should display proper result`, done => {
     const query = 'query';
-    const time = 'time';
-    const location = 'location';
+    const category = [1, 1];
     const spy = jest.spyOn(axios, 'get').mockImplementation(() => {
       return new Promise(resolve => {
         const result = {
@@ -495,23 +494,20 @@ describe('ActionMatch', () => {
       });
     });
 
-    store
-      .dispatch(actionCreators.searchMatch(query, time, location))
-      .then(() => {
-        const newState = store.getState();
-        expect(newState.match.searchResult.length).toBe(2);
-        expect(spy).toHaveBeenCalledTimes(1);
-        expect(spy).toBeCalledWith(
-          `/api/match/search?query=${query}&time=${time}&loc=${location}`,
-        );
-        done();
-      });
+    store.dispatch(actionCreators.searchMatch(query, category)).then(() => {
+      const newState = store.getState();
+      expect(newState.match.searchResult.length).toBe(2);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toBeCalledWith(
+        `/api/match/search?query=${query}&category=1,1`,
+      );
+      done();
+    });
   });
 
   it(`'searchMatch' should handle error correctly`, done => {
     const query = 'query';
-    const time = 'time';
-    const location = 'location';
+    const category = null;
     const spyGet = jest.spyOn(axios, 'get').mockImplementation(() => {
       return new Promise((_resolve, reject) => {
         const dummyError = {};
@@ -521,12 +517,10 @@ describe('ActionMatch', () => {
     const spyMessageError = jest
       .spyOn(message, 'error')
       .mockImplementation(() => {});
-    store
-      .dispatch(actionCreators.searchMatch(query, time, location))
-      .then(() => {
-        expect(spyGet).toHaveBeenCalledTimes(1);
-        expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
-        done();
-      });
+    store.dispatch(actionCreators.searchMatch(query, category)).then(() => {
+      expect(spyGet).toHaveBeenCalledTimes(1);
+      expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
+      done();
+    });
   });
 });

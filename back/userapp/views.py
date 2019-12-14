@@ -74,6 +74,8 @@ def sign_out(request):
     return HttpResponseNotAllowed(['POST'])
 
 #pylint: disable=too-many-locals
+
+
 def user_detail(request, user_id):
     ''' user detail '''
     try:
@@ -125,9 +127,7 @@ def user_interest(request, user_id):
         if request.user.is_authenticated and user_id == request.user.id:
             data = CamelCaseJSONParser().parse(request)
             request.user.interest_user.all().delete()
-            print(data)
             for indexes in data:
-                print(indexes)
                 if indexes is not None and indexes != []:
                     category = get_object_or_404(Category, indexes=indexes)
                     Interest.objects.create(

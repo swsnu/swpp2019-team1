@@ -5,6 +5,8 @@ import moment from 'moment';
 import * as actionTypes from './actionTypes';
 import { categories } from '../staticData/categories';
 
+import { generateQuery } from '../tools/functions';
+
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 
@@ -325,17 +327,8 @@ const searchMatchAction = searchResult => {
   return { type: actionTypes.SEARCH_MATCH, searchResult };
 };
 
-export const searchMatch = (query, time, location) => {
-  let parameter = ``;
-  if (query) {
-    parameter += `?query=${query}`;
-  }
-  if (time) {
-    parameter += `&time=${time}`;
-  }
-  if (location) {
-    parameter += `&loc=${location}`;
-  }
+export const searchMatch = (query, category) => {
+  const parameter = generateQuery(query, category);
   return dispatch => {
     return (
       axios

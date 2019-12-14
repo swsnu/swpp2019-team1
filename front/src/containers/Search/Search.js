@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
-import { Col } from 'antd';
+import { Col, Cascader, Icon, Button } from 'antd';
 import PropTypes from 'prop-types';
 
+import { categories } from '../../store/staticData/categories';
 import * as actionCreators from '../../store/actions/index';
 import MatchPreviewTile from '../../components/Match/MatchPreviewTile/MatchPreviewTile';
+import './Search.css';
 
 class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
       query: '',
-      time: '',
-      location: '',
+      category: [],
     };
   }
 
@@ -34,7 +35,7 @@ class Search extends Component {
 
   render() {
     const { searchResult, onClickSearch } = this.props;
-    const { query, time, location } = this.state;
+    const { query, category } = this.state;
     let componentSearchResult = searchResult.map(this.matchToComponent);
     if (componentSearchResult.length === 0) {
       componentSearchResult = 'No Result';
@@ -42,28 +43,39 @@ class Search extends Component {
     return (
       <div className="Search">
         <div className="SearchOption">
+          <div className="SearchTitleText">Search</div>
           <input
             id="search-general-query-field"
+            placeholder="ex) Study"
             value={query}
             onChange={event => this.setState({ query: event.target.value })}
           />
-          <input
-            id="search-time-field"
-            value={time}
-            onChange={event => this.setState({ time: event.target.value })}
-          />
-          <input
-            id="search-location-field"
-            value={location}
-            onChange={event => this.setState({ location: event.target.value })}
-          />
-          <button
-            type="submit"
-            id="search-button"
-            onClick={() => onClickSearch(query, time, location)}
-          >
-            Search
-          </button>
+          <div className="Set-Category">
+            <Cascader
+              name="category"
+              options={categories}
+              expandTrigger="hover"
+              defaultValue={[]}
+              placeholder="Category"
+              onChange={value => {
+                this.setState({
+                  category: value,
+                });
+              }}
+            />
+            <Button
+              id="search-button"
+              type="submit"
+              block
+              size="large"
+              onClick={() => {
+                onClickSearch(query, category);
+              }}
+            >
+              <Icon type="search" />
+              Search
+            </Button>
+          </div>
         </div>
         <div className="SearchResult">{componentSearchResult}</div>
       </div>
@@ -94,8 +106,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onClickSearch: (query, time, location) =>
-      dispatch(actionCreators.searchMatch(query, time, location)),
+    onClickSearch: (query, category) =>
+      dispatch(actionCreators.searchMatch(query, category)),
     onClickMatch: mid => dispatch(push(`/match/${mid}`)),
   };
 };
