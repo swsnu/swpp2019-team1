@@ -138,7 +138,7 @@ export const editUser = (id, userInfo) => {
       .patch(`/api/user/${id}/`, userInfo)
       .then(() => {
         dispatch(editUserAction(userInfo));
-        dispatch(push(`/profile/:${id}`));
+        dispatch(push(`/profile/${id}`));
       })
       .catch(error => {
         // TODO: error handling
