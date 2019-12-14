@@ -100,6 +100,7 @@ describe('<UserProfile />', () => {
   let spyGet;
   let spyHistoryPush;
   beforeEach(() => {
+    jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
     spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(() => {});
     const userParams = {
       params: { id: 1 },
@@ -172,6 +173,7 @@ describe('<UserProfile />', () => {
         resolve(result);
       });
     });
+    jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
   });
   afterEach(() => {
     jest.clearAllMocks();

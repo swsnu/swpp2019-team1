@@ -19,6 +19,7 @@ class HomePage extends Component {
 
   async componentDidMount() {
     const { getHotMatch, getNewMatch, getRecommendMatch } = this.props;
+    window.scrollTo(0, 0);
     getHotMatch();
     getNewMatch();
     await new Promise(resolve => setTimeout(resolve, 50));

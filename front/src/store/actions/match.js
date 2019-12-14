@@ -281,8 +281,7 @@ export const joinMatch = id => {
           console.log('Error', error.message);
         } */
           // console.log(error.config);
-          message.error('Log in!');
-          dispatch(push('/signin'));
+          message.error('Error!');
         })
     );
   };

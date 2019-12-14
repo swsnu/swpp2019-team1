@@ -10,6 +10,10 @@ const stubInitUser = {
   currentUser: null,
   selectedUser: null,
 };
+const stubInitNoUser = {
+  currentUser: { id: 1 },
+  selectedUser: null,
+};
 const stubInitMatch = {
   hot: [],
   new: [],
@@ -19,11 +23,20 @@ const stubInitMatch = {
   title: '',
 };
 const mockStore = getMockStore(stubInitUser, stubInitMatch);
+const mockStoreNoUser = getMockStore(stubInitNoUser, stubInitMatch);
 
 describe('App', () => {
+  beforeEach(() => {
+    jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
+  });
   it('should render', async () => {
     const app = (
       <Provider store={mockStore}>
+        <App history={history} />
+      </Provider>
+    );
+    const appNoUser = (
+      <Provider store={mockStoreNoUser}>
         <App history={history} />
       </Provider>
     );
@@ -32,5 +45,11 @@ describe('App', () => {
 
     expect(component.find('.App').length).toBe(1);
     expect(component.find('.HomePage').length).toBe(1);
+
+    const componentNoUser = mount(appNoUser);
+    await new Promise(resolve => setTimeout(resolve, 100)).catch(() => {});
+
+    expect(componentNoUser.find('.App').length).toBe(1);
+    expect(componentNoUser.find('.HomePage').length).toBe(1);
   });
 });

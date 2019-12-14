@@ -93,6 +93,7 @@ describe('<MatchEdit />', () => {
       .mockImplementation(() => {
         return () => {};
       });
+    jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
   });
 
   it('should render without errors', async () => {

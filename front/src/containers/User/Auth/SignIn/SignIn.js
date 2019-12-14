@@ -16,6 +16,10 @@ class SignIn extends Component {
     };
   }
 
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
   clickSignInHandler = async values => {
     const { onSignIn } = this.props;
     await this.setState({ ...values });

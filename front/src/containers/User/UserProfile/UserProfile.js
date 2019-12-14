@@ -67,6 +67,7 @@ class UserProfile extends Component {
 
   componentDidMount() {
     const { onGetUser, match } = this.props;
+    window.scrollTo(0, 0);
     onGetUser(match.params.id)
       .then(() => {
         const { selectedUser } = this.props;

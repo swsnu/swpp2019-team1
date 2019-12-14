@@ -46,6 +46,7 @@ describe('<Search />', () => {
         </ConnectedRouter>
       </Provider>
     );
+    jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
   });
 
   afterEach(() => {

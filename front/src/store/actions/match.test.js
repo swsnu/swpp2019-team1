@@ -416,7 +416,7 @@ describe('ActionMatch', () => {
       .mockImplementation(() => {});
     store.dispatch(actionCreators.joinMatch(stubMatchPk)).then(() => {
       expect(spyPost).toHaveBeenCalledTimes(1);
-      expect(spyMessageError).toHaveBeenCalledWith('Log in!');
+      expect(spyMessageError).toHaveBeenCalledWith('Error!');
       done();
     });
   });

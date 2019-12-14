@@ -18,6 +18,7 @@ class MatchDetail extends Component {
 
   componentDidMount() {
     const { match, onGetMatch } = this.props;
+    window.scrollTo(0, 0);
     onGetMatch(match.params.id);
   }
 
@@ -32,7 +33,8 @@ class MatchDetail extends Component {
   };
 
   clickJoinHandler = () => {
-    const { match, onJoinMatch } = this.props;
+    const { match, onJoinMatch, currentUser, onGoSignIn } = this.props;
+    if (currentUser === null) onGoSignIn();
     onJoinMatch(match.params.id);
     window.location.reload();
   };
@@ -221,6 +223,7 @@ const mapDispatchToProps = dispatch => {
     onQuitMatch: mid => dispatch(actionCreators.quitMatch(mid)),
     onUserProfile: uid => dispatch(push(`/profile/${uid}`)),
     onClickChatRoom: mid => dispatch(push(`/match/${mid}/chatroom`)),
+    onGoSignIn: () => dispatch(push('/signin')),
   };
 };
 
@@ -242,6 +245,7 @@ MatchDetail.propTypes = {
   onQuitMatch: PropTypes.func.isRequired,
   onEditMatch: PropTypes.func.isRequired,
   onUserProfile: PropTypes.func.isRequired,
+  onGoSignIn: PropTypes.func.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
 };
 MatchDetail.defaultProps = { selected: undefined, currentUser: null };

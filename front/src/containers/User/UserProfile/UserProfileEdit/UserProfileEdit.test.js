@@ -66,6 +66,7 @@ describe('<UserProfileEdit />', () => {
         </ConnectedRouter>
       </Provider>
     );
+    jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
   });
 
   it('should render without errors', () => {

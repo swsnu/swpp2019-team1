@@ -38,7 +38,9 @@ class MatchCreate extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
 
   onClickCreate = matchFormInfo => {
     const { onCreate } = this.props;

@@ -44,6 +44,7 @@ class MatchEdit extends Component {
 
   componentDidMount() {
     const { match, onGetMatch } = this.props;
+    window.scrollTo(0, 0);
     onGetMatch(match.params.id);
     new Promise(resolve => setTimeout(resolve, 100)).then(() => {
       const { selected } = this.props;

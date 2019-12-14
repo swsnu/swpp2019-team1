@@ -79,6 +79,7 @@ describe('<HomePage />', () => {
       .mockImplementation(() => {
         return () => null;
       });
+    jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
   });
 
   afterEach(() => {

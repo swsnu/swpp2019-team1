@@ -23,6 +23,10 @@ class SignUp extends Component {
     };
   }
 
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
   clickSignUpHandler = async values => {
     const { onSignUp } = this.props;
     await this.setState({ ...values });

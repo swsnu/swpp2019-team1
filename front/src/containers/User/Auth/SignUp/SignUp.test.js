@@ -36,6 +36,7 @@ describe('<SignUp />', () => {
         </ConnectedRouter>
       </Provider>
     );
+    jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
   });
 
   it('should render without errors', () => {

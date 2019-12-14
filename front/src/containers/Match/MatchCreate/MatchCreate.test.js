@@ -68,6 +68,7 @@ describe('<MatchCreate />', () => {
       .mockImplementation(() => {
         return () => {};
       });
+    jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
   });
 
   it('should render without errors', () => {

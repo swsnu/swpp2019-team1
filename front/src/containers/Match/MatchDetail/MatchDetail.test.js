@@ -142,6 +142,7 @@ describe('<MatchDetail />', () => {
   let spyQuitMatch;
   beforeEach(() => {
     jest.spyOn(window.location, 'reload').mockImplementation(() => {});
+    jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
     const matchParams = {
       params: { id: 1 },
       path: '/match/:id/',
@@ -242,6 +243,7 @@ describe('<MatchDetail />', () => {
       .mockImplementation(() => {
         return () => {};
       });
+    jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
   });
   afterEach(() => {
     jest.clearAllMocks();
@@ -264,7 +266,12 @@ describe('<MatchDetail />', () => {
   it('should render join button when no user', () => {
     const component = mount(matchDetailNoUser);
     const wrapper = component.find('#join-match-button');
+    const spyHistoryPush = jest
+      .spyOn(history, 'push')
+      .mockImplementation(() => {});
     expect(wrapper.length).toBe(2);
+    wrapper.at(0).simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/signin');
   });
 
   it('should redirected to match edit page when edit button clicked', () => {
