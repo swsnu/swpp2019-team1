@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch } from 'react-router-dom';
-import { Cascader, Button } from 'antd';
+import { Cascader } from 'antd';
 
 import Search from './Search';
 import getMockStore from '../../test-utils/getMockStore';

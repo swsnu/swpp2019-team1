@@ -48,8 +48,7 @@ class GoogleCloudLanguageMock:
             category = language_service_pb2.ClassificationCategory(
                 name='/Internet & Telecom/Mobile & Wireless',
                 confidence=0.6100000143051147)
-            response = language_service_pb2.ClassifyTextResponse(categories=[
-                                                                 category])
+            response = language_service_pb2.ClassifyTextResponse(categories=[category])
             return response
 
         # google_analysis_response = client.analyze_entities(document=document)
@@ -490,18 +489,16 @@ class MatchMakerTestCase(TestCase):
         client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
 
         response = client.post('/api/match/nlp/', json.dumps({
-            'nlp_text': 'Google, headquartered in Mountain View'}),
-            content_type='application/json',
-            HTTP_X_CSRFTOKEN=csrftoken)
+            'nlp_text': 'Google, headquartered in Mountain View'}), content_type='application/json',
+                               HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
 
         response = client.post('/api/match/nlp/', json.dumps({
             'nlp_text': 'Google, headquartered in Mountain View (1600 Amphitheatre '
                         'Pkwy, Mountain View, CA 940430), unveiled the new Android phone for $799'
                         ' at the Consumer Electronic Show. Sundar Pichai said in his keynote that'
-                        ' users love their new Android phones.'}),
-            content_type='application/json',
-            HTTP_X_CSRFTOKEN=csrftoken)
+                        ' users love their new Android phones.'}), content_type='application/json',
+                               HTTP_X_CSRFTOKEN=csrftoken)
         response_dict = json.loads(response.content.decode())
         self.assertEqual(response_dict['categories'],
                          [{'name': '/Internet & Telecom/Mobile & Wireless',
@@ -527,9 +524,8 @@ class MatchMakerTestCase(TestCase):
             'nlp_text': 'Google, headquartered in Mountain View (1600 Amphitheatre '
                         'Pkwy, Mountain View, CA 940430), unveiled the new Android phone for $799'
                         ' at the Consumer Electronic Show. Sundar Pichai said in his keynote that'
-                        ' users love their new Android phones.'}),
-            content_type='application/json',
-            HTTP_X_CSRFTOKEN=csrftoken)
+                        ' users love their new Android phones.'}), content_type='application/json',
+                               HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
 
     @patch.object(nlp, 'enums', mock.Mock(side_effect=GoogleCloudLanguageMock.enums))
@@ -566,6 +562,12 @@ class MatchMakerTestCase(TestCase):
         test_category = create_dummy_category()
         create_dummy_match(test_user, test_category)
         response = client.get('/api/match/search?query=TEST_TITLE&category=0')
+        self.assertEqual(len(json.loads(response.content.decode())), 1)
+        response = client.get('/api/match/search?query=TEST_TITLE')
+        self.assertEqual(len(json.loads(response.content.decode())), 1)
+        response = client.get('/api/match/search?category=0')
+        self.assertEqual(len(json.loads(response.content.decode())), 1)
+        response = client.get('/api/match/search')
         self.assertEqual(len(json.loads(response.content.decode())), 1)
 
     def test_match_new(self):
