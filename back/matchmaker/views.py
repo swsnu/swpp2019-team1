@@ -22,7 +22,6 @@ def get_match_detail_json(request, match_id):
     match_obj = get_object_or_404(Match, pk=match_id)
     if request.session.get('match%d' % match_id, 0) == 0:
         match_obj.view_count = match_obj.view_count+1
-        serializer = MatchSerializer(match_obj, data=match_obj)
         match_obj.save()
         request.session['match%d' % match_id] = 1
     serializer = MatchSerializer(match_obj)

@@ -186,15 +186,15 @@ export const createMatch = match => {
   };
 };
 
+const CToACallback = (acc, ctgn) => {
+  const { ctgs, array } = acc;
+  const target = ctgs.filter(obj => obj.label === ctgn)[0];
+  return { ctgs: target.children, array: array.concat([target.value]) };
+};
+
 const convertCategoryToArray = string => {
   if (!string) return null;
   const splited = string.substring(1).split('/');
-
-  const CToACallback = (acc, ctgn) => {
-    const { ctgs, array } = acc;
-    const target = ctgs.filter(obj => obj.label === ctgn)[0];
-    return { ctgs: target.children, array: array.concat([target.value]) };
-  };
 
   const result = splited.reduce(CToACallback, { ctgs: categories, array: [] });
   const { array } = result;
