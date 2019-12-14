@@ -54,9 +54,9 @@ class Search extends Component {
             <Cascader
               name="category"
               options={categories}
-              expandTrigger="hover"
               defaultValue={[]}
               placeholder="Category"
+              changeOnSelect
               onChange={value => {
                 this.setState({
                   category: value,

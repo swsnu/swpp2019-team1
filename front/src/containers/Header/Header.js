@@ -39,8 +39,7 @@ class Header extends Component {
     history.push(`/profile/${currentUser.id}`); // TODO
   };
 
-  render() {
-    const { currentUser } = this.props;
+  createHeaderButtons = currentUser => {
     const menu = (
       <Menu onClick={() => null}>
         <Menu.Item key="1" onClick={this.clickProfileHandler}>
@@ -53,35 +52,41 @@ class Header extends Component {
         </Menu.Item>
       </Menu>
     );
-    const buttons = [
-      [
-        <Button key="1" onClick={this.clickSignInHandler}>
-          Sign In
-        </Button>,
-        <Button
-          key="2"
-          type="primary"
-          style={{
-            marginLeft: 3,
-          }}
-          onClick={this.clickSignUpHandler}
-        >
-          Sign Up
-        </Button>,
-      ],
-      [
+    if (currentUser) {
+      return [
         <Dropdown key="1" overlay={menu} trigger={['click']}>
           <Button type="link" ghost>
             <Avatar
               shape="square"
               size="large"
-              src="/media/thumbnail/default-user.png"
+              src={currentUser.profilePicture}
             />
             <Icon type="down" />
           </Button>
         </Dropdown>,
-      ],
+      ];
+    }
+    return [
+      <Button key="1" onClick={this.clickSignInHandler}>
+        Sign In
+      </Button>,
+      <Button
+        key="2"
+        type="primary"
+        style={{
+          marginLeft: 3,
+        }}
+        onClick={this.clickSignUpHandler}
+      >
+        Sign Up
+      </Button>,
     ];
+  };
+
+  render() {
+    const { currentUser } = this.props;
+
+    const buttons = this.createHeaderButtons(currentUser);
 
     return (
       <div className="Header">
@@ -103,7 +108,7 @@ class Header extends Component {
             >
               MatchMaker
             </Link>
-            <div className="Buttons">{buttons[currentUser ? 1 : 0]}</div>
+            <div className="Buttons">{buttons}</div>
           </Layout.Header>
         </Layout>
       </div>
@@ -121,6 +126,7 @@ Header.propTypes = {
   }).isRequired,
   currentUser: PropTypes.shape({
     id: PropTypes.number,
+    profilePicture: PropTypes.string,
   }),
   onSignOut: PropTypes.func.isRequired,
   onRestoreUser: PropTypes.func.isRequired,
