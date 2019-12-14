@@ -30,9 +30,9 @@ class ImageUpload extends Component {
       this.setState({
         content: (
           <img
+            id="Image-Preview"
             src={URL.createObjectURL(event.target.files[0])}
             alt="preview"
-            style={{ width: '100%' }}
           />
         ),
       });
@@ -53,6 +53,7 @@ class ImageUpload extends Component {
         id="ImageUpload"
         onClick={this.handleClick}
         onKeyDown={this.handleClick}
+        stype={{ padding: '1rem' }}
       >
         {content}
         <input
