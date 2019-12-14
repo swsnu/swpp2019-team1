@@ -78,10 +78,7 @@ class MatchCreate extends Component {
       additionalInfo,
     } = this.state;
     return (
-      <div
-        className="MatchCreate"
-        style={{ height: '100%', marginBottom: '-100px' }}
-      >
+      <div className="MatchCreate" style={{ marginBottom: '100px' }}>
         <MatchForm
           title={title}
           category={category}

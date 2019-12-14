@@ -95,7 +95,7 @@ class MatchEdit extends Component {
     if (!selected || !id)
       return <div className="MatchEditLoading">Loading...</div>;
     return (
-      <div className="MatchEdit">
+      <div className="MatchEdit" style={{ marginBottom: '100px' }}>
         <MatchForm
           title={title}
           category={category}

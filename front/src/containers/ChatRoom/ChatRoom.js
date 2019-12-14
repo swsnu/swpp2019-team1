@@ -35,7 +35,7 @@ class ChatRoom extends Component {
         const token = sessionStorage.getItem('token');
         this.client.setUser(
           {
-            id: currentUser.username,
+            id: `user${currentUser.id}`,
             name: currentUser.username,
             image: '/media/thumbnail/default-user.png',
           },

@@ -80,13 +80,14 @@ class GoogleMap extends Component {
 
   render() {
     const { mapsApiLoaded, mapInstance, mapsApi } = this.state;
-    const { center, zoom, isForm, height, width } = this.props;
+    const { center, zoom, isForm, height, width, locationText } = this.props;
     return (
       <div className="GoogleMap">
         {mapsApiLoaded && isForm && (
           <SearchBox
             map={mapInstance}
             mapsApi={mapsApi}
+            placeholder={locationText}
             onPlacesChanged={this.onPlacesChanged}
           />
         )}

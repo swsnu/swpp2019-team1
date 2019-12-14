@@ -20,7 +20,7 @@ class StreamTokenSerializer(TokenSerializer):
         '''get stream token'''
         chat_client = StreamChat(api_key=settings.STREAM_KEY,
                                  api_secret=settings.STREAM_SECRET)
-        token = chat_client.create_token(obj.user.username)
+        token = chat_client.create_token(f'user{obj.user.id}')
         return token.decode('ascii')
 
 
