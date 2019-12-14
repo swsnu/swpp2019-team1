@@ -37,14 +37,14 @@ class ChatRoom extends Component {
           {
             id: `user${currentUser.id}`,
             name: currentUser.username,
-            image: '/media/thumbnail/default-user.png',
+            image: currentUser.profilePicture,
           },
           token,
         );
         const { selected } = this.props;
         this.channel = this.client.channel(
           'messaging',
-          `deployedChannel${selected.id}`,
+          `finalChannel${selected.id}`,
           {
             image: selected.matchThumbnail,
             name: selected.title,
@@ -103,6 +103,7 @@ ChatRoom.propTypes = {
   currentUser: PropTypes.shape({
     id: PropTypes.number.isRequired,
     username: PropTypes.string.isRequired,
+    profilePicture: PropTypes.string.isRequired,
   }),
   onGetMatch: PropTypes.func.isRequired,
   onUnAuthorized: PropTypes.func.isRequired,

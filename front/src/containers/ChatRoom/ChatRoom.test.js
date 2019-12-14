@@ -16,6 +16,7 @@ const stubUser = {
   currentUser: {
     id: 1,
     username: 'TEST_USER',
+    profilePicture: 'TEST_PROFILE_PICTURE',
   },
 };
 const stubNoUser = {
