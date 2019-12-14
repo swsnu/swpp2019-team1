@@ -116,8 +116,11 @@ def match_recommend(request):
                 id=request.user.id).interest_user.values()
             match_id_list = []
             for interest in interest_list:
+                indexes = Category.objects.get(
+                    id=interest['category_id']).indexes
+                indexes = ''.join(str(index) for index in indexes)
                 raw_result = Match.objects.filter(
-                    category_id=interest['category_id']).exclude(
+                    category__indexes__startswith=indexes).exclude(
                         host_user_id=request.user.id).order_by(
                             '-view_count')[:1].values_list('id')
                 if len(raw_result) > 0:

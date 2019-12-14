@@ -8,6 +8,7 @@ const stubMatchRespA = {
   title: '',
   // matchThumbnail
   category: [0, 0],
+  categoryName: 'Adult / Adult',
   capacity: 0,
   isOnline: false,
   locationText: 'TEST_LOCATION_TEXT',
@@ -30,6 +31,7 @@ const stubMatchRespB = {
   title: '',
   // matchThumbnail
   category: [0, 0],
+  categoryName: 'Adult / Adult',
   capacity: 0,
   isOnline: false,
   locationText: 'TEST_LOCATION_TEXT',
@@ -52,6 +54,7 @@ const stubMatchA = {
   title: '',
   // matchThumbnail
   category: [0, 0],
+  categoryName: 'Adult / Adult',
   capacity: 0,
   isOnline: false,
   locationText: 'TEST_LOCATION_TEXT',
@@ -80,6 +83,7 @@ const stubNewMatch = {
   title: '',
   matchThumbnail: null,
   category: [0, 0],
+  categoryName: 'Adult / Adult',
   capacity: 0,
   isOnline: false,
   locationText: 'TEST_LOCATION_TEXT',
@@ -141,7 +145,7 @@ describe('ActionMatch', () => {
 
     store.dispatch(actionCreators.getMatch(0)).then(() => {
       const newState = store.getState();
-      expect(newState.match.selected.restrictToMale).toBe(true);
+      expect(newState.match.selected.restrictToMale).toBe(false);
       done();
     });
   });

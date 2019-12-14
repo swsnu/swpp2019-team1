@@ -137,6 +137,10 @@ class MatchDetail extends Component {
             </b>
             <br />
             <div className="Detail-PlaceDate-And-Host">
+              <p>
+                <i className="material-icons">category</i>
+                {selected.categoryName}
+              </p>
               <i className="material-icons">calendar_today</i>
               {selected.timeBegin.format('YYYY/MM/DD, h:mm a')}
               {this.renderPeriod(selected.period)}
