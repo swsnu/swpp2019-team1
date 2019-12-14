@@ -108,6 +108,7 @@ class MatchDetail extends Component {
           type="primary"
           id="join-match-button"
           onClick={() => this.clickJoinHandler()}
+          disabled={selected.capacity <= selected.numParticipants}
         >
           Join
         </Button>
