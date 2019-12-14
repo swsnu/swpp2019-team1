@@ -35,24 +35,30 @@ def create_dummy_match(test_user, test_category):
         title='TEST_TITLE', category=test_category, host_user=test_user,
         capacity=4, location_text='TEST_LOCATION')
 # pylint: disable=too-few-public-methods, no-self-use, unused-argument, invalid-name
+
+
 class GoogleCloudLanguageMock:
     '''GoogleCloudLanguageMock'''
     class LanguageServiceClient:
         '''LanguageServiceClient'''
         # google_category_response = client.classify_text(document=document)
+
         def classify_text(self, document=None):
             '''classify_text'''
             category = language_service_pb2.ClassificationCategory(
                 name='/Internet & Telecom/Mobile & Wireless',
                 confidence=0.6100000143051147)
-            response = language_service_pb2.ClassifyTextResponse(categories=[category])
+            response = language_service_pb2.ClassifyTextResponse(categories=[
+                                                                 category])
             return response
 
         # google_analysis_response = client.analyze_entities(document=document)
         def analyze_entities(self, document=None):
             '''analyze_entities'''
-            entity_location = language_service_pb2.Entity(name="Amphitheatre Pkwy", type=2)
-            entity_event = language_service_pb2.Entity(name="Consumer Electronic Show", type=4)
+            entity_location = language_service_pb2.Entity(
+                name="Amphitheatre Pkwy", type=2)
+            entity_event = language_service_pb2.Entity(
+                name="Consumer Electronic Show", type=4)
             entity_address = language_service_pb2.Entity(
                 name="Mountain View (1600 Amphitheatre Pkwy", type=10)
             response = language_service_pb2.AnalyzeEntitiesResponse(
@@ -62,6 +68,7 @@ class GoogleCloudLanguageMock:
     class LanguageServiceClientEmpty:
         '''LanguageServiceClient'''
         # google_category_response = client.classify_text(document=document)
+
         def classify_text(self, document=None):
             '''classify_text'''
             return language_service_pb2.ClassifyTextResponse()
@@ -69,15 +76,18 @@ class GoogleCloudLanguageMock:
         # google_analysis_response = client.analyze_entities(document=document)
         def analyze_entities(self, document=None):
             '''analyze_entities'''
-            entity_anything_else = language_service_pb2.Entity(name="Anything Else", type=3)
+            entity_anything_else = language_service_pb2.Entity(
+                name="Anything Else", type=3)
             return language_service_pb2.AnalyzeEntitiesResponse(entities=[entity_anything_else])
 
     class LanguageServiceClientInvalid:
         '''LanguageServiceClient'''
         # google_category_response = client.classify_text(document=document)
+
         def classify_text(self, document=None):
             '''classify_text'''
-            raise InvalidArgument('Invalid text content: too few tokens (words) to process.')
+            raise InvalidArgument(
+                'Invalid text content: too few tokens (words) to process.')
 
     '''
     document = types.Document(
@@ -98,6 +108,7 @@ class GoogleCloudLanguageMock:
                 '''Type'''
                 PLAIN_TEXT = ''
 # pylint: enable=too-few-public-methods, no-self-use, unused-argument, invalid-name
+
 
 class MatchMakerTestCase(TestCase):
     '''Tests for the app Matchmaker'''
@@ -428,7 +439,7 @@ class MatchMakerTestCase(TestCase):
             'restrictedGender': settings.MALE,
             'timeBegin': '2019-11-03T08:07:46+09:00',
             'timeEnd': '2019-11-03T08:07:46+09:00',
-            })
+        })
 
         response = client.post(f'/api/match/{match_id}/',
                                data=form,
@@ -480,8 +491,8 @@ class MatchMakerTestCase(TestCase):
 
         response = client.post('/api/match/nlp/', json.dumps({
             'nlp_text': 'Google, headquartered in Mountain View'}),
-                               content_type='application/json',
-                               HTTP_X_CSRFTOKEN=csrftoken)
+            content_type='application/json',
+            HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
 
         response = client.post('/api/match/nlp/', json.dumps({
@@ -489,8 +500,8 @@ class MatchMakerTestCase(TestCase):
                         'Pkwy, Mountain View, CA 940430), unveiled the new Android phone for $799'
                         ' at the Consumer Electronic Show. Sundar Pichai said in his keynote that'
                         ' users love their new Android phones.'}),
-                               content_type='application/json',
-                               HTTP_X_CSRFTOKEN=csrftoken)
+            content_type='application/json',
+            HTTP_X_CSRFTOKEN=csrftoken)
         response_dict = json.loads(response.content.decode())
         self.assertEqual(response_dict['categories'],
                          [{'name': '/Internet & Telecom/Mobile & Wireless',
@@ -517,8 +528,8 @@ class MatchMakerTestCase(TestCase):
                         'Pkwy, Mountain View, CA 940430), unveiled the new Android phone for $799'
                         ' at the Consumer Electronic Show. Sundar Pichai said in his keynote that'
                         ' users love their new Android phones.'}),
-                               content_type='application/json',
-                               HTTP_X_CSRFTOKEN=csrftoken)
+            content_type='application/json',
+            HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
 
     @patch.object(nlp, 'enums', mock.Mock(side_effect=GoogleCloudLanguageMock.enums))
@@ -554,7 +565,7 @@ class MatchMakerTestCase(TestCase):
         test_user = create_dummy_user('TEST_EMAIL@test.com')
         test_category = create_dummy_category()
         create_dummy_match(test_user, test_category)
-        response = client.get('/api/match/search?query=TEST_TITLE')
+        response = client.get('/api/match/search?query=TEST_TITLE&category=0')
         self.assertEqual(len(json.loads(response.content.decode())), 1)
 
     def test_match_new(self):
@@ -588,7 +599,8 @@ class MatchMakerTestCase(TestCase):
         create_dummy_match(test_user_2, test_category)
         response = client.get('/api/match/recommend/')
         self.assertEqual(response.status_code, 401)
-        client.login(email='TEST_SECOND_EMAIL@test.com', password='TEST_PASSWORD')
+        client.login(email='TEST_SECOND_EMAIL@test.com',
+                     password='TEST_PASSWORD')
         Interest.objects.create(user=test_user_2, category=test_category)
         response = client.get('/api/match/recommend/')
         self.assertEqual(len(json.loads(response.content.decode())), 0)
