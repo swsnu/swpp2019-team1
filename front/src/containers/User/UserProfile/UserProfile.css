@@ -1,6 +1,3 @@
-.UserProfile {
-  height: 100%;
-}
 /* .ant-breadcrumb {
   font-size: 30px;
   text-align: center;
@@ -83,4 +80,5 @@ button {
 
 .UserProfile {
   padding: 20px 30px;
+  height: 100%;
 }
