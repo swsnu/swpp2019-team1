@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Card } from 'antd';
 
-import { getCategoryFirstName } from '../../../store/staticData/categories';
+import { getCategoryName } from '../../../store/staticData/categories';
 
 import './MatchPreviewTile.css';
 
@@ -13,6 +13,7 @@ const { Meta } = Card;
 const MatchPreviewTile = props => {
   const { page, match, clickHandler } = props;
   const indexes = JSON.parse(match.category.indexes);
+  const categoryName = getCategoryName(indexes.slice(0, 1));
   return (
     <Card
       hoverable
@@ -34,19 +35,18 @@ const MatchPreviewTile = props => {
       </p>
       <p>
         <span className="type">Category </span>
-        <span>{getCategoryFirstName(indexes)}</span>
+        <span>{categoryName}</span>
       </p>
       <p>
         <span className="type">Location </span>
         <span>{match.locationText}</span>
-        <p>
-          <span className="type">Time </span>
-          <span>{moment(match.timeBegin).format('YY/MM/DD, h:mm a')}</span>
-          <br />
-          <span className="timeEnd">
-            ~&nbsp;{moment(match.timeEnd).format('YY/MM/DD, h:mm a')}
-          </span>
-        </p>
+        <br />
+        <span className="type">Time </span>
+        <span>{moment(match.timeBegin).format('YY/MM/DD, h:mm a')}</span>
+        <br />
+        <span className="timeEnd">
+          ~&nbsp;{moment(match.timeEnd).format('YY/MM/DD, h:mm a')}
+        </span>
       </p>
 
       <Meta className={`${page}MatchPreviewTile ${match.id}`} />
