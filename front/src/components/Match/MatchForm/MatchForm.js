@@ -165,7 +165,7 @@ export const MatchPropTypes = {
   category: PropTypes.arrayOf(PropTypes.number),
   capacity: PropTypes.number.isRequired,
   isOnline: PropTypes.bool,
-  locationText: PropTypes.string.isRequired,
+  locationText: PropTypes.string,
   // latitude and longitude will be implemented or removed after applying Google Map API
   // locationLatitude: PropTypes.number.isRequired,
   // locationLongitude: PropTypes.number.isRequired,
@@ -191,6 +191,7 @@ MatchForm.defaultProps = {
   title: '',
   timeBegin: null,
   timeEnd: null,
+  locationText: undefined,
 };
 
 export default MatchForm;

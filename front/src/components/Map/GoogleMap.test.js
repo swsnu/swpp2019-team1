@@ -19,12 +19,54 @@ describe('<GoogleMap />', () => {
   const stubMarker = jest.fn(() => ({
     setMap: jest.fn(() => {}),
   }));
-  const stubMapsApi = { Marker: stubMarker };
-  let testPlaces;
+  let testPlaces = [
+    {
+      geometry: {
+        location: { lat: jest.fn(), lng: jest.fn() },
+        viewport: null,
+      },
+      name: '',
+      formatted_address: '',
+    },
+  ];
+  const stubFindPlaceFromQuery = jest.fn((request, func) =>
+    func(testPlaces, 200),
+  );
+  const stubMapsApi = {
+    Marker: stubMarker,
+    places: {
+      PlacesService: jest.fn(() => ({
+        findPlaceFromQuery: stubFindPlaceFromQuery,
+      })),
+      PlacesServiceStatus: { OK: 200 },
+    },
+  };
+  const stubFindNoPlaceFromQuery = jest.fn((request, func) =>
+    func(testPlaces, 400),
+  );
+  const stubMapsApiNoPlaceFromQuery = {
+    Marker: stubMarker,
+    places: {
+      PlacesService: jest.fn(() => ({
+        findPlaceFromQuery: stubFindNoPlaceFromQuery,
+      })),
+      PlacesServiceStatus: { OK: 200 },
+    },
+  };
   let googleMap;
   let googleMapInForm;
 
   beforeEach(() => {
+    testPlaces = [
+      {
+        geometry: {
+          location: { lat: jest.fn(), lng: jest.fn() },
+          viewport: null,
+        },
+        name: '',
+        formatted_address: '',
+      },
+    ];
     googleMap = (
       <GoogleMap
         center={{ lat: testLocationLatitude, lng: testLocationLongitude }}
@@ -45,16 +87,6 @@ describe('<GoogleMap />', () => {
         isForm
       />
     );
-    testPlaces = [
-      {
-        geometry: {
-          location: { lat: jest.fn(), lng: jest.fn() },
-          viewport: null,
-        },
-        name: '',
-        formatted_address: '',
-      },
-    ];
   });
   afterEach(() => {
     jest.clearAllMocks();
@@ -76,7 +108,7 @@ describe('<GoogleMap />', () => {
       map: stubMapInstance,
       maps: stubMapsApi,
     });
-    expect(stubMarker).toHaveBeenCalledTimes(1);
+    expect(stubFindPlaceFromQuery).toHaveBeenCalledTimes(1);
     component.instance().onPlacesChanged(testPlaces);
     expect(stubMarker).toHaveBeenCalledTimes(2);
 
@@ -89,6 +121,17 @@ describe('<GoogleMap />', () => {
     expect(stubMarker).toHaveBeenCalledTimes(3);
   });
 
+  it('should not render map and marker when found no place from query', () => {
+    const component = mount(googleMap);
+    const wrapper = component.find(GoogleMapReact);
+    wrapper.prop('onGoogleApiLoaded')({
+      map: stubMapInstance,
+      maps: stubMapsApiNoPlaceFromQuery,
+    });
+    expect(stubFindNoPlaceFromQuery).toHaveBeenCalledTimes(1);
+    expect(stubMarker).toHaveBeenCalledTimes(0);
+  });
+
   it('should not call setMap when marker is null', () => {
     const component = mount(googleMap);
     const wrapper = component.find(GoogleMapReact);
@@ -96,7 +139,7 @@ describe('<GoogleMap />', () => {
       map: stubMapInstance,
       maps: stubMapsApi,
     });
-    expect(stubMarker).toHaveBeenCalledTimes(1);
+    expect(stubFindPlaceFromQuery).toHaveBeenCalledTimes(1);
     component.instance().setState({ marker: null });
     component.instance().onPlacesChanged(testPlaces);
     expect(stubMarker).toHaveBeenCalledTimes(2);

@@ -53,7 +53,7 @@ export const getMatch = id => {
           console.log('Error', error.message);
         } */
           // console.log(error.config);
-          message.error('ERROR!');
+          dispatch(push('/home'));
         })
     );
   };
@@ -208,7 +208,7 @@ const sendNlpTextAction = (category, location, title, nlpText) => {
   return {
     type: actionTypes.SEND_NLP_TEXT,
     category: convertCategoryToArray(category),
-    location,
+    locationText: location,
     title,
     additionalInfo: nlpText,
   };

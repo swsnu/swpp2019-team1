@@ -23,12 +23,12 @@ class MatchCreate extends Component {
   constructor(props) {
     super(props);
     // using category : not implemented
-    const { title, additionalInfo, category } = this.props;
+    const { title, additionalInfo, category, locationText } = this.props;
     this.state = {
       title,
       category,
       capacity: 2,
-      locationText: '',
+      locationText,
       locationLatitude: 37.4494771,
       locationLongitude: 126.9519515,
       timeBegin: null,
@@ -112,18 +112,21 @@ MatchCreate.propTypes = {
   category: PropTypes.arrayOf(PropTypes.number),
   title: PropTypes.string,
   additionalInfo: PropTypes.string,
+  locationText: PropTypes.string,
 };
 
 MatchCreate.defaultProps = {
   title: '',
   category: null,
   additionalInfo: '',
+  locationText: undefined,
 };
 const mapStateToProps = state => {
   return {
     category: state.match.category,
     title: state.match.title,
     additionalInfo: state.match.additionalInfo,
+    locationText: state.match.locationText,
   };
 };
 
