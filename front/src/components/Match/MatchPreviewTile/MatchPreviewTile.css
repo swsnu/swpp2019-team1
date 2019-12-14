@@ -1,7 +1,7 @@
 .Tile-Cover {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center;
+  align-items: center; */
   width: 238px;
   height: 140px;
 }
@@ -10,4 +10,27 @@
   max-width: 100%;
   max-height: 100%;
   width: 'auto';
+}
+
+.ant-row .ant-col .ant-card .ant-card-body {
+  padding: 20px;
+  padding-top: 15px;
+  text-align: left;
+}
+
+.type {
+  font-weight: bold;
+}
+
+.timeEnd {
+  position: absolute;
+  right: 20px;
+}
+
+.capacity {
+  font-weight: bold;
+}
+
+.ant-card-head-title {
+  font-size: 20px;
 }
