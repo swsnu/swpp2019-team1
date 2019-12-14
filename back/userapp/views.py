@@ -18,6 +18,12 @@ from matchmaker.serializers import MatchSerializer, CategorySerializer
 USER = get_user_model()
 
 
+def default_profile(data):
+    ''' If user has no profile picture, change it to default '''
+    if data['profile_picture'] is None:
+        data['profile_picture'] = "https://t1matchmaker.ml/media/profile/default-user.png"
+
+
 @ensure_csrf_cookie
 def token(request):
     ''' get csrf token '''
@@ -55,8 +61,7 @@ def sign_in(request):
             auth.login(request, user)
             serializer = UserSerializer(user)
             rdata = serializer.data
-            if rdata['profile_picture'] is None:
-                rdata['profile_picture'] = "https://t1matchmaker.ml/media/profile/default-user.png"
+            default_profile(rdata)
             response = json.loads(
                 CamelCaseJSONRenderer().render(rdata))
             return JsonResponse({'user': response}, status=200)
@@ -106,9 +111,7 @@ def user_detail(request, user_id):
             category_json = CategorySerializer(category).data
             category_list.append(category_json['indexes'])
         data['interests'] = category_list
-        print(data['profile_picture'])
-        if data['profile_picture'] is None:
-            data['profile_picture'] = "https://t1matchmaker.ml/media/profile/default-profile.png"
+        default_profile(data)
         response = json.loads(
             CamelCaseJSONRenderer().render(data))
         return JsonResponse(response)
