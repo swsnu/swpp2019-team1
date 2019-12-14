@@ -254,8 +254,8 @@ class MatchMakerTestCase(TestCase):
                               HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
-        response = client.delete(f'/api/match/{test_match.id}/join/',
-                                 HTTP_X_CSRFTOKEN=csrftoken)
+        response = client.put(f'/api/match/{test_match.id}/join/',
+                              HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 405)
 
         response = client.delete(f'/api/match/nlp/',
@@ -620,10 +620,30 @@ class MatchMakerTestCase(TestCase):
         response = client.get('/api/token/')
         csrftoken = response.cookies['csrftoken'].value
         test_user = create_dummy_user('TEST_EMAIL@test.com')
-        client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
+        create_dummy_user('TEST_SECOND_EMAIL@test.com')
         test_category = create_dummy_category()
         test_match = create_dummy_match(test_user, test_category)
-
+        # quit not authenticated
+        response = client.delete(f'/api/match/{test_match.id}/join/',
+                                 HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 401)
+        # not host user
+        client.login(email='TEST_SECOND_EMAIL@test.com', password='TEST_PASSWORD')
         response = client.post(f'/api/match/{test_match.id}/join/',
                                HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 200)
+        # quit and delete participation
+        response = client.delete(f'/api/match/{test_match.id}/join/',
+                                 HTTP_X_CSRFTOKEN=csrftoken)
+        self.assertEqual(response.status_code, 200)
+        #host user
+        client.logout()
+        client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
+        response = client.get('/api/token/')
+        csrftoken = response.cookies['csrftoken'].value
+        response = client.post(f'/api/match/{test_match.id}/join/',
+                               HTTP_X_CSRFTOKEN=csrftoken)
+        # quit and delete match
+        response = client.delete(f'/api/match/{test_match.id}/join/',
+                                 HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)

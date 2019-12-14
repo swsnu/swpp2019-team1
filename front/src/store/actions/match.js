@@ -53,7 +53,7 @@ export const getMatch = id => {
           console.log('Error', error.message);
         } */
           // console.log(error.config);
-          message.error('ERROR!');
+          dispatch(push('/home'));
         })
     );
   };

@@ -100,8 +100,10 @@ const stubNewMatch = {
 };
 
 describe('ActionMatch', () => {
+  let spyPush;
   beforeEach(() => {
     jest.clearAllMocks();
+    spyPush = jest.spyOn(history, 'push').mockImplementation(path => path);
   });
 
   it(`'getMatch' should fetch match correctly`, async done => {
@@ -151,12 +153,9 @@ describe('ActionMatch', () => {
         reject(dummyError);
       });
     });
-    const spyMessageError = jest
-      .spyOn(message, 'error')
-      .mockImplementation(() => {});
     store.dispatch(actionCreators.getMatch(0)).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
-      expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
+      expect(spyPush).toHaveBeenCalledWith('/home');
       done();
     });
   });
@@ -279,9 +278,7 @@ describe('ActionMatch', () => {
         resolve(result);
       });
     });
-    const spyPush = jest
-      .spyOn(history, 'push')
-      .mockImplementation(path => path);
+
     store.dispatch(actionCreators.createMatch(stubNewMatch)).then(() => {
       expect(spyPost).toHaveBeenCalledTimes(1);
       expect(spyPush).toHaveBeenCalledTimes(1);
@@ -303,9 +300,7 @@ describe('ActionMatch', () => {
         resolve(result);
       });
     });
-    const spyPush = jest
-      .spyOn(history, 'push')
-      .mockImplementation(path => path);
+
     store.dispatch(actionCreators.sendNlpText('analyze this')).then(() => {
       const newState = store.getState();
       expect(newState.match.category).toStrictEqual([0]);
@@ -331,9 +326,7 @@ describe('ActionMatch', () => {
         resolve(result);
       });
     });
-    const spyPush = jest
-      .spyOn(history, 'push')
-      .mockImplementation(path => path);
+
     store.dispatch(actionCreators.sendNlpText('analyze this')).then(() => {
       const newState = store.getState();
       expect(newState.match.category).toStrictEqual([1, 0]);
@@ -359,9 +352,7 @@ describe('ActionMatch', () => {
         resolve(result);
       });
     });
-    const spyPush = jest
-      .spyOn(history, 'push')
-      .mockImplementation(path => path);
+
     store.dispatch(actionCreators.sendNlpText('analyze this')).then(() => {
       const newState = store.getState();
       expect(newState.match.category).toBe(null);
@@ -383,9 +374,7 @@ describe('ActionMatch', () => {
         resolve(result);
       });
     });
-    const spyPush = jest
-      .spyOn(history, 'push')
-      .mockImplementation(path => path);
+
     store.dispatch(actionCreators.editMatch(1, stubNewMatch)).then(() => {
       expect(spyPut).toHaveBeenCalledTimes(1);
       expect(spyPush).toHaveBeenCalledTimes(1);

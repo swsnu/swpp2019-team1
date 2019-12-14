@@ -166,7 +166,17 @@ def match_join(request, match_id):
                 CamelCaseJSONRenderer().render(serializer.data))
             return JsonResponse(response, status=200)
         return HttpResponse(status=401)  # not authenticated
-    return HttpResponseNotAllowed(['POST'])
+    if request.method == 'DELETE':
+        match_obj = get_object_or_404(Match, pk=match_id)
+        if request.user.is_authenticated:
+            if match_obj.host_user_id == request.user.id:
+                match_obj.delete()
+            else:
+                Participation.objects.get(
+                    user_id=request.user.id, match_id=match_obj.id).delete()
+            return HttpResponse(status=200)
+        return HttpResponse(status=401)  # not authenticated
+    return HttpResponseNotAllowed(['POST', 'DELETE'])
 
 
 def search(request):

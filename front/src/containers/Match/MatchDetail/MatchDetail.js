@@ -40,6 +40,7 @@ class MatchDetail extends Component {
   clickQuitHandler = () => {
     const { match, onQuitMatch } = this.props;
     onQuitMatch(match.params.id);
+    window.location.reload();
   };
 
   clickChatRoomHandler = () => {
@@ -76,7 +77,7 @@ class MatchDetail extends Component {
   renderButtons = (selected, userid) => {
     if (selected.participants.includes(userid))
       return (
-        <div className="HostButtons">
+        <div className="MatchDetailButtons">
           <Button
             type="primary"
             id="enter-chatroom-button"
@@ -92,23 +93,23 @@ class MatchDetail extends Component {
               Edit
             </Button>
           )}
+          <Button
+            type="danger"
+            id="quit-match-button"
+            onClick={() => this.clickQuitHandler()}
+          >
+            Quit
+          </Button>
         </div>
       );
     return (
-      <div className="HostButtons">
+      <div className="MatchDetailButtons">
         <Button
           type="primary"
           id="join-match-button"
           onClick={() => this.clickJoinHandler()}
         >
           Join
-        </Button>
-        <Button
-          type="danger"
-          id="quit-match-button"
-          onClick={() => this.clickQuitHandler()}
-        >
-          Quit
         </Button>
       </div>
     );
