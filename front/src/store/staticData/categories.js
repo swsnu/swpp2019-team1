@@ -3456,12 +3456,11 @@ export const categories = [
     ],
   },
 ];
-export const getCategoryFirstName = indexes => {
-  return categories[indexes[0]].label;
-};
-export const getCategoryName = indexes => {
-  if (indexes.length === 1) return categories[indexes[0]].label;
-  return `${categories[indexes[0]].label} / ${getCategoryName(
+export const getCategoryName = (indexes, children) => {
+  const childCategories = children || categories;
+  if (indexes.length === 1) return childCategories[indexes[0]].label;
+  return `${childCategories[indexes[0]].label} / ${getCategoryName(
     indexes.slice(1),
+    childCategories[indexes[0]].children,
   )}`;
 };

@@ -19,11 +19,11 @@ export const getMatch = id => {
     return (
       axios
         .get(`/api/match/${id}/`)
-        .then(res => {
+        .then(async res => {
           const { data } = res;
           const { restrictedGender } = data;
           delete data.restrictedGender;
-          const indexes = JSON.parse(data.category.indexes);
+          const indexes = await JSON.parse(data.category.indexes);
           const matchInfo = {
             ...data,
             timeBegin: moment(data.timeBegin),
