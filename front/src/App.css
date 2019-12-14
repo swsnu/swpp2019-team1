@@ -5,6 +5,7 @@
   background-color: #f6feff;
   height: 100%;
   /* text-align: center; */
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .App-logo {
@@ -24,10 +25,6 @@
 
 .App-link {
   color: #09d3ac;
-}
-
-.App {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .extra {
