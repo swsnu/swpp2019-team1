@@ -22,12 +22,25 @@ const MatchPreviewTile = props => {
       }
       onClick={clickHandler}
     >
-      <p>Host: {match.hostUser.username}</p>
-      <p>Location: {match.locationText}</p>
-      <p>Begin: {moment(match.timeBegin).format('YYYY/MM/DD, h:mm a')}</p>
-      <p>End: {moment(match.timeEnd).format('YYYY/MM/DD, h:mm a')}</p>
-      <p>Participants: {match.numParticipants}</p>
-      <p>Capacity: {match.capacity}</p>
+      <p>
+        <span className="type">Host </span>
+        <span>{match.hostUser.username}</span>
+        <span className="capacity">
+          &nbsp;{match.numParticipants}/{match.capacity}
+        </span>
+      </p>
+      <p>
+        <span className="type">Location </span>
+        <span>{match.locationText}</span>
+      </p>
+      <p>
+        <span className="type">Time </span>
+        <span>{moment(match.timeBegin).format('YY/MM/DD, h:mm a')}</span>
+        <br />
+        <span className="timeEnd">
+          ~&nbsp;{moment(match.timeEnd).format('YY/MM/DD, h:mm a')}
+        </span>
+      </p>
       <Meta className={`${page}MatchPreviewTile ${match.id}`} />
     </Card>
   );
