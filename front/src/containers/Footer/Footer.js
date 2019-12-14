@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Layout } from 'antd';
-import './Footer.css';
 
 class Footer extends Component {
   constructor(props) {
