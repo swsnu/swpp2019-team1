@@ -33,7 +33,7 @@ def get_match_detail_json(request, match_id):
          'host_name': match_obj.host_user.username})
     if match_json['match_thumbnail'] is None:
         match_json.update(
-            {'match_thumbnail': '/media/thumbnail/default-thumbnail.png'})
+            {'match_thumbnail': 'https://t1matchmaker.ml/media/thumbnail/default-thumbnail.png'})
     match_json = json.loads(
         CamelCaseJSONRenderer().render(match_json))
     return match_json
