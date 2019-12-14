@@ -25,7 +25,7 @@ const MatchPreviewTile = props => {
       <p>
         <span className="type">Host </span>
         <span>{match.hostUser.username}</span>
-        <span className="capacity">
+        <span className="capacity end">
           &nbsp;{match.numParticipants}/{match.capacity}
         </span>
       </p>

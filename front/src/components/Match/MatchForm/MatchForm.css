@@ -1,24 +1,29 @@
 .MatchForm {
   max-width: 800px;
   margin: 20px auto 0;
-  padding: 10px 20px 20px 20px;
-  border: 1px solid rgb(1, 121, 151);
+  margin-bottom: -100px;
+  padding: 0px 20px 0px 20px;
+  /* border: 1px solid rgb(1, 121, 151); */
   border-width: 4px;
   border-radius: 5px;
   font-size: 20px;
-  height: 1680px;
+  height: 100%;
 }
-.Buttons {
+
+.MatchForm .Buttons {
   display: flex;
   text-align: center;
   margin: 10px auto 0;
 }
-.ant-form-item {
+
+.MatchForm .ant-form-item {
   margin-bottom: 5px !important;
 }
+
 .ant-form label {
   font-size: 25px;
 }
+
 .ant-input {
   height: 40px;
   margin-bottom: 10px;
@@ -26,46 +31,62 @@
 }
 
 .ant-form-item-label {
-  margin-top: 15px;
+  margin-top: 30px;
 }
+
 .ant-form-item-label > label::after {
   content: '';
 }
+
+.MatchForm .ant-form-item::before {
+  content: '\A';
+  white-space: pre;
+}
+
 .ant-cascader-picker {
   height: 40px;
 }
+
 .CreateButton {
   width: 170px;
   height: 60px;
   font-size: 25px;
 }
+
 .EditButton {
   width: 170px;
   height: 60px;
   font-size: 25px;
 }
+
 #cancel-button {
   width: 170px;
   height: 60px;
   font-size: 25px;
 }
+
 .ant-form-explain {
   font-size: 20px;
 }
+
 .ant-form-item-children {
   font-size: 20px;
 }
+
 .ant-input-number {
   margin: 0px 10px;
 }
+
 .ant-input-number-input {
   font-size: 15px;
 }
+
 #ImageUpload {
   width: 300px;
   height: 300px;
   font-size: 30px;
 }
+
 li {
   font-size: 17px;
 }

@@ -1,6 +1,11 @@
-/* .App {
-  text-align: center;
-} */
+#root {
+  height: 100%;
+}
+.App {
+  background-color: #f6feff;
+  height: 100%;
+  /* text-align: center; */
+}
 
 .App-logo {
   height: 40vmin;
@@ -23,4 +28,13 @@
 
 .App {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.extra {
+  background-color: #f6feff;
+  padding: 25px;
+}
+
+html {
+  height: 150%;
 }

@@ -2,12 +2,14 @@
   max-width: 900px;
   margin: 20px auto 0;
   padding: 20px;
+  margin-bottom: -100px;
   font-size: 20px;
-  border: 1px solid rgb(1, 121, 151);
+  /* border: 1px solid rgb(1, 121, 151); */
   border-width: 4px;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 .SearchOption {
   margin-bottom: 40px;

@@ -9,3 +9,10 @@
   float: right;
   padding: 0px 4;
 }
+
+.Header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}

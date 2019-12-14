@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import * as actionCreators from '../../../../store/actions';
 import SignUpForm from '../../../../components/User/Auth/SignUp/SignUpForm';
 
+import './SignUp.css';
+
 class SignUp extends Component {
   constructor(props) {
     super(props);
