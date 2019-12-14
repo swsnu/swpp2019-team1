@@ -1,4 +1,5 @@
 // eslint-disable-next-line import/prefer-default-export
+
 export const categories = [
   {
     value: 0,
@@ -3455,3 +3456,12 @@ export const categories = [
     ],
   },
 ];
+export const getCategoryFirstName = indexes => {
+  return categories[indexes[0]].label;
+};
+export const getCategoryName = indexes => {
+  if (indexes.length === 1) return categories[indexes[0]].label;
+  return `${categories[indexes[0]].label} / ${getCategoryName(
+    indexes.slice(1),
+  )}`;
+};

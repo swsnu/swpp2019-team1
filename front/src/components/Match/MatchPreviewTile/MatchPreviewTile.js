@@ -3,13 +3,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Card } from 'antd';
+
+import { getCategoryFirstName } from '../../../store/staticData/categories';
+
 import './MatchPreviewTile.css';
 
 const { Meta } = Card;
 
 const MatchPreviewTile = props => {
   const { page, match, clickHandler } = props;
-
+  const indexes = JSON.parse(match.category.indexes);
   return (
     <Card
       hoverable
@@ -30,17 +33,22 @@ const MatchPreviewTile = props => {
         </span>
       </p>
       <p>
-        <span className="type">Location </span>
-        <span>{match.locationText}</span>
+        <span className="type">Category </span>
+        <span>{getCategoryFirstName(indexes)}</span>
       </p>
       <p>
-        <span className="type">Time </span>
-        <span>{moment(match.timeBegin).format('YY/MM/DD, h:mm a')}</span>
-        <br />
-        <span className="timeEnd">
-          ~&nbsp;{moment(match.timeEnd).format('YY/MM/DD, h:mm a')}
-        </span>
+        <span className="type">Location </span>
+        <span>{match.locationText}</span>
+        <p>
+          <span className="type">Time </span>
+          <span>{moment(match.timeBegin).format('YY/MM/DD, h:mm a')}</span>
+          <br />
+          <span className="timeEnd">
+            ~&nbsp;{moment(match.timeEnd).format('YY/MM/DD, h:mm a')}
+          </span>
+        </p>
       </p>
+
       <Meta className={`${page}MatchPreviewTile ${match.id}`} />
     </Card>
   );
@@ -60,6 +68,7 @@ MatchPreviewTile.propTypes = {
     numParticipants: PropTypes.number.isRequired,
     capacity: PropTypes.number.isRequired,
     matchThumbnail: PropTypes.string,
+    category: PropTypes.shape({ indexes: PropTypes.string }),
   }).isRequired,
   clickHandler: PropTypes.func.isRequired,
 };

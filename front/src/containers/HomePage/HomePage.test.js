@@ -29,6 +29,7 @@ const testmatch = {
   timeEnd: '2019-11-12T06:29:50.304Z',
   numParticipants: 2,
   capacity: 4,
+  category: { indexes: '[0]' },
 };
 const stubMatch = {
   hot: [testmatch],

@@ -3,7 +3,7 @@ import { push } from 'connected-react-router';
 import { message } from 'antd';
 import moment from 'moment';
 import * as actionTypes from './actionTypes';
-import { categories } from '../staticData/categories';
+import { categories, getCategoryName } from '../staticData/categories';
 
 import { generateQuery } from '../tools/functions';
 
@@ -23,6 +23,7 @@ export const getMatch = id => {
           const { data } = res;
           const { restrictedGender } = data;
           delete data.restrictedGender;
+          const indexes = JSON.parse(data.category.indexes);
           const matchInfo = {
             ...data,
             timeBegin: moment(data.timeBegin),
@@ -30,7 +31,8 @@ export const getMatch = id => {
             restrictToMale: data.isGenderRestricted && !restrictedGender,
             restrictToFemale: data.isGenderRestricted && restrictedGender,
             isPeriodic: data.period !== 0,
-            category: JSON.parse(data.category.indexes),
+            category: indexes,
+            categoryName: getCategoryName(indexes),
           };
           dispatch(getMatchAction(matchInfo));
         })
