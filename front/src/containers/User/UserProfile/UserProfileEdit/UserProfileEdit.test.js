@@ -153,7 +153,6 @@ describe('<UserProfileEdit />', () => {
       wrapper = component.find(Form);
       await new Promise(resolve => setTimeout(resolve, 100));
       wrapper.simulate('submit');
-      // console.log(wrapper.debug());
       await new Promise(resolve => setTimeout(resolve, 100));
     });
     // should submit with correct input

@@ -70,7 +70,7 @@ const SignInForm = ({
           </div>
           <div className="button">
             <SubmitButton className="SignInButton" type="primary">
-              Sign In
+              Log In
             </SubmitButton>
           </div>
           <div className="SignUpLink">

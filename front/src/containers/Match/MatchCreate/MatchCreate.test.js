@@ -28,7 +28,6 @@ const stubMatch = {
     title: 'TEST_TITLE',
     hostName: 'TEST_HOSTNAME',
     additionalInfo: 'TEST_ADITIONAL_INFO',
-    // matchThumbnail
     category: [0, 0],
     capacity: 2,
     isOnline: false,
@@ -79,13 +78,10 @@ describe('<MatchCreate />', () => {
 
   it('should handle input changes', async () => {
     const component = mount(matchCreate);
+
     // title change
     const title = 'TEST_TITLE';
 
-    // eslint-disable-next-line no-unused-vars
-    const createInstance = component
-      .find(MatchCreate.WrappedComponent)
-      .instance();
     // category change
     const categoryOption = {
       value: [1, 0],
@@ -97,8 +93,7 @@ describe('<MatchCreate />', () => {
 
     const capacity = 3;
     const additionalInfo = 'TEST_ADDITIONAL_INFO';
-    // eslint-disable-next-line no-unused-vars
-    const locationText = 'TEST_LOCATION_TEXT';
+
     const timeBegin = moment();
     const timeEnd = moment();
 
@@ -119,18 +114,19 @@ describe('<MatchCreate />', () => {
       );
 
       // capacity change
-
       wrapper = component.find(`.ant-input-number`);
       expect(wrapper.length).toBe(1);
       wrapper.simulate('change', {
         target: { name: 'capacity', value: capacity },
       });
+
       // additionalInfo change
       wrapper = component.find(`textarea[name="additionalInfo"]`);
       expect(wrapper.length).toBe(1);
       wrapper.simulate('change', {
         target: { name: 'additionalInfo', value: additionalInfo },
       });
+
       // Thumbnail
       wrapper = component.find(ImageUpload);
       wrapper.prop('setFieldValue')(1);
@@ -147,13 +143,17 @@ describe('<MatchCreate />', () => {
       wrapper.prop('onChange')(timeBegin);
       await new Promise(resolve => setTimeout(resolve, 100));
       wrapper.prop('disabledDate')(timeBegin);
+
       // timeEnd change
       wrapper = component.find(DatePicker).at(1);
       wrapper.prop('onChange')(timeEnd);
+
       // cannot get timeBegin
       wrapper.prop('disabledDate')(timeEnd);
+
       // bad testing
       expect(disableDate(2, 1)).toBe(true);
+
       // test with time
       wrapper = component.find(Form);
       await new Promise(resolve => setTimeout(resolve, 100));

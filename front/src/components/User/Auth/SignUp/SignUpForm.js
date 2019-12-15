@@ -99,7 +99,7 @@ const SignUpForm = ({
               placeholder="Password"
             />
           </FormItem>
-          <FormItem name="passwordConfirm" label="PasswordConfirm">
+          <FormItem name="passwordConfirm" label="Confirm Password">
             <Input.Password
               name="passwordConfirm"
               id="passwordConfirm"

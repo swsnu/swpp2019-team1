@@ -120,13 +120,14 @@ describe('<SignUp />', () => {
       wrapper = component.find(Form);
       await new Promise(resolve => setTimeout(resolve, 100));
       wrapper.simulate('submit');
-      // console.log(wrapper.debug());
       await new Promise(resolve => setTimeout(resolve, 100));
     });
+
     // should submit with correct input
     expect(spySignUp).toHaveBeenCalledWith(dummySignUpInfo);
-    expect(signUpInstance.state).toEqual(dummySignUpInput);
+
     // should change state
+    expect(signUpInstance.state).toEqual(dummySignUpInput);
   });
 
   // test with react-testing-library
@@ -201,7 +202,7 @@ describe('<SignUp />', () => {
           },
         },
         dummySignUpInput.birthdate,
-      ); // TODO: not working
+      ); // not working
       fireEvent.click(birthdateInput);
 
       // await new Promise(resolve => setTimeout(resolve, 1000));

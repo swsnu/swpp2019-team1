@@ -4,6 +4,7 @@ import { message } from 'antd';
 import moment from 'moment';
 
 import * as actionTypes from './actionTypes';
+import { errorHandler } from './match';
 
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
@@ -37,14 +38,12 @@ export const signIn = signInInfo => {
   };
 };
 
-// not yet implemented
 const signOutAction = () => {
   return {
     type: actionTypes.SIGN_OUT,
   };
 };
 
-// not yet implemented
 export const signOut = () => {
   return dispatch => {
     return axios
@@ -56,7 +55,6 @@ export const signOut = () => {
       })
       .catch(() => {
         message.error('Failed to set up request.');
-        // console.log(error.config);
       });
   };
 };
@@ -76,26 +74,13 @@ export const createUser = signUpInfo => {
         dispatch(push('/signin'));
       })
       .catch(error => {
-        // TODO: error handling
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
           message.error('Email is duplicated.');
-          // console.log(error.response.data);
-          // console.log(error.response.status);
-          // console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          // console.log(error.request);
-          message.error('No response from server.');
         } else {
-          // Something happened in setting up the request that triggered an Error
-          // console.log('Error', error.message);
-          message.error('Failed to set up request.');
+          errorHandler(error);
         }
-        // console.log(error.config);
       });
   };
 };
@@ -109,19 +94,22 @@ const getUserAction = user => {
 
 export const getUser = id => {
   return dispatch => {
-    return axios.get(`/api/user/${id}`).then(res => {
-      const { data } = res;
-      const { schedule } = data;
-      const userInfo = {
-        ...data,
-        schedule: schedule.map(match => ({
-          ...match,
-          timeBegin: moment(match.timeBegin),
-          timeEnd: moment(match.timeEnd),
-        })),
-      };
-      dispatch(getUserAction(userInfo));
-    });
+    return axios
+      .get(`/api/user/${id}`)
+      .then(res => {
+        const { data } = res;
+        const { schedule } = data;
+        const userInfo = {
+          ...data,
+          schedule: schedule.map(match => ({
+            ...match,
+            timeBegin: moment(match.timeBegin),
+            timeEnd: moment(match.timeEnd),
+          })),
+        };
+        dispatch(getUserAction(userInfo));
+      })
+      .catch(errorHandler);
   };
 };
 
@@ -140,28 +128,7 @@ export const editUser = (id, userInfo) => {
         dispatch(editUserAction(userInfo));
         dispatch(push(`/profile/${id}`));
       })
-      .catch(error => {
-        // TODO: error handling
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          message.error('Got response but error.');
-          // console.log(error.response.data);
-          // console.log(error.response.status);
-          // console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          // console.log(error.request);
-          message.error('No response from server.');
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          // console.log('Error', error.message);
-          message.error('Failed to set up request.');
-        }
-        // console.log(error.config);
-      });
+      .catch(errorHandler);
   };
 };
 
@@ -179,28 +146,7 @@ export const editInterest = (id, valueList) => {
       .then(() => {
         dispatch(editInterestAction(valueList));
       })
-      .catch(error => {
-        // TODO: error handling
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          message.error('Got response but error.');
-          // console.log(error.response.data);
-          // console.log(error.response.status);
-          // console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          // console.log(error.request);
-          message.error('No response from server.');
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          // console.log('Error', error.message);
-          message.error('Failed to set up request.');
-        }
-        // console.log(error.config);
-      });
+      .catch(errorHandler);
   };
 };
 

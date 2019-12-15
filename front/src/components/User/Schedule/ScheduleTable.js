@@ -13,7 +13,7 @@ function formatScheduleTable(schedule) {
         {match.title}
       </Link>
     ),
-    time: match.timeBegin.format('h:mm a'), // TODO: fix time
+    time: match.timeBegin.format('h:mm a'),
     participants: match.numParticipants,
   }));
 }

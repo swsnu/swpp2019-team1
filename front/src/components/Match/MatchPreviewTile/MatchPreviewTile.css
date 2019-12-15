@@ -40,3 +40,34 @@
   position: absolute;
   right: 20px;
 }
+
+.MatchPreviewTile .category {
+  float: inline-end;
+  font-size: 10px;
+}
+
+.location {
+  display: inline-block;
+  width: 130px;
+  margin-left: 5.3em;
+  text-indent: -5.3em;
+  font-size: 13px;
+}
+
+.top-margin {
+  margin-top: 18px;
+}
+
+.bottom-inverse-margin {
+  margin-bottom: -7px;
+}
+
+.ant-card-head {
+  background-color: rgb(249, 255, 250);
+}
+
+.ant-card .ant-card-body {
+  padding: 24px;
+  padding-left: 45px;
+  text-align: left;
+}

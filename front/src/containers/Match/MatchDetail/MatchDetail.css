@@ -3,90 +3,138 @@
   margin: 20px auto 0;
   padding: 20px;
   font-size: 35px;
-  border: 1px solid rgb(1, 121, 151);
   border-width: 4px;
   border-radius: 5px;
 }
+
 #join-match-button {
   margin: 10px;
   width: 95%;
   font-size: 30px;
   height: 60px;
-  margin-top: 50px;
+  margin-top: 40px;
 }
+
 #enter-chatroom-button {
   margin: 1%;
   width: 65%;
   font-size: 37px;
   height: 60px;
-  margin-top: 50px;
+  margin-top: 40px;
 }
+
 #edit-match-button {
   margin: 1%;
   width: 31%;
   font-size: 37px;
   height: 60px;
-  margin-top: 50px;
 }
+
 #quit-match-button {
-  margin: 10px;
-  width: 25%;
+  margin: 1%;
+  width: 31%;
   font-size: 37px;
   height: 60px;
 }
+
 .MatchDetail > i {
   margin-top: 30px;
 }
-.Detail-PlaceDate-And-Host {
-  margin-top: 50px;
-}
+
 .material-icons {
   margin: 10px;
 }
+
 #detail-title {
   font-size: 50px;
+  text-align: center;
+  width: 100%;
+  display: block;
+  margin-top: 20px;
 }
+
 #capacity-text {
   margin-bottom: 660px;
 }
-#materials-icon-person {
-  margin-left: 60px;
-  font-size: 60px;
-  color: #114ef7;
-  text-shadow: 4px 4px 8px #114ef7;
-  margin-top: 40px;
-}
+
 .Detail-Additional-Info {
   margin-top: 50px;
   text-align: center;
   font-size: 30px;
 }
+
 .Detail-Restrictions {
   font-weight: bold;
   color: #f71111;
 }
 
+.Detail-Middle {
+  font-size: 30px;
+}
+
+.Detail-Date-Host {
+  margin-top: 5px;
+}
+
 #detail-capacity {
-  font-size: 40px;
-  margin-top: 10px;
-  margin-right: 10px;
+  font-size: 25px;
+  margin-top: 15px;
+  margin-right: 20px;
   float: right;
+  font-weight: normal;
 }
-.MatchInfo {
-  font-size: 50px;
-  color: rgb(30, 61, 9);
+
+#materials-icon-person {
+  margin-left: 60px;
+  font-size: 30px;
+  color: #114ef7;
+  text-shadow: 2px 2px 4px #114ef7;
+  margin-top: 45px;
+  margin-bottom: 0px;
 }
-.MatchDetail img {
-  width: 100%;
-  margin-bottom: 30px;
+
+.MatchDetail .category {
+  margin-left: 43px;
+  font-size: 20px;
+  font-weight: bold;
 }
-#host-profile-button {
+
+.host {
   font-size: 30px;
   float: right;
 }
+
+.MatchInfo {
+  font-size: 50px;
+  color: rgb(30, 61, 9);
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.MatchDetail img {
+  width: 95%;
+  margin-bottom: 30px;
+  margin-top: 25px;
+}
+
 #Detail-GoogleMap {
   margin: 10px;
 }
+
 #additional-info-text {
   margin: 10px 20px;
+}
+
+.MatchDetail .ant-btn-link {
+  margin-left: -15px;
+}
+
+svg line {
+  stroke: #305e34;
+  stroke-width: 8;
+}
+
+.MatchDetail #container {
+  margin-left: 5%;
+  margin-right: 1%;
 }

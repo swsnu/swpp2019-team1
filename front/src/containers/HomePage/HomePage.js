@@ -111,7 +111,7 @@ class HomePage extends Component {
                 borderWidth: 4,
                 borderRadius: 10,
                 width: 500,
-                paddingVertical: 10,
+                padding: 10,
                 marginBottom: 20,
               }}
             >

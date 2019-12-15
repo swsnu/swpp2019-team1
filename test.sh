@@ -90,7 +90,7 @@ if [ $# -eq 1 ]; then
     \?)
       echo "Invalid option: -$OPTARG" >&2
       ;;
-      # TODO: 테스트할 파일명 인자로 받기?
+      # 테스트할 파일명 인자로 받기?
       #:)
       #echo "Option -$OPTARG requires an argument." >&2
       #;;

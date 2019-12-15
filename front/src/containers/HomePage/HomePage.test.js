@@ -9,8 +9,6 @@ import getMockStore from '../../test-utils/getMockStore';
 import { history } from '../../store/store';
 import * as actionCreators from '../../store/actions/match';
 
-// jest.mock('../../components/HomeMatchTile/HomeMatchTile', () => {})
-
 const stubUser = {
   currentUser: {
     id: 1,
@@ -118,7 +116,6 @@ describe('<HomePage />', () => {
 
   it('should handle input changes', async () => {
     const component = mount(homePage);
-    // nlpText change
     const nlpText = 'TEST_NLP_TEXT';
     const wrapper = component.find(`#Home-create-textinput`);
     expect(wrapper.length).toBe(2);

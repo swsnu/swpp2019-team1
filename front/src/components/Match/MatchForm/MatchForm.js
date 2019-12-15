@@ -11,7 +11,6 @@ import GoogleMap from '../../Map/GoogleMap';
 
 import { categories } from '../../../store/staticData/categories';
 import ImageUpload from '../../ImageUpload/ImageUpload';
-// const { RangePicker } = DatePicker;
 
 const MatchSchema = Yup.object().shape({
   title: Yup.string().required('Required'),
@@ -38,11 +37,9 @@ export const disableDate = (beginValue, endValue) => {
 };
 const MatchForm = ({
   title,
-  // matchThumbnail,
   category,
   capacity,
   locationText,
-  // latitude and longitude will be implemented or removed after applying Google Map API
   locationLatitude,
   locationLongitude,
   timeBegin,
@@ -62,7 +59,6 @@ const MatchForm = ({
           locationText,
           timeBegin,
           timeEnd,
-          // timeRange: [moment(timeBegin), moment(timeEnd)],
           additionalInfo,
         }}
         onSubmit={(values, actions) => {
@@ -72,7 +68,6 @@ const MatchForm = ({
         validationSchema={MatchSchema}
       >
         {({ setFieldValue, values }) => (
-          // eslint-disable-next-line react/jsx-props-no-spreading
           <Form>
             <div className="MatchFormItem">
               <FormItem name="title" label="Title">
@@ -161,14 +156,10 @@ const MatchForm = ({
 
 export const MatchPropTypes = {
   title: PropTypes.string,
-  // matchThumbnail,
   category: PropTypes.arrayOf(PropTypes.number),
   capacity: PropTypes.number.isRequired,
   isOnline: PropTypes.bool,
   locationText: PropTypes.string,
-  // latitude and longitude will be implemented or removed after applying Google Map API
-  // locationLatitude: PropTypes.number.isRequired,
-  // locationLongitude: PropTypes.number.isRequired,
   timeBegin: momentPropTypes.momentObj,
   timeEnd: momentPropTypes.momentObj,
   additionalInfo: PropTypes.string,
@@ -178,9 +169,6 @@ export const MatchPropTypes = {
   restrictAgeFrom: PropTypes.number,
   restrictAgeTo: PropTypes.number,
   isGenderRestricted: PropTypes.bool,
-  // restrictMale and restrictFemale will be implemented later with CSS
-  // restrictMale: PropTypes.bool.isRequired,
-  // restrictFemale: PropTypes.bool.isRequired,
 };
 
 MatchForm.propTypes = {

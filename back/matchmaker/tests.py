@@ -113,7 +113,6 @@ class MatchMakerTestCase(TestCase):
     '''Tests for the app Matchmaker'''
 
     def setUp(self):
-        # Setup test database here TODO
         pass
 
     def test_matchserializer(self):
@@ -572,7 +571,6 @@ class MatchMakerTestCase(TestCase):
 
     def test_match_new(self):
         '''Checks if get_new_match performs correctly.'''
-        # Make complex test cases TODO
         client = Client()
         test_user = create_dummy_user('TEST_EMAIL@test.com')
         test_category = create_dummy_category()
@@ -582,7 +580,6 @@ class MatchMakerTestCase(TestCase):
 
     def test_match_hot(self):
         '''Checks if get_hot_match performs correctly.'''
-        # Make complex test cases TODO
         client = Client()
         test_user = create_dummy_user('TEST_EMAIL@test.com')
         test_category = create_dummy_category()
@@ -592,7 +589,6 @@ class MatchMakerTestCase(TestCase):
 
     def test_match_recommend(self):
         '''Checks if get_recommend_match performs correctly.'''
-        # Make complex test cases TODO
         client = Client()
         test_user = create_dummy_user('TEST_EMAIL@test.com')
         test_user_2 = create_dummy_user('TEST_SECOND_EMAIL@test.com')

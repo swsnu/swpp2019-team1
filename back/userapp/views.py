@@ -28,6 +28,7 @@ def token(request):
     ''' get csrf token '''
     if request.method == 'GET':
         return HttpResponse(status=204)
+    # 405
     return HttpResponseNotAllowed(['GET'])
 
 
@@ -38,10 +39,8 @@ def sign_up(request):
         data = CamelCaseJSONParser().parse(request)
         serializer = UserSerializer(data=data)
         if serializer.is_valid():
-            # 200
             serializer.create(data)
             return JsonResponse(serializer.data, status=201)
-        # 400
         return JsonResponse(serializer.data, status=400)
     # 405
     return HttpResponseNotAllowed(['POST'])
@@ -126,7 +125,6 @@ def user_detail(request, user_id):
                 CamelCaseJSONRenderer().render(serializer.data))
             return JsonResponse(response)
         return JsonResponse(serializer.errors, status=400)
-
     # 405
     return HttpResponseNotAllowed(['GET', 'PATCH'])
 
@@ -144,4 +142,5 @@ def user_interest(request, user_id):
                         user=request.user, category=category)
             return HttpResponse(status=200)
         return HttpResponse(status=401)
+    # 405
     return HttpResponseNotAllowed(['PUT'])

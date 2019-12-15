@@ -10,7 +10,6 @@ const userReducer = (state, action) => {
   switch (action.type) {
     case actionTypes.CREATE_USER:
       return { ...state };
-    // yet not implemented
     case actionTypes.SIGN_IN:
       return {
         ...state,

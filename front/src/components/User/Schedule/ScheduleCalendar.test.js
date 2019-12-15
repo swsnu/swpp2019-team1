@@ -28,7 +28,6 @@ const testMatch = {
   title: 'TEST_TITLE',
   hostName: 'TEST_HOSTNAME',
   additionalInfo: 'TEST_ADITIONAL_INFO',
-  // matchThumbnail
   category: [0, 0],
   capacity: 2,
   isOnline: false,

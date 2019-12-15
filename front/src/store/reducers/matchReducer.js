@@ -6,31 +6,12 @@ const initialState = {
   recommend: [],
   searchResult: [],
   selected: undefined,
-  // the following may not be needed
   myMatch: [],
   category: null,
   location: '',
   title: '',
   additionalInfo: '',
 };
-
-// const testInitialState = {
-//   hot: [],
-//   new: [],
-//   recommend: [],
-//   searchResult: [],
-//   selected: {
-//     id: 1,
-//     hostId: 2,
-//     title: 'TEST_TITLE',
-//     time: 'TEST_TIME',
-//     location: 'TEST_LOCATION',
-//     hostName: 'TEST_HOSTNAME',
-//     restriction: 'TEST_RESTRICTION',
-//     additionalInfo: 'TEST_ADITIONAL_INFO',
-//   },
-//   myMatch: [],
-// };
 
 const matchReducer = (state, action) => {
   if (typeof state === 'undefined') return initialState;

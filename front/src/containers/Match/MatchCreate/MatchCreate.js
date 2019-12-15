@@ -1,7 +1,3 @@
-/*
- *  TODO : input validation + all TODOs in the lines
- */
-
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -11,7 +7,6 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 
 import * as actionCreators from '../../../store/actions';
 import MatchForm from '../../../components/Match/MatchForm/MatchForm';
-// import LocationPopUp from ''
 
 const createButton = (
   <SubmitButton className="CreateButton" type="primary">
@@ -22,7 +17,6 @@ const createButton = (
 class MatchCreate extends Component {
   constructor(props) {
     super(props);
-    // using category : not implemented
     const { title, additionalInfo, category, locationText } = this.props;
     this.state = {
       title,
@@ -33,7 +27,6 @@ class MatchCreate extends Component {
       locationLongitude: 126.9519515,
       timeBegin: null,
       timeEnd: null,
-      // timeRange: ['',''],
       additionalInfo,
     };
   }
@@ -55,13 +48,9 @@ class MatchCreate extends Component {
       timeEnd: timeEnd.format(),
     };
 
-    // matchInfo.category = matchInfo.category.indexes;
-
     onCreate(matchInfo);
   };
 
-  // this will be implemented or removed after applying Google Map API
-  // LocationSearch = () => {};
   onClickCancel = () => {
     const { history } = this.props;
     history.goBack();
@@ -91,12 +80,6 @@ class MatchCreate extends Component {
           timeBegin={timeBegin}
           timeEnd={timeEnd}
           additionalInfo={additionalInfo}
-          // LocationLatitudeChange={
-          //   event => LocationLatitudeChange
-          // (event, context)}
-          // LocationLongitudeChange={
-          //   event => LocationLongitudeChange
-          // (event, context)}
           clickSubmit={this.onClickCreate}
           submitButton={createButton}
           clickCancel={this.onClickCancel}

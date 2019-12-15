@@ -91,7 +91,7 @@ class GoogleMap extends Component {
             onPlacesChanged={this.onPlacesChanged}
           />
         )}
-        <div style={{ height, width }}>
+        <div style={{ height, width }} id="container">
           <GoogleMapReact
             bootstrapURLKeys={{
               key: 'AIzaSyDAoCLA1ph2m58Gq97sfoUuAw9UvlkdYjU',
