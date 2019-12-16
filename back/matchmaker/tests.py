@@ -48,7 +48,8 @@ class GoogleCloudLanguageMock:
             category = language_service_pb2.ClassificationCategory(
                 name='/Internet & Telecom/Mobile & Wireless',
                 confidence=0.6100000143051147)
-            response = language_service_pb2.ClassifyTextResponse(categories=[category])
+            response = language_service_pb2.ClassifyTextResponse(
+                categories=[category])
             return response
 
         # google_analysis_response = client.analyze_entities(document=document)
@@ -488,16 +489,16 @@ class MatchMakerTestCase(TestCase):
         client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
 
         response = client.post('/api/match/nlp/', json.dumps({
-            'nlp_text': 'Google, headquartered in Mountain View'}), content_type='application/json',
-                               HTTP_X_CSRFTOKEN=csrftoken)
+            'nlp_text': 'Google, headquartered in Mountain View'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
 
         response = client.post('/api/match/nlp/', json.dumps({
             'nlp_text': 'Google, headquartered in Mountain View (1600 Amphitheatre '
                         'Pkwy, Mountain View, CA 940430), unveiled the new Android phone for $799'
                         ' at the Consumer Electronic Show. Sundar Pichai said in his keynote that'
-                        ' users love their new Android phones.'}), content_type='application/json',
-                               HTTP_X_CSRFTOKEN=csrftoken)
+                        ' users love their new Android phones.'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         response_dict = json.loads(response.content.decode())
         self.assertEqual(response_dict['categories'],
                          [{'name': '/Internet & Telecom/Mobile & Wireless',
@@ -523,8 +524,8 @@ class MatchMakerTestCase(TestCase):
             'nlp_text': 'Google, headquartered in Mountain View (1600 Amphitheatre '
                         'Pkwy, Mountain View, CA 940430), unveiled the new Android phone for $799'
                         ' at the Consumer Electronic Show. Sundar Pichai said in his keynote that'
-                        ' users love their new Android phones.'}), content_type='application/json',
-                               HTTP_X_CSRFTOKEN=csrftoken)
+                        ' users love their new Android phones.'}),
+                               content_type='application/json', HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
 
     @patch.object(nlp, 'enums', mock.Mock(side_effect=GoogleCloudLanguageMock.enums))
@@ -608,6 +609,7 @@ class MatchMakerTestCase(TestCase):
         response = client.get('/api/match/recommend/')
         self.assertEqual(len(json.loads(response.content.decode())), 0)
         Interest.objects.create(user=test_user, category=test_category)
+        Interest.objects.create(user=test_user, category=test_category)
         response = client.get('/api/match/recommend/')
         self.assertEqual(len(json.loads(response.content.decode())), 1)
 
@@ -625,7 +627,8 @@ class MatchMakerTestCase(TestCase):
                                  HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 401)
         # not host user
-        client.login(email='TEST_SECOND_EMAIL@test.com', password='TEST_PASSWORD')
+        client.login(email='TEST_SECOND_EMAIL@test.com',
+                     password='TEST_PASSWORD')
         response = client.post(f'/api/match/{test_match.id}/join/',
                                HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
@@ -633,7 +636,7 @@ class MatchMakerTestCase(TestCase):
         response = client.delete(f'/api/match/{test_match.id}/join/',
                                  HTTP_X_CSRFTOKEN=csrftoken)
         self.assertEqual(response.status_code, 200)
-        #host user
+        # host user
         client.logout()
         client.login(email='TEST_EMAIL@test.com', password='TEST_PASSWORD')
         response = client.get('/api/token/')
