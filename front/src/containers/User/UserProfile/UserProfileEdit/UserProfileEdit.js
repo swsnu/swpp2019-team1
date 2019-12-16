@@ -30,6 +30,7 @@ class UserProfileEdit extends Component {
       phoneNumber: values.phoneNumber,
       gender: values.gender,
       birthdate: values.birthdate,
+      introduction: values.introduction,
     };
     onProfileEdit(currentUser.id, userInfo);
   };
@@ -52,6 +53,7 @@ class UserProfileEdit extends Component {
           phoneNumber={currentUser.phoneNumber}
           gender={currentUser.gender}
           birthdate={currentUser.birthdate}
+          introduction={currentUser.introduction}
           isProfileEdit
           clickSubmit={this.clickProfileEditHandler}
         />
@@ -70,6 +72,7 @@ UserProfileEdit.propTypes = {
     phoneNumber: PropTypes.string.isRequired,
     gender: PropTypes.bool,
     birthdate: PropTypes.string.isRequired,
+    introduction: PropTypes.string,
   }),
 };
 UserProfileEdit.defaultProps = { currentUser: null };

@@ -52,7 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(max_length=13, default='000-0000-0000')
     gender = models.BooleanField(default=True)
     birthdate = models.DateField(default=timezone.now)
-    message = models.CharField(max_length=200, blank=True)
+    introduction = models.CharField(max_length=200, blank=True)
     profile_picture = models.ImageField(
         upload_to='profile/', null=True, blank=True)
     is_email_public = models.BooleanField(default=True, blank=True)

@@ -33,7 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'email', 'username',
                   'first_name', 'last_name',
                   'phone_number', 'gender', 'birthdate',
-                  'message', 'profile_picture',
+                  'introduction', 'profile_picture',
                   'is_email_public', 'is_schedule_public', 'is_interest_public',
                   'password')
         validators = []
@@ -48,7 +48,7 @@ class UserSerializer(serializers.ModelSerializer):
         '''instance.username = validated_data.get('username', instance.username)
         instance.phone_number = validated_data.get(
             'phone_number', instance.phone_number)
-        instance.message = validated_data.get('message', instance.message)
+        instance.introduction = validated_data.get('introduction', instance.introduction)
         instance.profile_picture = validated_data.get(
             'profile_picture', instance.profile_picture)
         instance.is_email_public = validated_data.get(

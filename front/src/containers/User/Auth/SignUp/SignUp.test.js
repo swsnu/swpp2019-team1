@@ -23,6 +23,7 @@ const dummySignUpInput = {
   phoneNumber: '012-3456-7890',
   gender: true,
   birthdate: '2000-12-12',
+  introduction: 'test_introduction',
 };
 describe('<SignUp />', () => {
   let signUp;
@@ -62,6 +63,7 @@ describe('<SignUp />', () => {
       phoneNumber,
       gender,
       birthdate,
+      introduction,
     } = dummySignUpInput;
     const dummySignUpInfo = {
       email,
@@ -72,6 +74,7 @@ describe('<SignUp />', () => {
       phoneNumber,
       gender,
       birthdate,
+      introduction,
     };
     const component = mount(signUp);
     const signUpInstance = component.find(SignUp.WrappedComponent).instance();
@@ -117,6 +120,11 @@ describe('<SignUp />', () => {
       });
       wrapper = component.find(DatePicker);
       wrapper.prop('onChange')(new Date(), dummySignUpInput.birthdate);
+      wrapper = component.find(`textarea[name="introduction"]`);
+      expect(wrapper.length).toBe(1);
+      wrapper.simulate('change', {
+        target: { name: 'introduction', value: dummySignUpInput.introduction },
+      });
       wrapper = component.find(Form);
       await new Promise(resolve => setTimeout(resolve, 100));
       wrapper.simulate('submit');

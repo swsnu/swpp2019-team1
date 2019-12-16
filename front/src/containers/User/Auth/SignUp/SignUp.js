@@ -20,6 +20,7 @@ class SignUp extends Component {
       phoneNumber: '',
       gender: undefined,
       birthdate: '',
+      introduction: '',
     };
   }
 
@@ -39,6 +40,7 @@ class SignUp extends Component {
       phoneNumber: values.phoneNumber,
       gender: values.gender,
       birthdate: values.birthdate,
+      introduction: values.introduction,
     };
     onSignUp(signUpInfo);
   };
@@ -54,6 +56,7 @@ class SignUp extends Component {
       phoneNumber,
       gender,
       birthdate,
+      introduction,
     } = this.state;
     return (
       <div className="SignUp">
@@ -67,6 +70,7 @@ class SignUp extends Component {
           phoneNumber={phoneNumber}
           gender={gender}
           birthdate={birthdate}
+          introduction={introduction}
           clickSubmit={this.clickSignUpHandler}
         />
       </div>
