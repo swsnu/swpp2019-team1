@@ -212,7 +212,7 @@ def search(request):
         if 'category' in request.GET:
             category = request.GET['category']
         search_result_raw = Match.objects.filter(
-            title__contains=query).filter(category__indexes__startswith=category).values_list('id')
+            title__icontains=query).filter(category__indexes__startswith=category).values_list('id')
         match_id_list = [match_id_tuple[0]
                          for match_id_tuple in search_result_raw]
         search_result = list(
