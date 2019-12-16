@@ -26,7 +26,7 @@ const renderContent = user => (
       <a href={`skype:${user.email}?call`}>{user.phoneNumber}</a>
     </Item>
     <Item />
-    <Item label="Message">{user.message}</Item>
+    <Item label="Introduction">{user.introduction}</Item>
   </Descriptions>
 );
 
@@ -179,7 +179,7 @@ UserProfile.propTypes = {
     profilePicture: PropTypes.string.isRequired,
     gender: PropTypes.bool,
     birthdate: PropTypes.string.isRequired,
-    message: PropTypes.string,
+    introduction: PropTypes.string,
     schedule: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.number,

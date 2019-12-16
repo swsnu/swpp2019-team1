@@ -44,6 +44,7 @@ const profileEditSchemaEntries = {
     .required('Required'),
   gender: Yup.bool().required('Required'),
   birthdate: Yup.string().required('Required'),
+  introduction: Yup.string(),
 };
 const SignUpSchema = Yup.object().shape({
   email: Yup.string()
@@ -62,6 +63,7 @@ const SignUpForm = ({
   phoneNumber,
   gender,
   birthdate,
+  introduction,
   isProfileEdit,
   clickSubmit,
 }) => (
@@ -77,6 +79,7 @@ const SignUpForm = ({
         phoneNumber,
         gender,
         birthdate,
+        introduction,
       }}
       onSubmit={(values, actions) => {
         clickSubmit(values);
@@ -150,6 +153,13 @@ const SignUpForm = ({
               placeholder="Birthdate"
             />
           </FormItem>
+          <FormItem name="introduction" label="Introduction">
+            <Input.TextArea
+              name="introduction"
+              rows={4}
+              placeholder="Introduce yourself"
+            />
+          </FormItem>
           <div className="button">
             <SubmitButton type="primary">
               {!isProfileEdit ? 'Sign Up' : 'Edit'}
@@ -170,12 +180,14 @@ SignUpForm.propTypes = {
   phoneNumber: PropTypes.string.isRequired,
   gender: PropTypes.bool,
   birthdate: PropTypes.string.isRequired,
+  introduction: PropTypes.string,
   isProfileEdit: PropTypes.bool,
   clickSubmit: PropTypes.func.isRequired,
 };
 SignUpForm.defaultProps = {
   email: undefined,
   gender: undefined,
+  introduction: undefined,
   isProfileEdit: undefined,
 };
 export default SignUpForm;
