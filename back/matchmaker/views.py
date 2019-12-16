@@ -136,8 +136,9 @@ def match_recommend(request):
                     category__indexes__startswith=indexes).order_by('-view_count')
                 raw_result = list(filter(lambda match: extract_joinable_match(
                     match, request.user.id), raw_result))
-                if len(raw_result) > 0:
-                    match_list += raw_result
+                for match_obj in raw_result:
+                    if match_obj not in match_list:
+                        match_list.append(match_obj)
             match_list = match_list[:3]
             result = list(
                 map((lambda match: get_match_detail_json(request, match.id)), list(match_list)))
