@@ -112,25 +112,35 @@ def match_hot(request):
     return HttpResponseNotAllowed(['GET'])
 
 
+def extract_joinable_match(match_obj, user_id):
+    ''' exclude participating match'''
+    participations = match_obj.participation_match
+    if len(participations.filter(user_id=user_id)) == 0 \
+            and match_obj.capacity > participations.all().count():
+        return match_obj
+    return None
+
+
 def match_recommend(request):
     '''Returns recommend three matches.'''
     if request.method == 'GET':
         if request.user.is_authenticated:
             interest_list = USER.objects.get(
                 id=request.user.id).interest_user.values()
-            match_id_list = []
+            match_list = []
             for interest in interest_list:
                 indexes = Category.objects.get(
                     id=interest['category_id']).indexes
                 indexes = ''.join(str(index) for index in indexes)
                 raw_result = Match.objects.filter(
-                    category__indexes__startswith=indexes).exclude(
-                        host_user_id=request.user.id).order_by(
-                            '-view_count')[:1].values_list('id')
+                    category__indexes__startswith=indexes).order_by('-view_count')
+                raw_result = list(filter(lambda match: extract_joinable_match(
+                    match, request.user.id), raw_result))
                 if len(raw_result) > 0:
-                    match_id_list.append(raw_result[0][0])
+                    match_list += raw_result
+            match_list = match_list[:3]
             result = list(
-                map((lambda id: get_match_detail_json(request, id)), list(match_id_list)))
+                map((lambda match: get_match_detail_json(request, match.id)), list(match_list)))
             return JsonResponse(result, safe=False)
         return HttpResponse(status=401)  # not authenticated
     # 405
