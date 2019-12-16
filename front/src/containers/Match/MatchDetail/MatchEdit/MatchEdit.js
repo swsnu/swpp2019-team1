@@ -8,7 +8,6 @@ import MatchForm, {
   MatchPropTypes,
 } from '../../../../components/Match/MatchForm/MatchForm';
 import * as actionCreators from '../../../../store/actions';
-// import LocationPopUp from ''
 
 const editButton = (
   <SubmitButton className="EditButton" type="primary">
@@ -29,33 +28,19 @@ class MatchEdit extends Component {
       locationLongitude: 126.9519515,
       timeBegin: null,
       timeEnd: null,
-      // timeRange: ['',''],
       additionalInfo: '',
-      // isPeriodic: false,
-      // period: 0,
-      // isAgeRestricted: false,
-      // restrictAgeFrom: 0,
-      // restrictAgeTo: 0,
-      // isGenderRestricted: false,
-      // restrictMale: false,
-      // restrictFemale: false,
     };
   }
 
   componentDidMount() {
     const { match, onGetMatch } = this.props;
+    window.scrollTo(0, 0);
     onGetMatch(match.params.id);
     new Promise(resolve => setTimeout(resolve, 100)).then(() => {
       const { selected } = this.props;
       this.setState(selected);
     });
   }
-
-  // TODO
-  // onClickCreate = () => {};
-
-  // this will be implemented or removed after applying Google Map API
-  // handleLocationSearch = () => {};
 
   onClickEdit = matchFormInfo => {
     const { onEdit, match } = this.props;
@@ -69,7 +54,6 @@ class MatchEdit extends Component {
       timeEnd: timeEnd.format(),
     };
 
-    // matchInfo.category = matchInfo.category.indexes;
     onEdit(match.params.id, matchInfo);
   };
 
@@ -106,12 +90,6 @@ class MatchEdit extends Component {
           timeBegin={timeBegin}
           timeEnd={timeEnd}
           additionalInfo={additionalInfo}
-          // LocationLatitudeChange={
-          //   event => LocationLatitudeChange
-          // (event, context)}
-          // LocationLongitudeChange={
-          //   event => LocationLongitudeChange
-          // (event, context)}
           clickSubmit={this.onClickEdit}
           submitButton={editButton}
           clickCancel={this.onClickCancel}

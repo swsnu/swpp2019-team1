@@ -63,6 +63,7 @@ class ImageUpload extends Component {
           ref="imageUploader"
           style={{ height: '0px', display: 'none' }}
           onChange={this.handleChange}
+          accept="image/*"
         />
       </div>
     );

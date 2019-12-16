@@ -33,7 +33,6 @@ const renderContent = user => (
 const routes = [
   {
     path: 'index',
-    // breadcrumbName: 'Profile',
   },
 ];
 
@@ -67,6 +66,7 @@ class UserProfile extends Component {
 
   componentDidMount() {
     const { onGetUser, match } = this.props;
+    window.scrollTo(0, 0);
     onGetUser(match.params.id)
       .then(() => {
         const { selectedUser } = this.props;
@@ -101,9 +101,6 @@ class UserProfile extends Component {
       <div className="UserProfile">
         <PageHeader
           title={selectedUser.username}
-          // style={{
-          //   border: '1px solid rgb(235, 237, 240)',
-          // }}
           extra={[
             isEditable && (
               <Button

@@ -51,6 +51,7 @@ def process_post_request(request):
         data['time_begin'] = time_begin
         data['time_end'] = time_end
     except (KeyError, arrow.parser.ParserError):
+        # 400
         return HttpResponseBadRequest()
     try:
         data['match_thumbnail'] = request.FILES['matchThumbnail']
@@ -79,8 +80,9 @@ def match(request):
             response = json.loads(
                 CamelCaseJSONRenderer().render(new_match_data))
             return JsonResponse(response, status=201)
-        # print(match_serializer.errors) need to return error info
+        # 400
         return HttpResponseBadRequest()
+    # 405
     return HttpResponseNotAllowed(['POST'])
 
 
@@ -93,6 +95,7 @@ def match_new(request):
         result = list(
             map((lambda id: get_match_detail_json(request, id)), list(match_id_list)))
         return JsonResponse(result, safe=False)
+    # 405
     return HttpResponseNotAllowed(['GET'])
 
 
@@ -105,6 +108,7 @@ def match_hot(request):
         result = list(
             map((lambda id: get_match_detail_json(request, id)), list(match_id_list)))
         return JsonResponse(result, safe=False)
+    # 405
     return HttpResponseNotAllowed(['GET'])
 
 
@@ -129,6 +133,7 @@ def match_recommend(request):
                 map((lambda id: get_match_detail_json(request, id)), list(match_id_list)))
             return JsonResponse(result, safe=False)
         return HttpResponse(status=401)  # not authenticated
+    # 405
     return HttpResponseNotAllowed(['GET'])
 
 
@@ -141,6 +146,7 @@ def match_detail(request, match_id):
     if request.method == 'POST':
         match_obj = get_object_or_404(Match, pk=match_id)
         if match_obj.host_user != request.user:
+            # 403
             return HttpResponseForbidden()
         data = process_post_request(request)
         match_serializer = MatchSerializer(data=data)
@@ -152,7 +158,9 @@ def match_detail(request, match_id):
             response = json.loads(
                 CamelCaseJSONRenderer().render(match_data))
             return JsonResponse(response, status=200)
+        # 400
         return HttpResponseBadRequest()
+    # 405
     return HttpResponseNotAllowed(['GET', 'POST', 'PATCH', 'DELETE'])
 
 
@@ -179,6 +187,7 @@ def match_join(request, match_id):
                     user_id=request.user.id, match_id=match_obj.id).delete()
             return HttpResponse(status=200)
         return HttpResponse(status=401)  # not authenticated
+    # 405
     return HttpResponseNotAllowed(['POST', 'DELETE'])
 
 
@@ -198,4 +207,5 @@ def search(request):
         search_result = list(
             map((lambda id: get_match_detail_json(request, id)), list(match_id_list)))
         return JsonResponse(search_result, safe=False)
+    # 405
     return HttpResponseNotAllowed(['GET'])

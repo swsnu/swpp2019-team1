@@ -26,7 +26,6 @@ const stubMatch = {
     title: 'TEST_TITLE',
     hostName: 'TEST_HOSTNAME',
     additionalInfo: 'TEST_ADITIONAL_INFO',
-    // matchThumbnail
     category: [0],
     capacity: 2,
     isOnline: false,
@@ -50,24 +49,6 @@ const stubNoSelectedMatch = {
   selected: undefined,
 };
 let mockStore = getMockStore(stubUser, stubMatch);
-/*
-jest.mock('../../../../store/actions', () => ({
-  getMatch: jest.fn(id => {
-    return dispatch => {
-      return new Promise((resolve, reject) => {
-        resolve();
-      });
-    };
-  }),
-  editMatch: jest.fn(id => {
-    return dispatch => {
-      return new Promise((resolve, reject) => {
-        resolve();
-      });
-    };
-  }),
-}));
-*/
 
 describe('<MatchEdit />', () => {
   let matchEdit;
@@ -93,6 +74,7 @@ describe('<MatchEdit />', () => {
       .mockImplementation(() => {
         return () => {};
       });
+    jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
   });
 
   it('should render without errors', async () => {

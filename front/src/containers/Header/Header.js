@@ -36,7 +36,7 @@ class Header extends Component {
 
   clickProfileHandler = async () => {
     const { history, currentUser } = this.props;
-    history.push(`/profile/${currentUser.id}`); // TODO
+    history.push(`/profile/${currentUser.id}`);
   };
 
   createHeaderButtons = currentUser => {
@@ -68,7 +68,7 @@ class Header extends Component {
     }
     return [
       <Button key="1" onClick={this.clickSignInHandler}>
-        Sign In
+        Log In
       </Button>,
       <Button
         key="2"

@@ -18,7 +18,9 @@ class Search extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
 
   matchToComponent = match => {
     const { onClickMatch } = this.props;

@@ -1,10 +1,10 @@
-/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { Button } from 'antd';
+import Moment from 'moment';
 import GoogleMap from '../../../components/Map/GoogleMap';
 import * as actionCreators from '../../../store/actions/index';
 import { MatchPropTypes } from '../../../components/Match/MatchForm/MatchForm';
@@ -18,6 +18,7 @@ class MatchDetail extends Component {
 
   componentDidMount() {
     const { match, onGetMatch } = this.props;
+    window.scrollTo(0, 0);
     onGetMatch(match.params.id);
   }
 
@@ -32,7 +33,8 @@ class MatchDetail extends Component {
   };
 
   clickJoinHandler = () => {
-    const { match, onJoinMatch } = this.props;
+    const { match, onJoinMatch, currentUser, onGoSignIn } = this.props;
+    if (currentUser === null) onGoSignIn();
     onJoinMatch(match.params.id);
     window.location.reload();
   };
@@ -83,23 +85,24 @@ class MatchDetail extends Component {
             id="enter-chatroom-button"
             onClick={this.clickChatRoomHandler}
           >
-            Enter Chatroom
+            Chatroom
           </Button>
-          {selected.hostUser.id === userid && (
+          {selected.hostUser.id === userid ? (
             <Button
               id="edit-match-button"
               onClick={() => this.clickEditHandler()}
             >
               Edit
             </Button>
+          ) : (
+            <Button
+              type="danger"
+              id="quit-match-button"
+              onClick={() => this.clickQuitHandler()}
+            >
+              Quit
+            </Button>
           )}
-          <Button
-            type="danger"
-            id="quit-match-button"
-            onClick={() => this.clickQuitHandler()}
-          >
-            Quit
-          </Button>
         </div>
       );
     return (
@@ -136,24 +139,27 @@ class MatchDetail extends Component {
               {this.renderCapacity(selected.numParticipants, selected.capacity)}
             </b>
             <br />
-            <div className="Detail-PlaceDate-And-Host">
-              <p>
-                <i className="material-icons">category</i>
-                {selected.categoryName}
-              </p>
-              <i className="material-icons">calendar_today</i>
-              {selected.timeBegin.format('YYYY/MM/DD, h:mm a')}
-              {this.renderPeriod(selected.period)}
-              <Button
-                type="link"
-                id="host-profile-button"
-                onClick={() => this.clickUserHandler()}
-              >
-                {selected.hostUser.username}
-              </Button>
-              <div className="Detail-Place">
-                <i className="material-icons">storefront</i>
-                {selected.locationText}
+            <div className="Detail-Middle">
+              <span className="category">{selected.categoryName}</span> <br />
+              <div className="Detail-Date-Host">
+                <i className="material-icons">calendar_today</i>
+                {selected.timeBegin.format('YYYY/MM/DD, h:mm a')}
+                {this.renderPeriod(selected.period)}
+                <span className="host">
+                  <i className="material-icons">account_circle</i>
+                  <Button
+                    type="link"
+                    className="host"
+                    id="host-profile-button"
+                    onClick={() => this.clickUserHandler()}
+                  >
+                    {selected.hostUser.username}
+                  </Button>
+                </span>
+                <div className="Detail-Place">
+                  <i className="material-icons">storefront</i>
+                  {selected.locationText}
+                </div>
               </div>
             </div>
           </div>
@@ -166,7 +172,7 @@ class MatchDetail extends Component {
                 lng: selected.locationLongitude,
               }}
               height="700px"
-              width="100%"
+              width="93%"
               zoom={15}
               locationText={selected.locationText}
             />
@@ -182,7 +188,7 @@ class MatchDetail extends Component {
               y1="0"
               x2="100%"
               y2="0"
-              style={{ stroke: '#0000bb', strokeWidth: 8 }}
+              style={{ stroke: '#305e34', strokeWidth: 8 }}
             />
             Your browser does not support inline SVG.
           </svg>
@@ -193,14 +199,24 @@ class MatchDetail extends Component {
               y1="0"
               x2="100%"
               y2="0"
-              style={{ stroke: '#0000bb', strokeWidth: 8 }}
+              style={{ stroke: '#305e34', strokeWidth: 8 }}
             />
             Your browser does not support inline SVG.
           </svg>
           <img src={selected.matchThumbnail} alt="No Pic" />
           <div id="additional-info-text">{selected.additionalInfo}</div>
+          <svg height="15" width="96%">
+            <line
+              x1="0"
+              y1="0"
+              x2="100%"
+              y2="0"
+              style={{ stroke: '#305e34', strokeWidth: 8 }}
+            />
+            Your browser does not support inline SVG.
+          </svg>
+          {this.renderButtons(selected, currentUser ? currentUser.id : 0)}
         </div>
-        {this.renderButtons(selected, currentUser ? currentUser.id : 0)}
       </div>
     );
   }
@@ -221,11 +237,11 @@ const mapDispatchToProps = dispatch => {
     onQuitMatch: mid => dispatch(actionCreators.quitMatch(mid)),
     onUserProfile: uid => dispatch(push(`/profile/${uid}`)),
     onClickChatRoom: mid => dispatch(push(`/match/${mid}/chatroom`)),
+    onGoSignIn: () => dispatch(push('/signin')),
   };
 };
 
 MatchDetail.propTypes = {
-  // user: PropTypes.object.isRequired,
   selected: PropTypes.shape({
     ...MatchPropTypes,
     hostUser: PropTypes.shape({
@@ -233,6 +249,19 @@ MatchDetail.propTypes = {
       username: PropTypes.string.isRequired,
     }).isRequired,
     participants: PropTypes.arrayOf(PropTypes.number),
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    numParticipants: PropTypes.number.isRequired,
+    capacity: PropTypes.number.isRequired,
+    categoryName: PropTypes.string.isRequired,
+    timeBegin: PropTypes.instanceOf(Moment),
+    timeEnd: PropTypes.instanceOf(Moment),
+    locationText: PropTypes.string.isRequired,
+    locationLatitude: PropTypes.number.isRequired,
+    locationLongitude: PropTypes.number.isRequired,
+    additionalInfo: PropTypes.string.isRequired,
+    matchThumbnail: PropTypes.string.isRequired,
+    period: PropTypes.number.isRequired,
   }),
   currentUser: PropTypes.shape({
     id: PropTypes.number.isRequired,
@@ -242,6 +271,8 @@ MatchDetail.propTypes = {
   onQuitMatch: PropTypes.func.isRequired,
   onEditMatch: PropTypes.func.isRequired,
   onUserProfile: PropTypes.func.isRequired,
+  onGoSignIn: PropTypes.func.isRequired,
+  onClickChatRoom: PropTypes.func.isRequired,
   match: ReactRouterPropTypes.match.isRequired,
 };
 MatchDetail.defaultProps = { selected: undefined, currentUser: null };

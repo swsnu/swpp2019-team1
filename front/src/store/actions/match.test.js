@@ -6,15 +6,11 @@ import store, { history } from '../store';
 
 const stubMatchRespA = {
   title: '',
-  // matchThumbnail
   category: [0, 0],
   categoryName: 'Adult / Adult',
   capacity: 0,
   isOnline: false,
   locationText: 'TEST_LOCATION_TEXT',
-  // latitude and longitude will be implemented or removed after applying Google Map API
-  // locationLatitude: '',
-  // locationLongitude: '',
   timeBegin: moment().format(),
   timeEnd: moment().format(),
   additionalInfo: '',
@@ -29,15 +25,11 @@ const stubMatchRespA = {
 
 const stubMatchRespB = {
   title: '',
-  // matchThumbnail
   category: [0, 0],
   categoryName: 'Adult / Adult',
   capacity: 0,
   isOnline: false,
   locationText: 'TEST_LOCATION_TEXT',
-  // latitude and longitude will be implemented or removed after applying Google Map API
-  // locationLatitude: '',
-  // locationLongitude: '',
   timeBegin: moment().format(),
   timeEnd: moment().format(),
   additionalInfo: '',
@@ -52,15 +44,11 @@ const stubMatchRespB = {
 
 const stubMatchA = {
   title: '',
-  // matchThumbnail
   category: [0, 0],
   categoryName: 'Adult / Adult',
   capacity: 0,
   isOnline: false,
   locationText: 'TEST_LOCATION_TEXT',
-  // latitude and longitude will be implemented or removed after applying Google Map API
-  // locationLatitude: '',
-  // locationLongitude: '',
   timeBegin: moment(stubMatchRespA.timeBegin),
   timeEnd: moment(stubMatchRespA.timeEnd),
   additionalInfo: '',
@@ -87,9 +75,6 @@ const stubNewMatch = {
   capacity: 0,
   isOnline: false,
   locationText: 'TEST_LOCATION_TEXT',
-  // latitude and longitude will be implemented or removed after applying Google Map API
-  // locationLatitude: '',
-  // locationLongitude: '',
   timeBegin: moment(),
   timeEnd: moment(),
   additionalInfo: '',
@@ -195,7 +180,7 @@ describe('ActionMatch', () => {
       .mockImplementation(() => {});
     store.dispatch(actionCreators.getNewMatch()).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
-      expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
+      expect(spyMessageError).toHaveBeenCalledWith('Failed to set up request.');
       done();
     });
   });
@@ -231,7 +216,7 @@ describe('ActionMatch', () => {
       .mockImplementation(() => {});
     store.dispatch(actionCreators.getHotMatch()).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
-      expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
+      expect(spyMessageError).toHaveBeenCalledWith('Failed to set up request.');
       done();
     });
   });
@@ -267,7 +252,7 @@ describe('ActionMatch', () => {
       .mockImplementation(() => {});
     store.dispatch(actionCreators.getRecommendMatch(0)).then(() => {
       expect(spy).toHaveBeenCalledTimes(1);
-      expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
+      expect(spyMessageError).toHaveBeenCalledWith('Failed to set up request.');
       done();
     });
   });
@@ -416,7 +401,7 @@ describe('ActionMatch', () => {
       .mockImplementation(() => {});
     store.dispatch(actionCreators.joinMatch(stubMatchPk)).then(() => {
       expect(spyPost).toHaveBeenCalledTimes(1);
-      expect(spyMessageError).toHaveBeenCalledWith('Log in!');
+      expect(spyMessageError).toHaveBeenCalledWith('Failed to set up request.');
       done();
     });
   });
@@ -450,7 +435,7 @@ describe('ActionMatch', () => {
       .mockImplementation(() => {});
     store.dispatch(actionCreators.quitMatch(stubMatchPk)).then(() => {
       expect(spyDelete).toHaveBeenCalledTimes(1);
-      expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
+      expect(spyMessageError).toHaveBeenCalledWith('Failed to set up request.');
       done();
     });
   });
@@ -512,7 +497,28 @@ describe('ActionMatch', () => {
       .mockImplementation(() => {});
     store.dispatch(actionCreators.searchMatch(query, category)).then(() => {
       expect(spyGet).toHaveBeenCalledTimes(1);
-      expect(spyMessageError).toHaveBeenCalledWith('ERROR!');
+      expect(spyMessageError).toHaveBeenCalledWith('Failed to set up request.');
+      done();
+    });
+  });
+
+  it(`If 'searchMatch' failed without response, it should alert error`, done => {
+    const spyGetFail = jest.spyOn(axios, 'get').mockImplementation(() => {
+      return new Promise((_resolve, reject) => {
+        const dummyError = {
+          request: {},
+        };
+        reject(dummyError);
+      });
+    });
+
+    const spyMessageError = jest
+      .spyOn(message, 'error')
+      .mockImplementation(() => {});
+
+    store.dispatch(actionCreators.searchMatch('', null)).then(() => {
+      expect(spyGetFail).toHaveBeenCalledTimes(1);
+      expect(spyMessageError).toHaveBeenCalledWith('No response from server.');
       done();
     });
   });

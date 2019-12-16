@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
@@ -22,10 +21,8 @@ const rootReducer = combineReducers({
   router: connectRouter(history),
 });
 
-const logger = storeArg => next => action => {
-  console.log('[Middleware] Dispatching', action);
+const logger = () => next => action => {
   const result = next(action);
-  console.log('[Middleware] Next State', storeArg.getState());
   return result;
 };
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

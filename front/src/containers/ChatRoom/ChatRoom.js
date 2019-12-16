@@ -29,6 +29,7 @@ class ChatRoom extends Component {
 
   componentDidMount() {
     const { match, onGetMatch, onUnAuthorized } = this.props;
+    window.scrollTo(0, 0);
     onGetMatch(match.params.id).then(() => {
       const { currentUser } = this.props;
       if (currentUser) {
@@ -62,7 +63,7 @@ class ChatRoom extends Component {
     const { isLoading } = this.state;
     if (!currentUser || isLoading) return null;
     return (
-      <div className="ChatRoom">
+      <div className="ChatRoom" style={{ height: '100%' }}>
         <Chat client={this.client} theme="messaging light">
           <Channel channel={this.channel}>
             <Window>

@@ -2,7 +2,6 @@
   max-width: 700px;
   margin: 10px auto 0;
   padding: 5px;
-  /* border: 1px solid lightskyblue; */
   border-radius: 5px;
 }
 
@@ -19,6 +18,14 @@
   margin-top: 0px;
   margin-right: 5px;
 }
-#password {
+
+.SignUpForm #password {
   margin: 0px;
+}
+
+.SignUpForm .ant-btn-primary {
+  width: 170px;
+  height: 45px;
+  font-size: 20px;
+  margin: 10px;
 }

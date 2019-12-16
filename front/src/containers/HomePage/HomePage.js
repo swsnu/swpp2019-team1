@@ -19,6 +19,7 @@ class HomePage extends Component {
 
   async componentDidMount() {
     const { getHotMatch, getNewMatch, getRecommendMatch } = this.props;
+    window.scrollTo(0, 0);
     getHotMatch();
     getNewMatch();
     await new Promise(resolve => setTimeout(resolve, 50));
@@ -110,7 +111,7 @@ class HomePage extends Component {
                 borderWidth: 4,
                 borderRadius: 10,
                 width: 500,
-                paddingVertical: 10,
+                padding: 10,
                 marginBottom: 20,
               }}
             >

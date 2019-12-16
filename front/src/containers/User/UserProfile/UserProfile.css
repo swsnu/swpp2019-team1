@@ -1,9 +1,3 @@
-/* .ant-breadcrumb {
-  font-size: 30px;
-  text-align: center;
-  margin-top: 5px;
-} */
-
 .ant-breadcrumb + .ant-page-header-heading {
   margin-top: 20px;
 }
@@ -38,10 +32,6 @@
 .ant-tabs-ink-bar {
   height: 4px;
 }
-/* 
-.ant-fullcalendar-fullscreen {
-  margin-top: 10px;
-} */
 .ant-fullcalendar-value {
   font-size: 20px;
 }
@@ -67,14 +57,9 @@
 
 .Interests {
   font-size: 30px;
-  /* padding-bottom: 20px; */
 }
 
 button {
-  /* position: absolute;
-  left: 200px;
-  margin-bottom: 10px;
-  height: 40px; */
   font-size: 20px;
 }
 

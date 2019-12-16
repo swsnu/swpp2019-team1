@@ -110,39 +110,4 @@ describe('<Header />', () => {
     await new Promise(resolve => setTimeout(resolve, 100));
     expect(spySignOut).toHaveBeenCalled();
   });
-
-  /*
-  xit(`should push home when click back button`, async () => {
-    expect(getHeaderName('/home')).toBe('Matchmaker');
-    expect(getHeaderName('/signup')).toBe('Sign Up');
-    expect(getHeaderName('/signin')).toBe('Sign In');
-    expect(getHeaderName('/search')).toBe('Search');
-    expect(getHeaderName('/match/create')).toBe('Create new Match');
-    expect(getHeaderName('/match/detail')).toBe('Match Detail');
-  });
-  
-  xit(`should change title appropriately`, async done => {
-    const spyGetName = jest
-      .spyOn(Headers, 'getHeaderName')
-      .mockImplementation(() => null);
-    const pushPromise = new Promise(resolve => {
-      history.push('/home');
-      authenticatedHeader = (
-        <Provider store={authenticatedMockStore}>
-          <ConnectedRouter history={history}>
-            <Header />
-          </ConnectedRouter>
-        </Provider>
-      );
-      resolve();
-    });
-    pushPromise.then(async () => {
-      const component = render(authenticatedHeader);
-      history.push('/signin');
-      component.findByText('Matchmaker');
-      await new Promise(resolve => setTimeout(resolve, 100));
-      expect(spyGetName).toHaveBeenCalledWith('/home');
-      done();
-    });
-  }); */
 });

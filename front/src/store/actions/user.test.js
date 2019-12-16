@@ -52,7 +52,7 @@ describe('User Actions', () => {
       return new Promise((_resolve, reject) => {
         const dummyError = {
           response: {
-            status: 500, // TODO: Implement error handling
+            status: 500,
             headers: '',
             data: '',
           },
@@ -230,7 +230,7 @@ describe('User Actions', () => {
       return new Promise((_resolve, reject) => {
         const dummyError = {
           response: {
-            status: 500, // TODO: Implement error handling
+            status: 500,
             headers: '',
             data: '',
           },
@@ -245,7 +245,7 @@ describe('User Actions', () => {
 
     store.dispatch(actionCreators.editUser()).then(() => {
       expect(spyPatchFail).toHaveBeenCalledTimes(1);
-      expect(spyMessageError).toHaveBeenCalledWith('Got response but error.');
+      expect(spyMessageError).toHaveBeenCalledWith('Error!');
       done();
     });
   });
@@ -311,7 +311,7 @@ describe('User Actions', () => {
       return new Promise((_resolve, reject) => {
         const dummyError = {
           response: {
-            status: 500, // TODO: Implement error handling
+            status: 500,
             headers: '',
             data: '',
           },
@@ -326,7 +326,7 @@ describe('User Actions', () => {
 
     store.dispatch(actionCreators.editInterest()).then(() => {
       expect(spyPutFail).toHaveBeenCalledTimes(1);
-      expect(spyMessageError).toHaveBeenCalledWith('Got response but error.');
+      expect(spyMessageError).toHaveBeenCalledWith('Error!');
       done();
     });
   });

@@ -83,6 +83,7 @@ describe('<ChatRoom />', () => {
         };
       });
     spyHistoryPush = jest.spyOn(history, 'push').mockImplementation(() => {});
+    jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
   });
   afterEach(() => {
     jest.clearAllMocks();

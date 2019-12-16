@@ -25,6 +25,13 @@ const stubUserNotHost = {
     id: 2,
   },
 };
+
+const stubUserNotParticipant = {
+  currentUser: {
+    id: 3,
+  },
+};
+
 const stubMatch = {
   selected: {
     id: 1,
@@ -35,7 +42,6 @@ const stubMatch = {
     title: 'TEST_TITLE',
     hostName: 'TEST_HOSTNAME',
     additionalInfo: 'TEST_ADITIONAL_INFO',
-    // matchThumbnail
     category: [0, 0],
     capacity: 2,
     isOnline: false,
@@ -53,7 +59,9 @@ const stubMatch = {
     restrictToMale: false,
     restrictToFemale: false,
     numParticipants: 1,
-    participants: [1],
+    participants: [1, 2],
+    categoryName: 'Games',
+    matchThumbnail: '/directory',
   },
 };
 
@@ -67,7 +75,6 @@ const stubMatchRestrictMale = {
     title: 'TEST_TITLE',
     hostName: 'TEST_HOSTNAME',
     additionalInfo: 'TEST_ADITIONAL_INFO',
-    // matchThumbnail
     category: [0, 0],
     capacity: 2,
     isOnline: false,
@@ -86,6 +93,8 @@ const stubMatchRestrictMale = {
     restrictToFemale: false,
     numParticipants: 2,
     participants: [1],
+    categoryName: 'Games',
+    matchThumbnail: '/directory',
   },
 };
 
@@ -99,7 +108,6 @@ const stubMatchRestrictFemale = {
     title: 'TEST_TITLE',
     hostName: 'TEST_HOSTNAME',
     additionalInfo: 'TEST_ADITIONAL_INFO',
-    // matchThumbnail
     category: [0, 0],
     capacity: 2,
     isOnline: false,
@@ -118,6 +126,8 @@ const stubMatchRestrictFemale = {
     restrictToFemale: true,
     numParticipants: 1,
     participants: [1],
+    categoryName: 'Games',
+    matchThumbnail: '/directory',
   },
 };
 const stubMatchUndef = {
@@ -126,6 +136,7 @@ const stubMatchUndef = {
 const mockStore = getMockStore(stubUser, stubMatch);
 const mockStoreUndef = getMockStore(stubUser, stubMatchUndef);
 const mockStoreNotHost = getMockStore(stubUserNotHost, stubMatch);
+const mockStoreNotParticipant = getMockStore(stubUserNotParticipant, stubMatch);
 const mockStoreNoUser = getMockStore(stubNoUser, stubMatch);
 const mockStoreRestrictMale = getMockStore(stubUser, stubMatchRestrictMale);
 const mockStoreRestrictFemale = getMockStore(stubUser, stubMatchRestrictFemale);
@@ -134,6 +145,7 @@ describe('<MatchDetail />', () => {
   let matchDetail;
   let matchDetailUndef;
   let matchDetailNotHost;
+  let matchDetailNotParticipant;
   let matchDetailNoUser;
   let matchDetailRestrictMale;
   let matchDetailRestrictFemale;
@@ -142,6 +154,7 @@ describe('<MatchDetail />', () => {
   let spyQuitMatch;
   beforeEach(() => {
     jest.spyOn(window.location, 'reload').mockImplementation(() => {});
+    jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
     const matchParams = {
       params: { id: 1 },
       path: '/match/:id/',
@@ -173,8 +186,23 @@ describe('<MatchDetail />', () => {
         </ConnectedRouter>
       </Provider>
     );
+
     matchDetailNotHost = (
       <Provider store={mockStoreNotHost}>
+        <ConnectedRouter history={history}>
+          <Switch>
+            <Route
+              path="/"
+              exact
+              render={() => <MatchDetail match={matchParams} />}
+            />
+          </Switch>
+        </ConnectedRouter>
+      </Provider>
+    );
+
+    matchDetailNotParticipant = (
+      <Provider store={mockStoreNotParticipant}>
         <ConnectedRouter history={history}>
           <Switch>
             <Route
@@ -242,6 +270,7 @@ describe('<MatchDetail />', () => {
       .mockImplementation(() => {
         return () => {};
       });
+    jest.spyOn(window, 'scrollTo').mockImplementation(() => {});
   });
   afterEach(() => {
     jest.clearAllMocks();
@@ -264,7 +293,12 @@ describe('<MatchDetail />', () => {
   it('should render join button when no user', () => {
     const component = mount(matchDetailNoUser);
     const wrapper = component.find('#join-match-button');
+    const spyHistoryPush = jest
+      .spyOn(history, 'push')
+      .mockImplementation(() => {});
     expect(wrapper.length).toBe(2);
+    wrapper.at(0).simulate('click');
+    expect(spyHistoryPush).toHaveBeenCalledWith('/signin');
   });
 
   it('should redirected to match edit page when edit button clicked', () => {
@@ -298,19 +332,17 @@ describe('<MatchDetail />', () => {
   });
 
   it('should call quitMatch when quit button clicked', () => {
-    const component = mount(matchDetail);
+    const component = mount(matchDetailNotHost);
     const wrapper = component.find('#quit-match-button').at(0);
     wrapper.simulate('click');
     expect(spyQuitMatch).toBeCalledTimes(1);
   });
 
   it('should call joinMatch when join button clicked', () => {
-    const component = mount(matchDetailNotHost);
+    const component = mount(matchDetailNotParticipant);
     let wrapper = component.find('#join-match-button').at(0);
     wrapper.simulate('click');
     expect(spyJoinMatch).toBeCalledTimes(1);
-    // wrapper = component.find('.Detail-PlaceDate');
-    // expect(wrapper.text()).toBe('calendar_today09:35AM, 7th 11 2019storefront');
     wrapper = component.find('#detail-capacity');
     expect(wrapper.text()).toBe('person1/2');
   });
@@ -319,10 +351,6 @@ describe('<MatchDetail />', () => {
     let component = mount(matchDetailRestrictMale);
     let wrapper = component.find('.Detail-Restrictions');
     expect(wrapper.text()).toBe('Females, Age 5 to 10[object Object]');
-    // wrapper = component.find('.Detail-PlaceDate');
-    // expect(wrapper.text()).toBe(
-    //   'calendar_today09:35PM, 7th 11 2019The period is 7storefrontabc',
-    // );
     wrapper = component.find('#detail-capacity');
     expect(wrapper.text()).toBe('person2/2 (Full)');
     component = mount(matchDetailRestrictFemale);

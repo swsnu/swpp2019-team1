@@ -54,24 +54,6 @@ class ScheduleCalendar extends Component {
       </ul>
     );
   };
-  /*
-  getMonthData = value => {
-    if (value.month() === 8) {
-      return 1394;
-    }
-    return null;
-  };
-
-  monthCellRender = value => {
-    const num = this.getMonthData(value);
-    return num ? (
-      <div className="notes-month">
-        <section>{num}</section>
-        <span>Backlog number</span>
-      </div>
-    ) : null;
-  };
-  */
 
   render() {
     // eslint-disable-next-line react/prop-types

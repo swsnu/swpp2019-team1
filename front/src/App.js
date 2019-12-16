@@ -3,7 +3,9 @@ import './App.css';
 
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
+import { connect } from 'react-redux';
 import ReactRouterPropTypes from 'react-router-prop-types';
+import PropTypes from 'prop-types';
 
 import Header from './containers/Header/Header';
 import Footer from './containers/Footer/Footer';
@@ -20,6 +22,7 @@ import ChatRoom from './containers/ChatRoom/ChatRoom';
 
 function App(props) {
   const { history } = props;
+  const { currentUser } = props;
   return (
     <div className="App">
       <ConnectedRouter history={history}>
@@ -31,11 +34,17 @@ function App(props) {
           <Route path="/match/create" exact component={MatchCreate} />
           <Route path="/match/:id/edit" exact component={MatchEdit} />
           <Route path="/match/:id" exact component={MatchDetail} />
-          <Route path="/match/:id/chatroom" exact component={ChatRoom} />
-          <Route path="/signin" exact component={SignIn} />
-          <Route path="/signup" exact component={SignUp} />
+          {currentUser ? (
+            <Route path="/match/:id/chatroom" exact component={ChatRoom} />
+          ) : (
+            <Route path="/signin" exact component={SignIn} />
+          )}
           <Route path="/profile/:id" exact component={UserProfile} />
-          <Route path="/profile/:id/edit" exact component={UserProfileEdit} />
+          {currentUser ? (
+            <Route path="/profile/:id/edit" exact component={UserProfileEdit} />
+          ) : (
+            <Route path="/signup" exact component={SignUp} />
+          )}
           <Redirect from="/" to="/home" />
         </Switch>
         <div className="extra" />
@@ -47,5 +56,20 @@ function App(props) {
 }
 App.propTypes = {
   history: ReactRouterPropTypes.history.isRequired,
+  currentUser: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+  }),
 };
-export default App;
+
+App.defaultProps = {
+  currentUser: null,
+};
+const mapStateToProps = state => {
+  return {
+    currentUser: state.user.currentUser,
+  };
+};
+export default connect(
+  mapStateToProps,
+  null,
+)(App);

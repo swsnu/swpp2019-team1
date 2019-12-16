@@ -14,6 +14,7 @@ class UserProfileEdit extends Component {
 
   componentDidMount() {
     const { history, currentUser } = this.props;
+    window.scrollTo(0, 0);
     if (!currentUser) history.push('/signin');
     else this.setState(currentUser);
   }
@@ -38,7 +39,10 @@ class UserProfileEdit extends Component {
     if (currentUser === null)
       return <div className="UserProfileEdit">Loading...</div>;
     return (
-      <div className="UserProfileEdit">
+      <div
+        className="UserProfileEdit"
+        style={{ marginTop: '50px', marginBottom: '-100px', height: '100%' }}
+      >
         <SignUpForm
           password=""
           passwordConfirm=""
