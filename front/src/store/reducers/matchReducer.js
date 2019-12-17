@@ -37,6 +37,11 @@ const matchReducer = (state, action) => {
         ...state,
         searchResult: action.searchResult,
       };
+    case actionTypes.EDIT_MATCH:
+      return {
+        ...state,
+        selected: action.match,
+      };
     case actionTypes.SEND_NLP_TEXT:
       return {
         ...state,
