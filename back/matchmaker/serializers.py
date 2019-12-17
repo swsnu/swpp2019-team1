@@ -35,8 +35,8 @@ class MatchSerializer(serializers.ModelSerializer):
             'match_thumbnail', instance.match_thumbnail)
         instance.match_thumbnail = new_match_thumbnail
 
-        instance.category_id = validated_data.get(
-            'category_id', instance.category_id)
+        instance.category = validated_data.get(
+            'category', instance.category)
         instance.capacity = validated_data.get('capacity', instance.capacity)
         instance.location_text = validated_data.get(
             'location_text', instance.location_text)
